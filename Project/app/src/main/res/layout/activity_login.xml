@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp"
+    android:background="#EEEEEE">
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/label_login"
+        android:layout_gravity="center"
+        />
+    <EditText
+        android:background="#fff"
+        android:layout_marginTop="@dimen/padding_top"
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top"
+        android:hint="User name"
+        android:textSize="16sp"
+        android:maxLines="1"
+        />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:background="#fff"
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top"
+        android:hint="Password"
+        android:textSize="16sp"
+        android:maxLines="1"
+        />
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Register Here"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#000000"/>
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/tv_forgotPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#000000"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/bt_submit"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="#4CAF50"
+        android:layout_gravity="center"
+        android:text="submit"
+        android:textColor="#fff" />
+    <Button
+        android:id="@+id/bt_loginWithFB"
+        android:layout_marginTop="10dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorFB"
+        android:layout_gravity="center"
+        android:text="Login with facebook"
+        android:textColor="#fff" />
+
+</LinearLayout>
