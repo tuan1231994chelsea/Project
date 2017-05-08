@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchParent"
+    android:layout_marginLeft="@dimen/padding_start"
+    android:orientation="vertical"
+    android:id="@+id/root_view_signup_activity">
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/user_name"
+        style="@style/MatchWidth"
+        android:hint="@string/UserName"
+        android:singleLine="true"
+        android:paddingTop="@dimen/padding_top"
+        android:textSize="20sp"
+        />
+    <EditText
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:id="@+id/password"
+        style="@style/MatchWidth"
+        android:hint="@string/Password"
+        android:singleLine="true"
+        android:paddingTop="@dimen/padding_top"
+        android:textSize="20sp" />
+    <EditText
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"
+        android:id="@+id/confirm_password"
+        style="@style/MatchWidth"
+        android:hint="@string/ConfirmPassword"
+        android:singleLine="true"
+        android:paddingTop="@dimen/padding_top"
+        android:textSize="20sp" />
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/email"
+        style="@style/MatchWidth"
+        android:hint="@string/Email"
+        android:singleLine="true"
+        android:paddingTop="@dimen/padding_top"
+        android:textSize="20sp" />
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/full_name"
+        style="@style/MatchWidth"
+        android:hint="@string/FullName"
+        android:singleLine="true"
+        android:paddingTop="@dimen/padding_top"
+        android:textSize="20sp" />
+    <Button
+        android:id="@+id/bt_signup"
+        android:layout_marginTop="15dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="#4CAF50"
+        android:layout_gravity="center"
+        android:text="@string/SignUp"
+        android:textColor="#fff" />
+
+</LinearLayout>

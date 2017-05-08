@@ -12,7 +12,6 @@ import tuan.anh.giang.core.utils.configs.CoreConfigUtils;
 
 public class CoreApp extends Application {
     public static final String TAG = CoreApp.class.getSimpleName();
-
     private static CoreApp instance;
     private static final String QB_CONFIG_DEFAULT_FILE_NAME = "qb_config.json";
     private QbConfigs qbConfigs;

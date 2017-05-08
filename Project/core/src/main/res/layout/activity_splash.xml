@@ -5,16 +5,26 @@
     style="@style/MatchParent"
     tools:ignore="ContentDescription">
 
+    <ImageView
+        android:id="@+id/logo"
+        style="@style/WrapContent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp"
+        android:src="@drawable/project_logo" />
+
     <LinearLayout
         style="@style/WrapContent"
-        android:layout_centerInParent="true"
+        android:layout_above="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/text_splash_app_title"
             style="@style/SplashAppTitleStyle"
-            tools:text="AppName"/>
+            tools:text="AppName" />
 
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/text_splash_app_version"
@@ -23,7 +33,5 @@
             tools:text="3.3.0" />
     </LinearLayout>
 
-    <ImageView
-        style="@style/SplashLogoStyle"
-        android:layout_marginBottom="40dp" />
+
 </RelativeLayout>

@@ -3,6 +3,7 @@ package tuan.anh.giang.core.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.backendless.BackendlessUser;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
 
@@ -16,6 +17,16 @@ public class SharedPrefsHelper {
     private static final String QB_USER_PASSWORD = "qb_user_password";
     private static final String QB_USER_FULL_NAME = "qb_user_full_name";
     private static final String QB_USER_TAGS = "qb_user_tags";
+
+    private static final String BEL_USER_NAME="bel_user_name";
+    private static final String BEL_USER_PASSWORD="bel_user_password";
+    private static final String BEL_USER_EMAIL="bel_user_email";
+    private static final String BEL_USER_FULL_NAME="bel_user_full_name";
+    private static final String BEL_USER_IS_EMPLOYEE="bel_user_is_employee";
+    private static final String BEL_USER_IS_ONLINE="bel_user_is_online";
+    private static final String BEL_USER_TAGS="bel_user_tags";
+
+
 
     private static SharedPrefsHelper instance;
 
@@ -117,6 +128,38 @@ public class SharedPrefsHelper {
             return null;
         }
     }
+    public boolean hasBELUser(){
+        return has(BEL_USER_NAME);
+    }
+    public  void saveBELUser(BackendlessUser belUser){
+        save(BEL_USER_NAME,belUser.getProperty("user_name"));
+        save(BEL_USER_EMAIL,belUser.getProperty("email"));
+        save(BEL_USER_FULL_NAME,belUser.getProperty("full_name"));
+        save(BEL_USER_IS_EMPLOYEE,belUser.getProperty("is_employee"));
+        save(BEL_USER_TAGS,belUser.getProperty("tags"));
+    }
+    public void removeBELUser(){
+        delete(BEL_USER_NAME);
+        delete(BEL_USER_EMAIL);
+        delete(BEL_USER_FULL_NAME);
+        delete(BEL_USER_IS_EMPLOYEE);
+        delete(BEL_USER_TAGS);
+    }
+    public BackendlessUser getBELUser(){
+        if(hasBELUser()){
+            BackendlessUser belUser = new BackendlessUser();
+            belUser.setProperty("user_name",get(BEL_USER_NAME));
+            belUser.setProperty("email",get(BEL_USER_EMAIL));
+            belUser.setProperty("full_name",get(BEL_USER_FULL_NAME));
+            belUser.setProperty("is_employee",get(BEL_USER_IS_EMPLOYEE));
+            belUser.setProperty("tags",get(BEL_USER_TAGS));
+            return belUser;
+        }
+        else{
+            return null;
+        }
+    }
+
 
     public boolean hasQbUser() {
         return has(QB_USER_LOGIN) && has(QB_USER_PASSWORD);

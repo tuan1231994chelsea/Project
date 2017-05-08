@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_user_info"
+        android:icon="@drawable/ic_information"
+        android:title="User Infomation" />
+    <item
+        android:id="@+id/nav_list_employee"
+        android:icon="@drawable/ic_view_list"
+        android:title="List Employee" />
+    <item android:title="Setting">
+        <menu>
+            <item
+                android:id="@+id/nav_video_setting"
+                android:icon="@drawable/ic_settings"
+                android:title="Video setting" />
+        </menu>
+    </item>
+    <item android:title="More">
+        <menu>
+            <item
+                android:id="@+id/nav_rate"
+                android:icon="@drawable/icon_danhgia"
+                android:title="Give me 5 stars" />
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/icon_gopy"
+                android:title="Help us make app better" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/icon_chiase"
+                android:title="Share" />
+        </menu>
+    </item>
+</menu>

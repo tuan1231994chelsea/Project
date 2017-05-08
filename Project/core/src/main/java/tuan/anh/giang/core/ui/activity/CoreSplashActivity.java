@@ -60,7 +60,6 @@ public abstract class CoreSplashActivity extends CoreBaseActivity {
             showSnackbarErrorParsingConfigs();
             return false;
         }
-
         return true;
     }
 
