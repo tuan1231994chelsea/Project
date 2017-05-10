@@ -6,29 +6,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
-import com.backendless.Counters;
-import com.backendless.IAtomic;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.DataQueryBuilder;
-import com.backendless.persistence.QueryOptions;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.StringifyArrayList;
@@ -45,8 +44,10 @@ import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.adapters.OpponentsAdapter;
 import tuan.anh.giang.project.adapters.QuestionAdapter;
 import tuan.anh.giang.project.db.QbUsersDbManager;
+import tuan.anh.giang.project.entities.Answer;
 import tuan.anh.giang.project.entities.Question;
-import tuan.anh.giang.project.fragments.FragmentAnswer;
+import tuan.anh.giang.project.fragments.AnswerFragment;
+import tuan.anh.giang.project.fragments.NewQuestionFragment;
 import tuan.anh.giang.project.services.CallService;
 import tuan.anh.giang.project.utils.Consts;
 import tuan.anh.giang.project.utils.PermissionsChecker;
@@ -74,26 +75,29 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private ArrayList<BackendlessUser> employeeList;
     public static DrawerLayout drawer;
     private ImageView imgMenu;
-    private BackendlessUser currentBackendlessUser;
+    public static BackendlessUser currentBackendlessUser;
     private ArrayList<Question> listOldQuestion;
     private ListView lvOldQuestion;
+    private TextView tvNewQuestion;
     private QuestionAdapter questionAdapter;
     public static FragmentManager fragmentManager;
     public static MainActivity mainActivity;
     DataQueryBuilder queryQuestion;
-
+    Fragment currentFragment;
+    SwipeRefreshLayout refreshLayout;
+    boolean isAllOfQuestion = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
-        Log.d("kiemtratime","bat dau mainactivity");
+        Log.d("kiemtratime", "bat dau mainactivity");
         fragmentManager = getSupportFragmentManager();
+        queryQuestion = DataQueryBuilder.create();
         if (sharedPrefsHelper == null) {
             sharedPrefsHelper = SharedPrefsHelper.getInstance();
         }
-        queryQuestion = DataQueryBuilder.create();
         listOldQuestion = new ArrayList<>();
         findViewById();
         onClick();
@@ -122,7 +126,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                     Backendless.UserService.setCurrentUser(response);
                                     currentBackendlessUser = response;
                                     // check sharepreferences haven't Backendless User -> save current BELUser
-                                    Log.d("kiemtratime","lay duoc current backendless user");
+                                    Log.d("kiemtratime", "lay duoc current backendless user");
                                     if (!checkHasBELUser()) {
                                         sharedPrefsHelper.saveBELUser(currentBackendlessUser);
                                     }
@@ -135,7 +139,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                     } else {
                                         signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
                                     }
-                                    updateOldQuestion();
+                                    getOldQuestionFirst();
                                 }
 
                                 @Override
@@ -152,7 +156,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 }
             });
-        }else{
+        } else {
             // check sharepreferences haven't Backendless User -> save current BELUser
             if (!checkHasBELUser()) {
                 sharedPrefsHelper.saveBELUser(currentBackendlessUser);
@@ -166,25 +170,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             } else {
                 signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
             }
-            updateOldQuestion();
+            getOldQuestionFirst();
         }
     }
 
-
-    /**
-     * get user's questions and sort data by created
-     */
-    private void updateOldQuestion(){
-        queryQuestion.setWhereClause( "user.objectId = '" + currentBackendlessUser.getObjectId() + "'");
+    // first load old question, load first page
+    private void getOldQuestionFirst() {
+        isAllOfQuestion = false;
+        queryQuestion.setWhereClause("user.objectId = '" + currentBackendlessUser.getObjectId() + "'");
         queryQuestion.setSortBy("created DESC");
+        queryQuestion.setPageSize(10);
         Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
             @Override
             public void handleResponse(List<Question> response) {
+                if (response.size() < 10) {
+                    isAllOfQuestion = true;
+                }
                 listOldQuestion.addAll(response);
-                questionAdapter = new QuestionAdapter(mainActivity,R.layout.item_list_question,listOldQuestion);
-                lvOldQuestion.setAdapter(questionAdapter);
+                lvOldQuestion.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        questionAdapter.notifyDataSetChanged();
+                    }
+                });
                 hideProgressDialog();
-                Log.d("kiemtratime","load xong questions");
+                Log.d("kiemtratime", "load xong questions");
             }
 
             @Override
@@ -192,11 +202,94 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 Log.d("myapp", fault.getMessage());
             }
         });
+    }
+
+
+    /**
+     * update first page question
+     */
+    private void updateOldQuestion() {
+        isAllOfQuestion = false;
+        showProgressDialog(R.string.refreshing_your_question);
+        queryQuestion = DataQueryBuilder.create();
+        queryQuestion.setWhereClause("user.objectId = '" + currentBackendlessUser.getObjectId() + "'");
+        queryQuestion.setSortBy("created DESC");
+        queryQuestion.setPageSize(10);
+        listOldQuestion.clear();
+        Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
+            @Override
+            public void handleResponse(List<Question> response) {
+                if (response.size() < 10) {
+                    isAllOfQuestion = true;
+                }
+                listOldQuestion.addAll(response);
+                lvOldQuestion.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        questionAdapter.notifyDataSetChanged();
+                        refreshLayout.setRefreshing(false);
+                    }
+                });
+                hideProgressDialog();
+                Log.d("kiemtratime", "load xong questions");
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d("myapp", fault.getMessage());
+            }
+        });
+    }
+
+    // load more 1 page question
+    private void loadMoreQuestion() {
+        showProgressDialog(R.string.loading_more_answer);
         queryQuestion.prepareNextPage();
+        Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
+            @Override
+            public void handleResponse(List<Question> response) {
+                hideProgressDialog();
+                if (response.size() != 0) {
+                    if(response.size() < 10){
+                        isAllOfQuestion = true;
+                    }
+                    listOldQuestion.addAll(response);
+                    lvOldQuestion.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            questionAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } else {
+                    isAllOfQuestion = true;
+                }
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d("myapp", fault.getMessage());
+            }
+        });
     }
 
 
     private void onClick() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateOldQuestion();
+            }
+        });
+        tvNewQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentFragment = new NewQuestionFragment();
+                fragmentManager.beginTransaction().replace(R.id.root_view_main_activity, currentFragment)
+                        .addToBackStack(null)
+                        .commit();
+
+            }
+        });
         imgMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,12 +308,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                FragmentAnswer fragmentAnswer = new FragmentAnswer();
+                currentFragment = new AnswerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("question",listOldQuestion.get(i));
-                bundle.putString("full_name",String.valueOf(currentBackendlessUser.getProperty("full_name")));
-                fragmentAnswer.setArguments(bundle);
-                fragmentManager.beginTransaction().replace(R.id.root_view_main_activity,fragmentAnswer)
+                bundle.putSerializable("question", listOldQuestion.get(i));
+                currentFragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.root_view_main_activity, currentFragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -240,8 +332,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
         imgMenu = (ImageView) findViewById(R.id.img_menu);
         lvOldQuestion = (ListView) findViewById(R.id.lv_old_question);
+        tvNewQuestion = (TextView) findViewById(R.id.tv_new_question);
         lvOldQuestion.setVerticalScrollBarEnabled(false);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipetop);
         questionAdapter = new QuestionAdapter(mainActivity, R.layout.item_list_question, listOldQuestion);
+        lvOldQuestion.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int lastVisibleItem = firstVisibleItem + visibleItemCount;
+                if(!isAllOfQuestion && listOldQuestion.size() != 0){
+                    if(((listOldQuestion.size()-1) == lastVisibleItem))
+                    loadMoreQuestion();
+                }
+            }
+        });
         lvOldQuestion.setAdapter(questionAdapter);
     }
 
@@ -343,7 +451,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     @Override
                     public void onSuccess(QBUser result, Bundle params) {
                         Log.d("myapp", "signUp qb user success");
-                        Log.d("kiemtratime","dang ky xong QB user");
+                        Log.d("kiemtratime", "dang ky xong QB user");
                         loginToChat(result);
                     }
 
@@ -391,7 +499,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onSuccess(QBUser result, Bundle params) {
                 Log.d("myapp", "sign in thanh cong QbUser");
-                Log.d("kiemtratime","dang nhap QB user thanh cong");
+                Log.d("kiemtratime", "dang nhap QB user thanh cong");
                 if (deleteCurrentUser) {
                     removeAllUserData(result);
                 } else {
@@ -440,7 +548,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             if (isLoginSuccess) {
                 Log.d("myapp", "login qb user to chat success");
-                Log.d("kiemtratime","login to chat thanh cong");
+                Log.d("kiemtratime", "login to chat thanh cong");
                 saveUserData(userForSave);
                 signInCreatedUser(userForSave, false);
             } else {
@@ -474,6 +582,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            Log.i("MainActivity", "popping backstack");
+            fragmentManager.popBackStack();
+            if (currentFragment instanceof NewQuestionFragment) {
+                if (((NewQuestionFragment) currentFragment).isUpdateMain) {
+                    updateOldQuestion();
+                }
+            } else if (currentFragment instanceof AnswerFragment) {
+                if (((AnswerFragment) currentFragment).isUpdateMain) {
+                    updateOldQuestion();
+                }
+            }
+
+        } else {
+            Log.i("MainActivity", "nothing on backstack, calling super");
+            super.onBackPressed();
+        }
     }
 
 }

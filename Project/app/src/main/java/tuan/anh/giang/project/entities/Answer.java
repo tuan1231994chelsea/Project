@@ -2,13 +2,14 @@ package tuan.anh.giang.project.entities;
 
 import com.backendless.BackendlessUser;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by GIANG ANH TUAN on 04/05/2017.
  */
 
-public class Answer {
+public class Answer implements Serializable{
     private Date created;
     private Date updated;
     private String objectId;

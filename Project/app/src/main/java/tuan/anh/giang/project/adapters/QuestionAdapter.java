@@ -30,6 +30,7 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
     Activity context;
     int resource;
     ArrayList<Question> objects;
+//    private OnScrollToItemQuestionListener listener;
 
     public QuestionAdapter( Activity context,  int resource,  ArrayList<Question> objects) {
         super(context, resource, objects);
@@ -49,7 +50,7 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         TextView tvContent = (TextView) row.findViewById(R.id.tv_content);
 
         Question question = this.objects.get(position);
-        if(question.is_reply()){
+        if(question.getIs_reply()){
             imgReply.setColorFilter(ContextCompat.getColor(context,R.color.red));
         }else{
             imgReply.setColorFilter(ContextCompat.getColor(context,R.color.colorFB));
@@ -57,6 +58,15 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         tvCreated.setText("● "+sdf.format(question.getCreated()));
         tvContent.setText(question.getContent());
+//        if (listener != null)
+//            listener.onScrollToItem(position);
         return row;
     }
+//    public interface OnScrollToItemQuestionListener {
+//        void onScrollToItem(int position);
+//    }
+//
+//    public void setOnScrollToItemListener(OnScrollToItemQuestionListener listener) {
+//        this.listener = listener;
+//    }
 }

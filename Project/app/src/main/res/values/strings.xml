@@ -219,7 +219,10 @@
     <string name="fill_out_confirm_password">Please fill out confirm password</string>
     <string name="fill_out_email">Please fill out email</string>
     <string name="fill_out_full_name">Please fill out full name</string>
+    <string name="fill_out_content_answer">Write your comment</string>
+    <string name="fill_out_content_question">Write your question here</string>
     <string name="pls_check_confirm_password">Please check your confirm password</string>
+
 
     
     <!-- table name, column-->
@@ -259,7 +262,14 @@
 
     <string name="loading">Loading</string>
     <string name="loading_your_question">Loading your questions </string>
+    <string name="refreshing_your_question">Refreshing your question </string>
     <string name="loading_answer">Loading answers </string>
+    <string name="loading_more_answer">Loading more answers </string>
+
+    <!-- fragment answer-->
+    <string name="view_all_answer">View all answers</string>
+    <string name="view_less_answer">View less answers</string>
+    <string name="send">Send</string>
 
 
 </resources>

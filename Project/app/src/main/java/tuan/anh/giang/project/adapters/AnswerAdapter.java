@@ -46,6 +46,7 @@ public class AnswerAdapter extends ArrayAdapter<Answer> {
         TextView tvCreated = (TextView) row.findViewById(R.id.tv_created);
 
         Answer answer = objects.get(position);
+        // reponse tra ve khong co user
         if((Boolean) answer.getUser().getProperty(context.getString(R.string.is_employee))){
             imgUser.setImageResource(R.drawable.employee);
         }else{
@@ -56,7 +57,14 @@ public class AnswerAdapter extends ArrayAdapter<Answer> {
         tvAnswer.setText(answer.getContent_answer());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         tvCreated.setText("● "+sdf.format(answer.getCreated()));
-
         return row;
+    }
+    public void setListAnswer(ArrayList<Answer> listAnswer){
+        this.objects = listAnswer;
+    }
+
+    @Override
+    public int getCount() {
+        return objects.size();
     }
 }
