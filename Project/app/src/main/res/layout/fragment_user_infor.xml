@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEEEE"
+    android:clickable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="7dp"
+        android:background="@drawable/border_user_infor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/account_circle"
+            android:tint="@color/colorFB" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:stretchColumns="*">
+
+            <TableRow>
+
+                <TextView
+                    android:gravity="left"
+                    android:text="@string/FullName"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/ed_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/border_send_reply"
+                    android:maxLength="28"
+                    android:singleLine="true"
+                    android:text="Giang Anh Tuan"
+                    android:textColor="@color/full_name_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="25dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:gravity="left"
+                    android:text="@string/Email"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/ed_email"
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/border_send_reply"
+                    android:maxLength="28"
+                    android:singleLine="true"
+                    android:text="tuan1231994chelsea@gmail.com"
+                    android:textColor="@color/full_name_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/btn_update_infor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background_submit"
+            android:text="@string/Edit_Infor"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingLeft="5dp">
+
+            <ImageView
+                android:id="@+id/img_user"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/reset_password"
+                android:tint="@color/colorFB" />
+
+            <ImageView
+                android:id="@+id/img_send"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/send" />
+
+            <EditText
+                android:editable="false"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/ed_reply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/img_send"
+                android:layout_toRightOf="@+id/img_user"
+                android:background="@drawable/border_send_reply"
+                android:maxLines="2"
+                android:text="@string/Send_email_to_change_password"
+                android:textColor="#757575"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

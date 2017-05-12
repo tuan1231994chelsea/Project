@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -19,8 +20,9 @@ import tuan.anh.giang.project.utils.Consts;
 
 public abstract class BaseActivity extends CoreBaseActivity {
 
-    SharedPrefsHelper sharedPrefsHelper;
+    public SharedPrefsHelper sharedPrefsHelper;
     private ProgressDialog progressDialog;
+    private AlertDialog.Builder alertDialog;
     protected GooglePlayServicesHelper googlePlayServicesHelper;
     protected QBResRequestExecutor requestExecutor;
 
@@ -82,6 +84,16 @@ public abstract class BaseActivity extends CoreBaseActivity {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+    void showNotifyDialog(String titlte, String message, int icon) {
+        if (alertDialog == null) {
+            alertDialog = new AlertDialog.Builder(this);
+        }
+        alertDialog.setTitle(titlte)
+                .setIcon(icon)
+                .setMessage(message)
+                .create()
+                .show();
     }
 
     protected void showErrorSnackbar(@StringRes int resId, Exception e,

@@ -212,7 +212,11 @@
     <string name="Password">Password</string>
     <string name="ConfirmPassword">Confirm password</string>
     <string name="Email">Email</string>
-    <string name="FullName">Fullname</string>
+    <string name="FullName">Full name</string>
+    <string name="Edit_Infor">Edit Info</string>
+    <string name="Complete_Update_Infor">Complete update</string>
+    <string name="Send_email_to_change_password">Send email to change password</string>
+    <string name="Email_sent">Email has been sent</string>
     <string name="register_success">User has been registered, you must confirm your email to login</string>
     <string name="fill_out_user_name">Please fill out user name</string>
     <string name="fill_out_password">Please fill out password</string>
@@ -222,6 +226,7 @@
     <string name="fill_out_content_answer">Write your comment</string>
     <string name="fill_out_content_question">Write your question here</string>
     <string name="pls_check_confirm_password">Please check your confirm password</string>
+    <string name="recieve_email_to_change_password">You will be recieved an email to change password</string>
 
 
     
@@ -248,6 +253,7 @@
 
     <string name="created">created</string>
     <string name="updated">updated</string>
+    <string name="updating">Updating</string>
     <string name="objectId">objectId</string>
 
     <!-- Error -->

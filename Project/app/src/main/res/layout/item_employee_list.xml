@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/img_employee"
+        tools:src="@drawable/employee"
+        style="@style/ListItemIconStyle"
+        android:layout_marginStart="@dimen/padding_start"
+        android:layout_marginLeft="@dimen/padding_start"
+        />
+    <TextView
+        android:id="@+id/tv_full_name"
+        android:layout_marginLeft="10dp"
+        style="@style/MatchWidth"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        tools:text="Full Name"
+        />
+
+
+</LinearLayout>

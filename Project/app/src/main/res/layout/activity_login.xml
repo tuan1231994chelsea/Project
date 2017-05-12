@@ -16,22 +16,26 @@
         android:src="@drawable/label_login" />
 
     <EditText
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/hint_color"
         android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_top"
-        android:background="#fff"
+        android:background="@drawable/border_edittext_login"
         android:hint="User name"
         android:paddingTop="@dimen/padding_top"
         android:singleLine="true"
         android:textSize="16sp" />
 
     <EditText
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/hint_color"
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#fff"
+        android:background="@drawable/border_edittext_login"
         android:hint="Password"
         android:inputType="textPassword"
         android:paddingTop="@dimen/padding_top"
@@ -46,6 +50,8 @@
         android:weightSum="2">
 
         <TextView
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:id="@+id/tv_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -60,6 +66,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:text="Forgot Password"
             android:textColor="#000000"
             android:textSize="18sp"

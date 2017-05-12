@@ -7,7 +7,7 @@ public interface Consts {
 
     String QB_CONFIG_FILE_NAME = "qb_config.json";
 
-    String DEFAULT_USER_PASSWORD = "x6Bt0VDy5";
+    String DEFAULT_USER_PASSWORD = "a12345678";
 
     String VERSION_NUMBER = "1.0";
 

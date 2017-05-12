@@ -7,8 +7,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
@@ -19,6 +26,7 @@ import com.quickblox.videochat.webrtc.QBRTCSession;
 import com.quickblox.videochat.webrtc.QBRTCTypes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
@@ -40,16 +48,19 @@ public class OpponentsActivity extends BaseActivity {
     private static final String TAG = OpponentsActivity.class.getSimpleName();
 
     private static final long ON_ITEM_CLICK_DELAY = TimeUnit.SECONDS.toMillis(10);
-
+    private ArrayList<BackendlessUser> listEmployee;
     private OpponentsAdapter opponentsAdapter;
     private ListView opponentsListView;
     private QBUser currentUser;
     private ArrayList<QBUser> currentOpponentsList;
-    private QbUsersDbManager dbManager;
+//    private QbUsersDbManager dbManager;
     private boolean isRunForCall;
     private WebRtcSessionManager webRtcSessionManager;
 
     private PermissionsChecker checker;
+    BackendlessUser currentBELUser,employeeToChat;
+    ImageView imgBack;
+    TextView tvTittle;
 
     public static void start(Context context, boolean isRunForCall) {
         Intent intent = new Intent(context, OpponentsActivity.class);
@@ -65,7 +76,7 @@ public class OpponentsActivity extends BaseActivity {
 
         initFields();
 
-        initDefaultActionBar();
+//        initDefaultActionBar();
 
         initUi();
 
@@ -110,36 +121,58 @@ public class OpponentsActivity extends BaseActivity {
             isRunForCall = extras.getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
         }
         currentUser = sharedPrefsHelper.getQbUser();
-        dbManager = QbUsersDbManager.getInstance(getApplicationContext());
+//        dbManager = QbUsersDbManager.getInstance(getApplicationContext());
         webRtcSessionManager = WebRtcSessionManager.getInstance(getApplicationContext());
+        listEmployee = new ArrayList<>();
+        currentBELUser = Backendless.UserService.CurrentUser();
+        employeeToChat = new BackendlessUser();
     }
 
     private void startLoadUsers() {
         showProgressDialog(R.string.dlg_loading_opponents);
-        String currentRoomName = SharedPrefsHelper.getInstance().get(Consts.PREF_CURREN_ROOM_NAME);
-        requestExecutor.loadUsersByTag(currentRoomName, new QBEntityCallback<ArrayList<QBUser>>() {
+        DataQueryBuilder dataQueryBuilder = DataQueryBuilder.create();
+        dataQueryBuilder.setWhereClause(getString(R.string.is_employee)+"= true");
+        dataQueryBuilder.setPageSize(20);
+        Backendless.Data.of(BackendlessUser.class).find(dataQueryBuilder, new AsyncCallback<List<BackendlessUser>>() {
             @Override
-            public void onSuccess(ArrayList<QBUser> result, Bundle params) {
-                hideProgressDialog();
-                dbManager.saveAllUsers(result, true);
-                initUsersList();
+            public void handleResponse(List<BackendlessUser> response) {
+                listEmployee = (ArrayList<BackendlessUser>) response;
             }
 
             @Override
-            public void onError(QBResponseException responseException) {
-                hideProgressDialog();
-                showErrorSnackbar(R.string.loading_users_error, responseException, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startLoadUsers();
-                    }
-                });
+            public void handleFault(BackendlessFault fault) {
+
             }
         });
+
+
+//        showProgressDialog(R.string.dlg_loading_opponents);
+//        String currentRoomName = SharedPrefsHelper.getInstance().get(Consts.PREF_CURREN_ROOM_NAME);
+//        requestExecutor.loadUsersByTag(currentRoomName, new QBEntityCallback<ArrayList<QBUser>>() {
+//            @Override
+//            public void onSuccess(ArrayList<QBUser> result, Bundle params) {
+//                hideProgressDialog();
+////                dbManager.saveAllUsers(result, true);
+//                initUsersList();
+//            }
+//
+//            @Override
+//            public void onError(QBResponseException responseException) {
+//                hideProgressDialog();
+//                showErrorSnackbar(R.string.loading_users_error, responseException, new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        startLoadUsers();
+//                    }
+//                });
+//            }
+//        });
     }
 
     private void initUi() {
         opponentsListView = (ListView) findViewById(R.id.list_opponents);
+        imgBack = (ImageView) findViewById(R.id.img_back);
+        tvTittle = (TextView) findViewById(R.id.toolbar_title);
     }
 
     private boolean isCurrentOpponentsListActual(ArrayList<QBUser> actualCurrentOpponentsList) {
@@ -149,28 +182,29 @@ public class OpponentsActivity extends BaseActivity {
     }
 
     private void initUsersList() {
+
 //      checking whether currentOpponentsList is actual, if yes - return
         if (currentOpponentsList != null) {
-            ArrayList<QBUser> actualCurrentOpponentsList = dbManager.getAllUsers();
-            actualCurrentOpponentsList.remove(sharedPrefsHelper.getQbUser());
-            if (isCurrentOpponentsListActual(actualCurrentOpponentsList)) {
-                return;
-            }
+//            ArrayList<QBUser> actualCurrentOpponentsList = dbManager.getAllUsers();
+//            actualCurrentOpponentsList.remove(sharedPrefsHelper.getQbUser());
+//            if (isCurrentOpponentsListActual(actualCurrentOpponentsList)) {
+//                return;
+//            }
         }
         proceedInitUsersList();
     }
 
     private void proceedInitUsersList() {
-        currentOpponentsList = dbManager.getAllUsers();
+//        currentOpponentsList = dbManager.getAllUsers();
         Log.d(TAG, "proceedInitUsersList currentOpponentsList= " + currentOpponentsList);
-        currentOpponentsList.remove(sharedPrefsHelper.getQbUser());
-        opponentsAdapter = new OpponentsAdapter(this, currentOpponentsList);
-        opponentsAdapter.setSelectedItemsCountsChangedListener(new OpponentsAdapter.SelectedItemsCountsChangedListener() {
-            @Override
-            public void onCountSelectedItemsChanged(int count) {
-                updateActionBar(count);
-            }
-        });
+//        currentOpponentsList.remove(sharedPrefsHelper.getQbUser());
+//        opponentsAdapter = new OpponentsAdapter(this, currentOpponentsList);
+//        opponentsAdapter.setSelectedItemsCountsChangedListener(new OpponentsAdapter.SelectedItemsCountsChangedListener() {
+//            @Override
+//            public void onCountSelectedItemsChanged(int count) {
+//                updateActionBar(count);
+//            }
+//        });
 
         opponentsListView.setAdapter(opponentsAdapter);
     }
@@ -307,17 +341,17 @@ public class OpponentsActivity extends BaseActivity {
 
     private void removeAllUserData() {
         UsersUtils.removeUserData(getApplicationContext());
-        requestExecutor.deleteCurrentUser(currentUser.getId(), new QBEntityCallback<Void>() {
-            @Override
-            public void onSuccess(Void aVoid, Bundle bundle) {
-                Log.d(TAG, "Current user was deleted from QB");
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-                Log.e(TAG, "Current user wasn't deleted from QB " + e);
-            }
-        });
+//        requestExecutor.deleteCurrentUser(currentUser.getId(), new QBEntityCallback<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid, Bundle bundle) {
+//                Log.d(TAG, "Current user was deleted from QB");
+//            }
+//
+//            @Override
+//            public void onError(QBResponseException e) {
+//                Log.e(TAG, "Current user wasn't deleted from QB " + e);
+//            }
+//        });
     }
 
     private void startLoginActivity() {

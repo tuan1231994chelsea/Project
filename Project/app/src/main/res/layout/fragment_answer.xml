@@ -52,7 +52,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="Fragment Answer"
+                            android:text="Answer Question"
                             android:textColor="#fff"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -221,6 +221,7 @@
                             android:src="@drawable/send" />
 
                         <EditText
+                            android:maxLines="2"
                             android:textColor="@color/text_color"
                             android:id="@+id/ed_reply"
                             android:layout_width="match_parent"

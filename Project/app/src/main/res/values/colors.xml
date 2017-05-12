@@ -62,5 +62,6 @@
     <color name="time_color">#8C93A5</color>
     <color name="text_color">#010101</color>
     <color name="notify_color">#FF0000</color>
+    <color name="fb_color">#3B5998</color>
 
 </resources>

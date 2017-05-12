@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
@@ -28,6 +29,7 @@ import tuan.anh.giang.project.utils.ValidationUtils;
 
 public class SignUpActivity extends BaseActivity {
     EditText userName, passWord, confirmPassword, email, fullName;
+    ImageView img_back;
     Button signUp;
     Context context;
 
@@ -52,6 +54,12 @@ public class SignUpActivity extends BaseActivity {
     }
 
     private void onClick() {
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -81,6 +89,7 @@ public class SignUpActivity extends BaseActivity {
     }
 
     private void findViewById() {
+        img_back = (ImageView) findViewById(R.id.img_back);
         userName = (EditText) findViewById(R.id.user_name);
         passWord = (EditText) findViewById(R.id.password);
         confirmPassword = (EditText) findViewById(R.id.confirm_password);

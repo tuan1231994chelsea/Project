@@ -48,6 +48,7 @@ import tuan.anh.giang.project.entities.Answer;
 import tuan.anh.giang.project.entities.Question;
 import tuan.anh.giang.project.fragments.AnswerFragment;
 import tuan.anh.giang.project.fragments.NewQuestionFragment;
+import tuan.anh.giang.project.fragments.UserInforFragment;
 import tuan.anh.giang.project.services.CallService;
 import tuan.anh.giang.project.utils.Consts;
 import tuan.anh.giang.project.utils.PermissionsChecker;
@@ -78,7 +79,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public static BackendlessUser currentBackendlessUser;
     private ArrayList<Question> listOldQuestion;
     private ListView lvOldQuestion;
-    private TextView tvNewQuestion;
+    private TextView tvNewQuestion,tvTittle;
     private QuestionAdapter questionAdapter;
     public static FragmentManager fragmentManager;
     public static MainActivity mainActivity;
@@ -104,9 +105,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         getCurrentBELUser();
 
 
-//        deleteAndSaveNewBackendUser();
-//        getListEmployeeFromBEL();
-
 
     }
 
@@ -125,6 +123,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                 public void handleResponse(BackendlessUser response) {
                                     Backendless.UserService.setCurrentUser(response);
                                     currentBackendlessUser = response;
+                                    tvTittle.setText(currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
                                     // check sharepreferences haven't Backendless User -> save current BELUser
                                     Log.d("kiemtratime", "lay duoc current backendless user");
                                     if (!checkHasBELUser()) {
@@ -333,6 +332,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         imgMenu = (ImageView) findViewById(R.id.img_menu);
         lvOldQuestion = (ListView) findViewById(R.id.lv_old_question);
         tvNewQuestion = (TextView) findViewById(R.id.tv_new_question);
+        tvTittle = (TextView) findViewById(R.id.toolbar_title);
         lvOldQuestion.setVerticalScrollBarEnabled(false);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipetop);
         questionAdapter = new QuestionAdapter(mainActivity, R.layout.item_list_question, listOldQuestion);
@@ -365,8 +365,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         employeeList.clear();
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause("is_employee = true");
-        // demo voi so nhan vien duoi 100
-//        queryBuilder.setPageSize( 100 ).setOffset( 0 );
         Backendless.Data.of(BackendlessUser.class).find(queryBuilder, new AsyncCallback<List<BackendlessUser>>() {
             @Override
             public void handleResponse(List<BackendlessUser> users) {
@@ -382,14 +380,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-    }
-
-    private void deleteAndSaveNewBackendUser() {
-        if (sharedPrefsHelper == null) {
-            sharedPrefsHelper = SharedPrefsHelper.getInstance();
-        }
-        sharedPrefsHelper.removeBELUser();
-        sharedPrefsHelper.saveBELUser(currentBackendlessUser);
     }
 
     private boolean checkHasBELUser() {
@@ -437,7 +427,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             qbUser = new QBUser();
             qbUser.setFullName(fullName);
-            qbUser.setLogin(getCurrentDeviceId());
+            qbUser.setLogin(userName);
             qbUser.setPassword(Consts.DEFAULT_USER_PASSWORD);
             qbUser.setTags(userTags);
         }
@@ -446,7 +436,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // user quickblox
     private void startSignUpNewUser(final QBUser newUser) {
-        showProgressDialog(R.string.dlg_creating_new_user);
+//        showProgressDialog(R.string.dlg_creating_new_user);
         requestExecutor.signUpNewUser(newUser, new QBEntityCallback<QBUser>() {
                     @Override
                     public void onSuccess(QBUser result, Bundle params) {
@@ -558,13 +548,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void showListEmployee() {
-        OpponentsActivity.start(mainActivity, false);
+        EmployeesActivity.start(mainActivity, false);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_user_info:
+                showInfoUser();
                 break;
             case R.id.nav_video_setting:
                 break;
@@ -579,9 +570,37 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_list_employee:
                 showListEmployee();
                 break;
+            case R.id.nav_logout:
+                logOut();
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showInfoUser() {
+        currentFragment = new UserInforFragment();
+        fragmentManager.beginTransaction().replace(R.id.root_view_main_activity, currentFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void logOut() {
+        showProgressDialog(R.string.dlg_logout);
+        Backendless.UserService.logout(new AsyncCallback<Void>() {
+            @Override
+            public void handleResponse(Void response) {
+                // user has been logged out.
+                sharedPrefsHelper.removeBELUser();
+                LoginActivity.start(mainActivity);
+                finish();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.d("error",fault.getMessage());
+            }
+        });
     }
 
     @Override
