@@ -6,6 +6,7 @@ import android.util.Log;
 import com.quickblox.videochat.webrtc.QBRTCSession;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCClientSessionCallbacksImpl;
 
+import tuan.anh.giang.project.activities.EmployeesActivity;
 import tuan.anh.giang.project.activities.MainActivity;
 
 /**
@@ -45,7 +46,7 @@ public class WebRtcSessionManager extends QBRTCClientSessionCallbacksImpl {
 
         if (currentSession == null){
             setCurrentSession(session);
-            MainActivity.start(context, true);
+            EmployeesActivity.start(context, true);
         }
     }
 

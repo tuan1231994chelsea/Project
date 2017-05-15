@@ -28,6 +28,10 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.session.QBSessionManager;
+import com.quickblox.auth.session.QBSessionParameters;
+import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.StringifyArrayList;
@@ -66,7 +70,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final long ON_ITEM_CLICK_DELAY = TimeUnit.SECONDS.toMillis(10);
     private OpponentsAdapter opponentsAdapter;
     private ListView opponentsListView;
-    private QBUser currentQBUser;
     private ArrayList<QBUser> currentOpponentsList;
     private QbUsersDbManager dbManager;
     private boolean isRunForCall;
@@ -77,9 +80,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public static DrawerLayout drawer;
     private ImageView imgMenu;
     public static BackendlessUser currentBackendlessUser;
+    public static QBUser currentQBUser;
     private ArrayList<Question> listOldQuestion;
     private ListView lvOldQuestion;
-    private TextView tvNewQuestion,tvTittle;
+    private TextView tvNewQuestion,tvTitle;
     private QuestionAdapter questionAdapter;
     public static FragmentManager fragmentManager;
     public static MainActivity mainActivity;
@@ -123,21 +127,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                 public void handleResponse(BackendlessUser response) {
                                     Backendless.UserService.setCurrentUser(response);
                                     currentBackendlessUser = response;
-                                    tvTittle.setText(currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                                    tvTitle.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            tvTitle.setText(currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                                        }
+                                    });
+
                                     // check sharepreferences haven't Backendless User -> save current BELUser
                                     Log.d("kiemtratime", "lay duoc current backendless user");
-                                    if (!checkHasBELUser()) {
-                                        sharedPrefsHelper.saveBELUser(currentBackendlessUser);
-                                    }
+//                                    if (!checkHasBELUser()) {
+//                                        sharedPrefsHelper.saveBELUser(currentBackendlessUser);
+//                                    }
                                     /** check sharepreferences haven't QuickBlox User -> Sign Up new Quickblox User by
                                      * current BEL User -> save QB User and sign in this user
                                      * else get QB user from sharepreferences and sign in this user
                                      **/
-                                    if (!checkHasQbUser()) {
-                                        startSignUpNewUser(createQBUserWithCurrentData(currentBackendlessUser));
-                                    } else {
-                                        signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
-                                    }
+//                                    if (!checkHasQbUser()) {
+//                                        startSignUpNewUser(createQBUserWithCurrentData(currentBackendlessUser));
+//                                    } else {
+//                                        signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
+//                                    }
+                                    String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
+                                    currentQBUser = new QBUser(loginQBUser,Consts.DEFAULT_USER_PASSWORD);
+                                    signInCreatedUser(currentQBUser, false);
                                     getOldQuestionFirst();
                                 }
 
@@ -157,18 +170,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             });
         } else {
             // check sharepreferences haven't Backendless User -> save current BELUser
-            if (!checkHasBELUser()) {
-                sharedPrefsHelper.saveBELUser(currentBackendlessUser);
-            }
+//            if (!checkHasBELUser()) {
+//                sharedPrefsHelper.saveBELUser(currentBackendlessUser);
+//            }
             /** check sharepreferences haven't QuickBlox User -> Sign Up new Quickblox User by
              * current BEL User -> save QB User and sign in this user
              * else get QB user from sharepreferences and sign in this user
              **/
-            if (!checkHasQbUser()) {
-                startSignUpNewUser(createQBUserWithCurrentData(currentBackendlessUser));
-            } else {
-                signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
-            }
+//            if (!checkHasQbUser()) {
+//                startSignUpNewUser(createQBUserWithCurrentData(currentBackendlessUser));
+//            } else {
+//                signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
+//            }
+            String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
+            currentQBUser = new QBUser(loginQBUser,Consts.DEFAULT_USER_PASSWORD);
+            signInCreatedUser(currentQBUser, false);
             getOldQuestionFirst();
         }
     }
@@ -247,7 +263,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
             @Override
             public void handleResponse(List<Question> response) {
-                hideProgressDialog();
                 if (response.size() != 0) {
                     if(response.size() < 10){
                         isAllOfQuestion = true;
@@ -259,6 +274,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             questionAdapter.notifyDataSetChanged();
                         }
                     });
+                    hideProgressDialog();
                 } else {
                     isAllOfQuestion = true;
                 }
@@ -332,7 +348,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         imgMenu = (ImageView) findViewById(R.id.img_menu);
         lvOldQuestion = (ListView) findViewById(R.id.lv_old_question);
         tvNewQuestion = (TextView) findViewById(R.id.tv_new_question);
-        tvTittle = (TextView) findViewById(R.id.toolbar_title);
+        tvTitle = (TextView) findViewById(R.id.toolbar_title);
         lvOldQuestion.setVerticalScrollBarEnabled(false);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipetop);
         questionAdapter = new QuestionAdapter(mainActivity, R.layout.item_list_question, listOldQuestion);
@@ -382,16 +398,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    private boolean checkHasBELUser() {
-        if (sharedPrefsHelper == null) {
-            sharedPrefsHelper = SharedPrefsHelper.getInstance();
-        }
-        if (!sharedPrefsHelper.hasBELUser()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    private boolean checkHasBELUser() {
+//        if (sharedPrefsHelper == null) {
+//            sharedPrefsHelper = SharedPrefsHelper.getInstance();
+//        }
+//        if (!sharedPrefsHelper.hasBELUser()) {
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
 
     /**
      * check if hasQb user in sharepreferances -> return true
@@ -399,16 +415,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      *
      * @return
      */
-    private boolean checkHasQbUser() {
-        if (sharedPrefsHelper == null) {
-            sharedPrefsHelper = SharedPrefsHelper.getInstance();
-        }
-        if (!sharedPrefsHelper.hasQbUser()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    private boolean checkHasQbUser() {
+//        if (sharedPrefsHelper == null) {
+//            sharedPrefsHelper = SharedPrefsHelper.getInstance();
+//        }
+//        if (!sharedPrefsHelper.hasQbUser()) {
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
 
     public static void start(Context context, boolean isRunForCall) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -490,12 +506,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onSuccess(QBUser result, Bundle params) {
                 Log.d("myapp", "sign in thanh cong QbUser");
                 Log.d("kiemtratime", "dang nhap QB user thanh cong");
-                if (deleteCurrentUser) {
-                    removeAllUserData(result);
-                } else {
-
-//                    startOpponentsActivity();
-                }
+                currentQBUser = result;
+                currentQBUser.setPassword(Consts.DEFAULT_USER_PASSWORD);
+                startLoginService(currentQBUser);
+                saveUserData(currentQBUser);
+//                if (deleteCurrentUser) {
+//                    removeAllUserData(result);
+//                } else {
+//
+////                    startOpponentsActivity();
+//                }
             }
 
             @Override
@@ -521,6 +541,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
     }
+    private boolean checkSignIn() {
+        return QBSessionManager.getInstance().getSessionParameters() != null;
+    }
 
     @Override
     protected void onResume() {
@@ -539,8 +562,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             if (isLoginSuccess) {
                 Log.d("myapp", "login qb user to chat success");
                 Log.d("kiemtratime", "login to chat thanh cong");
-                saveUserData(userForSave);
-                signInCreatedUser(userForSave, false);
+//                saveUserData(userForSave);
+                signInCreatedUser(currentQBUser, false);
             } else {
                 Toaster.longToast(getString(R.string.login_chat_login_error) + errorMessage);
             }

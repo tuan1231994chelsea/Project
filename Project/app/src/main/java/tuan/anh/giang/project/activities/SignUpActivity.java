@@ -1,12 +1,18 @@
 package tuan.anh.giang.project.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +23,17 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.helper.StringifyArrayList;
+import com.quickblox.users.model.QBUser;
 
+import tuan.anh.giang.core.utils.Toaster;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.db.Defaults;
+import tuan.anh.giang.project.utils.Consts;
 import tuan.anh.giang.project.utils.ErrorHandling;
+import tuan.anh.giang.project.utils.QBEntityCallbackImpl;
 import tuan.anh.giang.project.utils.ValidationUtils;
 
 /**
@@ -32,6 +45,8 @@ public class SignUpActivity extends BaseActivity {
     ImageView img_back;
     Button signUp;
     Context context;
+    BackendlessUser currentBELUser;
+    QBUser currentQBUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +84,13 @@ public class SignUpActivity extends BaseActivity {
                     user.setPassword(passWord.getText().toString().trim());
                     user.setProperty("email", email.getText().toString().trim());
                     user.setProperty("full_name", fullName.getText().toString().trim());
+                    showProgressDialog("Signing up");
                     Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
-                        public void handleResponse(BackendlessUser registeredUser) {
+                        public void handleResponse(BackendlessUser belUser) {
                             // user has been registered and now can login
-                            Toast.makeText(view.getContext(), getResources().getString(R.string.register_success), Toast.LENGTH_LONG).show();
-                            LoginActivity.start(view.getContext());
+                            currentBELUser = belUser;
+                            startSignUpNewUser(createQBUserWithCurrentData(currentBELUser));
+
 //                            finish();
                         }
 
@@ -140,7 +157,85 @@ public class SignUpActivity extends BaseActivity {
         confirmPassword.setError(getResources().getString(R.string.pls_check_confirm_password));
         return false;
     }
+    // user quickblox
+    private void startSignUpNewUser(final QBUser newUser) {
+        requestExecutor.signUpNewUser(newUser, new QBEntityCallback<QBUser>() {
+                    @Override
+                    public void onSuccess(QBUser result, Bundle params) {
+                        Log.d("myapp", "signUp qb user success");
+                        Log.d("kiemtratime", "dang ky xong QB user");
+                        // update cac truong QBUser cho BELUser
+                        currentQBUser = newUser;
+                        currentBELUser.setProperty(getString(R.string.id_qb),currentQBUser.getId());
+                        currentBELUser.setProperty(getString(R.string.login),currentQBUser.getLogin());
+                        currentBELUser.setProperty(getString(R.string.tags),currentQBUser.getLogin());
+                        Backendless.Data.of(BackendlessUser.class).save(currentBELUser, new AsyncCallback<BackendlessUser>() {
+                            @Override
+                            public void handleResponse(BackendlessUser response) {
+                                // update thanh cong du lieu QbUser vao backendlessUser
+                                hideProgressDialog();
+                                showNotifyDialog("Sign up",getString(R.string.register_success),R.drawable.success);
+                                LoginActivity.start(getApplicationContext());
+                                finish();
+                            }
 
+                            @Override
+                            public void handleFault(BackendlessFault fault) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(QBResponseException e) {
+                        if (e.getHttpStatusCode() == Consts.ERR_LOGIN_ALREADY_TAKEN_HTTP_STATUS) {
+                            signInCreatedUser(newUser, true);
+                            Log.d("myapp", "error signUp qb user ERR_LOGIN_ALREADY_TAKEN_HTTP_STATUS ");
+                        } else {
+                            hideProgressDialog();
+                            Toaster.longToast(R.string.sign_up_error);
+                        }
+                    }
+                }
+        );
+    }
+    private QBUser createQBUserWithCurrentData(BackendlessUser user) {
+        QBUser qbUser = null;
+        String userName = user.getProperty(getString(R.string.user_name)).toString();
+        String fullName = user.getProperty(getString(R.string.full_name)).toString();
+        if (!TextUtils.isEmpty(userName)) {
+            StringifyArrayList<String> userTags = new StringifyArrayList<>();
+            userTags.add(userName);
+
+            qbUser = new QBUser();
+            qbUser.setFullName(fullName);
+            qbUser.setLogin(userName);
+            qbUser.setPassword(Consts.DEFAULT_USER_PASSWORD);
+            qbUser.setTags(userTags);
+        }
+        return qbUser;
+    }
+    private void signInCreatedUser(final QBUser user, final boolean deleteCurrentUser) {
+        requestExecutor.signInUser(user, new QBEntityCallbackImpl<QBUser>() {
+            @Override
+            public void onSuccess(QBUser result, Bundle params) {
+                Log.d("myapp", "sign in thanh cong QbUser");
+                Log.d("kiemtratime", "dang nhap QB user thanh cong");
+                if (deleteCurrentUser) {
+
+                } else {
+
+//                    startOpponentsActivity();
+                }
+            }
+
+            @Override
+            public void onError(QBResponseException responseException) {
+                hideProgressDialog();
+                Toaster.longToast(R.string.sign_up_error);
+            }
+        });
+    }
     private class SignUpEditTextWatcher implements TextWatcher {
         private EditText editText;
 

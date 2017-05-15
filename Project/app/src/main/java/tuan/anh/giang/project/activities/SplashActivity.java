@@ -23,11 +23,11 @@ public class SplashActivity extends CoreSplashActivity {
         sharedPrefsHelper=SharedPrefsHelper.getInstance();
         if (userToken != null && !userToken.equals("")) {
             // backendlessUser  login is available, skip the login activity/login form
-            if(sharedPrefsHelper.hasQbUser()){
-                startLoginService(sharedPrefsHelper.getQbUser());
-            }else{
-                Log.d("myapp","qbUser not save in sharePreferences");
-            }
+//            if(sharedPrefsHelper.hasQbUser()){
+//                startLoginService(sharedPrefsHelper.getQbUser());
+//            }else{
+//                Log.d("myapp","qbUser not save in sharePreferences");
+//            }
             startOpponentsActivity();
         }else{
             proceedToTheNextActivityWithDelay();

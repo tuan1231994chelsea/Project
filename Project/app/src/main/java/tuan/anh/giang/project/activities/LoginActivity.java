@@ -103,15 +103,15 @@ public class LoginActivity extends BaseActivity {
         Backendless.UserService.login(username, password, new AsyncCallback<BackendlessUser>() {
             public void handleResponse(BackendlessUser user) {
                 // user has been logged in
-                if (sharedPrefsHelper.hasBELUser()) {
-                    BackendlessUser oldBELUser = sharedPrefsHelper.getBELUser();
-                    if(!user.getEmail().equals(oldBELUser.getEmail())){
-                        deleteAndSaveNewBackendUser(user);
-                        deleteQBUser();
-                    }
-                } else {
-                    sharedPrefsHelper.saveBELUser(user);
-                }
+//                if (sharedPrefsHelper.hasBELUser()) {
+//                    BackendlessUser oldBELUser = sharedPrefsHelper.getBELUser();
+//                    if(!user.getEmail().equals(oldBELUser.getEmail())){
+//                        deleteAndSaveNewBackendUser(user);
+//                        deleteQBUser();
+//                    }
+//                } else {
+//                    sharedPrefsHelper.saveBELUser(user);
+//                }
                 Log.d("myapp", "login bel user thanh cong");
                 MainActivity.start(context, false);
                 finish();

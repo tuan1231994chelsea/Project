@@ -79,6 +79,29 @@ public abstract class BaseActivity extends CoreBaseActivity {
         progressDialog.show();
 
     }
+    void showProgressDialog(String message) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+
+            // Disable the back button
+            DialogInterface.OnKeyListener keyListener = new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    return keyCode == KeyEvent.KEYCODE_BACK;
+                }
+            };
+            progressDialog.setOnKeyListener(keyListener);
+        }
+
+        progressDialog.setMessage(message);
+
+        progressDialog.show();
+
+    }
+
 
     void hideProgressDialog() {
         if (progressDialog != null) {

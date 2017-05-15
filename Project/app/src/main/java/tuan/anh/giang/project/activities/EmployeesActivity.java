@@ -17,6 +17,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+import com.quickblox.users.model.QBUser;
 import com.quickblox.videochat.webrtc.QBRTCClient;
 import com.quickblox.videochat.webrtc.QBRTCSession;
 import com.quickblox.videochat.webrtc.QBRTCTypes;
@@ -29,6 +30,7 @@ import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.adapters.EmployeeAdapter;
 import tuan.anh.giang.project.utils.CollectionsUtils;
 import tuan.anh.giang.project.utils.Consts;
+import tuan.anh.giang.project.utils.PermissionsChecker;
 import tuan.anh.giang.project.utils.PushNotificationSender;
 import tuan.anh.giang.project.utils.WebRtcSessionManager;
 
@@ -44,6 +46,10 @@ public class EmployeesActivity extends BaseActivity {
     EmployeeAdapter employeeAdapter ;
     DataQueryBuilder dataQueryBuilder;
     BackendlessUser currentBELUser;
+    QBUser currentQBUser;
+    private boolean isRunForCall;
+    private WebRtcSessionManager webRtcSessionManager;
+    private PermissionsChecker checker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +58,15 @@ public class EmployeesActivity extends BaseActivity {
         dataQueryBuilder.setPageSize(20);
         dataQueryBuilder.setWhereClause(getString(R.string.is_employee)+" = true and "+getString(R.string.is_online)+"= true");
         currentBELUser = Backendless.UserService.CurrentUser();
+        initFields();
         findViewById();
         onClick();
         updateListEmployees();
+        if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
+            CallActivity.start(EmployeesActivity.this, true);
+        }
+
+        checker = new PermissionsChecker(getApplicationContext());
     }
 
     public static void start(Context context, boolean isRunForCall) {
@@ -118,13 +130,24 @@ public class EmployeesActivity extends BaseActivity {
         CallActivity.start(this, false);
     }
     private void updateListEmployees(){
-        showProgressDialog(R.string.loading);
+        refreshLayout.setRefreshing(true);
         listEmployee.clear();
         dataQueryBuilder = DataQueryBuilder.create();
         dataQueryBuilder.setPageSize(20);
         dataQueryBuilder.setWhereClause(getString(R.string.is_employee)+" = true and "+getString(R.string.is_online)+"= true");
         employeeAdapter.clearSelection();
         getListEmployees();
+    }
+    private void startPermissionsActivity(boolean checkOnlyAudio) {
+        PermissionsActivity.startActivity(this, checkOnlyAudio, Consts.PERMISSIONS);
+    }
+    private void initFields() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            isRunForCall = extras.getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
+        }
+        currentQBUser = sharedPrefsHelper.getQbUser();
+        webRtcSessionManager = WebRtcSessionManager.getInstance(getApplicationContext());
     }
 
     private void getListEmployees(){
@@ -143,11 +166,9 @@ public class EmployeesActivity extends BaseActivity {
                             employeeAdapter.notifyDataSetChanged();
                         }
                     });
-                    hideProgressDialog();
+                    refreshLayout.setRefreshing(false);
                 }
-
             }
-
             @Override
             public void handleFault(BackendlessFault fault) {
 
@@ -160,4 +181,25 @@ public class EmployeesActivity extends BaseActivity {
         return findViewById(R.id.list_employees);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        lvEmployee.post(new Runnable() {
+            @Override
+            public void run() {
+                employeeAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getExtras() != null) {
+            isRunForCall = intent.getExtras().getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
+            if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
+                CallActivity.start(EmployeesActivity.this, true);
+            }
+        }
+    }
 }
