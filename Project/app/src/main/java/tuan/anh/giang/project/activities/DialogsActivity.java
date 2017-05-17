@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.ui.activity;
+package tuan.anh.giang.project.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,17 +34,6 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.messages.services.SubscribeService;
-//import com.quickblox.sample.chat.R;
-//import com.quickblox.sample.chat.managers.DialogsManager;
-//import com.quickblox.sample.chat.ui.adapter.DialogsAdapter;
-//import com.quickblox.sample.chat.utils.chat.ChatHelper;
-//import com.quickblox.sample.chat.utils.qb.QbChatDialogMessageListenerImp;
-//import com.quickblox.sample.chat.utils.qb.QbDialogHolder;
-//import com.quickblox.sample.chat.utils.qb.callback.QbEntityCallbackImpl;
-//import com.quickblox.sample.core.gcm.GooglePlayServicesHelper;
-//import com.quickblox.sample.core.ui.dialog.ProgressDialogFragment;
-//import com.quickblox.sample.core.utils.SharedPrefsHelper;
-//import com.quickblox.sample.core.utils.constant.GcmConsts;
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
@@ -54,13 +43,22 @@ import tuan.anh.giang.core.gcm.GooglePlayServicesHelper;
 import tuan.anh.giang.core.ui.dialog.ProgressDialogFragment;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.constant.GcmConsts;
-import tuan.anh.giang.testtextchat.R;
-import tuan.anh.giang.testtextchat.managers.DialogsManager;
-import tuan.anh.giang.testtextchat.ui.adapter.DialogsAdapter;
-import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
-import tuan.anh.giang.testtextchat.utils.qb.QbChatDialogMessageListenerImp;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
-import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackImpl;
+import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.adapters.DialogsAdapter;
+import tuan.anh.giang.project.managers.DialogsManager;
+import tuan.anh.giang.project.utils.chat.ChatHelper;
+import tuan.anh.giang.project.utils.qb.QbChatDialogMessageListenerImp;
+import tuan.anh.giang.project.utils.qb.QbDialogHolder;
+import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackImpl;
+//import tuan.anh.giang.testtextchat.R;
+//import tuan.anh.giang.testtextchat.managers.DialogsManager;
+//import tuan.anh.giang.testtextchat.ui.adapter.DialogsAdapter;
+//import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
+//import tuan.anh.giang.testtextchat.utils.qb.QbChatDialogMessageListenerImp;
+//import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
+//import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackImpl;
+
+
 
 public class DialogsActivity extends BaseActivity implements DialogsManager.ManagingDialogsCallbacks {
     private static final String TAG = DialogsActivity.class.getSimpleName();
@@ -173,18 +171,19 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         if (resultCode == RESULT_OK) {
             isProcessingResultInProgress = true;
             if (requestCode == REQUEST_SELECT_PEOPLE) {
-                ArrayList<QBUser> selectedUsers = (ArrayList<QBUser>) data
-                        .getSerializableExtra(SelectUsersActivity.EXTRA_QB_USERS);
 
-                if (isPrivateDialogExist(selectedUsers)) {
-                    selectedUsers.remove(ChatHelper.getCurrentUser());
-                    QBChatDialog existingPrivateDialog = QbDialogHolder.getInstance().getPrivateDialogWithUser(selectedUsers.get(0));
-                    isProcessingResultInProgress = false;
-                    ChatActivity.startForResult(DialogsActivity.this, REQUEST_DIALOG_ID_FOR_UPDATE, existingPrivateDialog);
-                } else {
-                    ProgressDialogFragment.show(getSupportFragmentManager(), R.string.create_chat);
-                    createDialog(selectedUsers);
-                }
+//                ArrayList<QBUser> selectedUsers = (ArrayList<QBUser>) data
+//                        .getSerializableExtra(SelectUsersActivity.EXTRA_QB_USERS);
+//
+//                if (isPrivateDialogExist(selectedUsers)) {
+//                    selectedUsers.remove(ChatHelper.getCurrentUser());
+//                    QBChatDialog existingPrivateDialog = QbDialogHolder.getInstance().getPrivateDialogWithUser(selectedUsers.get(0));
+//                    isProcessingResultInProgress = false;
+//                    ChatActivity.startForResult(DialogsActivity.this, REQUEST_DIALOG_ID_FOR_UPDATE, existingPrivateDialog);
+//                } else {
+//                    ProgressDialogFragment.show(getSupportFragmentManager(), R.string.create_chat);
+//                    createDialog(selectedUsers);
+//                }
             } else if (requestCode == REQUEST_DIALOG_ID_FOR_UPDATE) {
                 if (data != null) {
                     String dialogId = data.getStringExtra(ChatActivity.EXTRA_DIALOG_ID);
@@ -249,7 +248,8 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
     }
 
     public void onStartNewChatClick(View view) {
-        SelectUsersActivity.startForResult(this, REQUEST_SELECT_PEOPLE);
+        EmployeesActivity.start(DialogsActivity.this,false);
+        //        SelectUsersActivity.startForResult(this, REQUEST_SELECT_PEOPLE);
     }
 
     private void initUi() {

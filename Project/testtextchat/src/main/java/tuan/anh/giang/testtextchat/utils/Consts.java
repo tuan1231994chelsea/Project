@@ -1,8 +1,8 @@
-package com.quickblox.sample.chat.utils;
+package tuan.anh.giang.testtextchat.utils;
 
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.core.utils.ResourceUtils;
-import com.quickblox.users.model.QBUser;
+
+import tuan.anh.giang.core.utils.ResourceUtils;
+import tuan.anh.giang.testtextchat.R;
 
 public interface Consts {
 

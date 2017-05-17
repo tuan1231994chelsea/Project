@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.widget;
+package tuan.anh.giang.testtextchat.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,7 +14,8 @@ import android.util.AttributeSet;
 import android.view.InflateException;
 import android.widget.ImageView;
 
-import com.quickblox.sample.chat.R;
+import tuan.anh.giang.testtextchat.R;
+
 
 public class MaskedImageView extends ImageView {
 

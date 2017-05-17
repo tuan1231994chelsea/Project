@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.activity;
+package tuan.anh.giang.testtextchat.ui.activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -7,8 +7,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 
-import com.quickblox.sample.core.ui.activity.CoreBaseActivity;
-import com.quickblox.sample.core.utils.ErrorUtils;
+import tuan.anh.giang.core.ui.activity.CoreBaseActivity;
+import tuan.anh.giang.core.utils.ErrorUtils;
+
 
 public abstract class BaseActivity extends CoreBaseActivity {
     private static final String TAG = BaseActivity.class.getSimpleName();
@@ -33,7 +34,7 @@ public abstract class BaseActivity extends CoreBaseActivity {
     protected Snackbar showErrorSnackbar(@StringRes int resId, Exception e,
                                          View.OnClickListener clickListener) {
         return ErrorUtils.showSnackbar(getSnackbarAnchorView(), resId, e,
-                com.quickblox.sample.core.R.string.dlg_retry, clickListener);
+                tuan.anh.giang.core.R.string.dlg_retry, clickListener);
     }
 
 }

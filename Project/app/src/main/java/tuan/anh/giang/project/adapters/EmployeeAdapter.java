@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.backendless.BackendlessUser;
+import com.quickblox.core.helper.StringifyArrayList;
+import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +23,7 @@ import java.util.List;
 import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.core.utils.UiUtils;
 import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.utils.Consts;
 
 
 /**
@@ -109,6 +112,16 @@ public class EmployeeAdapter extends ArrayAdapter<BackendlessUser> {
 
     public BackendlessUser getSelectedItem() {
         return selectedItem;
+    }
+    public QBUser getSelectedQBUser(){
+        BackendlessUser backendlessUser = getSelectedItem();
+        QBUser qbUser = new QBUser((String) backendlessUser.getProperty(context.getString(R.string.login)), Consts.DEFAULT_USER_PASSWORD);
+        qbUser.setId((Integer) backendlessUser.getProperty(context.getString(R.string.id_qb)));
+        qbUser.setFullName((String) backendlessUser.getProperty(context.getString(R.string.full_name)));
+        StringifyArrayList<String> tags = new StringifyArrayList<>();
+        tags.add((String) backendlessUser.getProperty(context.getString(R.string.tags)));
+        qbUser.setTags(tags);
+        return qbUser;
     }
 
     protected boolean isItemSelected(int position) {

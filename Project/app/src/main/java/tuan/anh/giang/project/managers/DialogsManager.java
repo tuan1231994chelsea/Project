@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.managers;
+package tuan.anh.giang.project.managers;
 
 import android.os.Bundle;
 
@@ -7,7 +7,6 @@ import com.quickblox.chat.QBSystemMessagesManager;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.chat.model.QBDialogType;
-
 import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.SmackException;
@@ -18,10 +17,11 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogUtils;
-import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackImpl;
+import tuan.anh.giang.project.utils.chat.ChatHelper;
+import tuan.anh.giang.project.utils.qb.QbDialogHolder;
+import tuan.anh.giang.project.utils.qb.QbDialogUtils;
+import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackImpl;
+
 
 public class DialogsManager {
 

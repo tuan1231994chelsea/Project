@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.adapter;
+package tuan.anh.giang.testtextchat.ui.adapter;
 
 import android.content.Context;
 import android.view.View;

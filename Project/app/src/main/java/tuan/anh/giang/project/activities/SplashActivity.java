@@ -18,20 +18,17 @@ public class SplashActivity extends CoreSplashActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkConfigsWithSnackebarError();
-        String userToken = UserTokenStorageFactory.instance().getStorage().get();
-        sharedPrefsHelper=SharedPrefsHelper.getInstance();
-        if (userToken != null && !userToken.equals("")) {
-            // backendlessUser  login is available, skip the login activity/login form
-//            if(sharedPrefsHelper.hasQbUser()){
-//                startLoginService(sharedPrefsHelper.getQbUser());
-//            }else{
-//                Log.d("myapp","qbUser not save in sharePreferences");
-//            }
-            startOpponentsActivity();
-        }else{
-            proceedToTheNextActivityWithDelay();
+        if(checkConfigsWithSnackebarError()){
+            String userToken = UserTokenStorageFactory.instance().getStorage().get();
+            sharedPrefsHelper=SharedPrefsHelper.getInstance();
+            if (userToken != null && !userToken.equals("")) {
+                // backendlessUser  login is available, skip the login activity/login form
+                startOpponentsActivity();
+            }else{
+                proceedToTheNextActivityWithDelay();
+            }
         }
+
     }
 
     private void startOpponentsActivity() {

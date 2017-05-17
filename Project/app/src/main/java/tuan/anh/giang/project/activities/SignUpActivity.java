@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.StringRes;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -82,8 +83,10 @@ public class SignUpActivity extends BaseActivity {
                     BackendlessUser user = new BackendlessUser();
                     user.setProperty(getResources().getString(R.string.user_name), userName.getText().toString().trim());
                     user.setPassword(passWord.getText().toString().trim());
-                    user.setProperty("email", email.getText().toString().trim());
-                    user.setProperty("full_name", fullName.getText().toString().trim());
+                    user.setProperty(getString(R.string.email), email.getText().toString().trim());
+                    user.setProperty(getString(R.string.full_name), fullName.getText().toString().trim());
+                    user.setProperty(getString(R.string.is_employee),false);
+                    user.setProperty(getString(R.string.is_online),false);
                     showProgressDialog("Signing up");
                     Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser belUser) {
@@ -163,9 +166,8 @@ public class SignUpActivity extends BaseActivity {
                     @Override
                     public void onSuccess(QBUser result, Bundle params) {
                         Log.d("myapp", "signUp qb user success");
-                        Log.d("kiemtratime", "dang ky xong QB user");
                         // update cac truong QBUser cho BELUser
-                        currentQBUser = newUser;
+                        currentQBUser = result;
                         currentBELUser.setProperty(getString(R.string.id_qb),currentQBUser.getId());
                         currentBELUser.setProperty(getString(R.string.login),currentQBUser.getLogin());
                         currentBELUser.setProperty(getString(R.string.tags),currentQBUser.getLogin());
@@ -174,14 +176,28 @@ public class SignUpActivity extends BaseActivity {
                             public void handleResponse(BackendlessUser response) {
                                 // update thanh cong du lieu QbUser vao backendlessUser
                                 hideProgressDialog();
+
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignUpActivity.this);
+
+                                alertDialog.setTitle("Sign up")
+                                        .setIcon(R.drawable.success)
+                                        .setMessage(getString(R.string.register_success))
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                LoginActivity.start(SignUpActivity.this);
+                                            }
+                                        })
+                                        .create()
+                                        .show();
                                 showNotifyDialog("Sign up",getString(R.string.register_success),R.drawable.success);
-                                LoginActivity.start(getApplicationContext());
-                                finish();
+//                                LoginActivity.start(SignUpActivity.this);
+//                                finish();
                             }
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
-
+                                showNotifyDialog("Sign up",fault.getMessage(),R.drawable.error);
                             }
                         });
                     }

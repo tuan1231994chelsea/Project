@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.ui.widget;
+package tuan.anh.giang.project.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.InflateException;
 import android.widget.ImageView;
 
-import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.project.R;
 
 
 public class MaskedImageView extends ImageView {

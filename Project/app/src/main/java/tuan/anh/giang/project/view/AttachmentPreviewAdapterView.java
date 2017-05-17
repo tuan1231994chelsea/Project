@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.ui.widget;
+package tuan.anh.giang.project.view;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -24,7 +24,7 @@ public class AttachmentPreviewAdapterView extends HorizontalScrollView {
 
         container = new LinearLayout(context);
         container.setOrientation(LinearLayout.HORIZONTAL);
-        HorizontalScrollView.LayoutParams lp = new HorizontalScrollView.LayoutParams(
+        LayoutParams lp = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(container, lp);
 

@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.ui.adapter;
+package tuan.anh.giang.project.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,6 @@ import com.quickblox.chat.model.QBAttachment;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.core.helper.CollectionsUtil;
-
 import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.SmackException;
@@ -32,14 +31,15 @@ import java.util.List;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 import tuan.anh.giang.core.ui.adapter.BaseListAdapter;
 import tuan.anh.giang.core.utils.ResourceUtils;
-import tuan.anh.giang.testtextchat.R;
-import tuan.anh.giang.testtextchat.ui.activity.AttachmentImageActivity;
-import tuan.anh.giang.testtextchat.ui.widget.MaskedImageView;
-import tuan.anh.giang.testtextchat.utils.Consts;
-import tuan.anh.giang.testtextchat.utils.TimeUtils;
-import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
-import tuan.anh.giang.testtextchat.utils.qb.PaginationHistoryListener;
-import tuan.anh.giang.testtextchat.utils.qb.QbUsersHolder;
+import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.activities.AttachmentImageActivity;
+import tuan.anh.giang.project.utils.Consts;
+import tuan.anh.giang.project.utils.TimeUtils;
+import tuan.anh.giang.project.utils.chat.ChatHelper;
+import tuan.anh.giang.project.utils.qb.PaginationHistoryListener;
+import tuan.anh.giang.project.utils.qb.QbUsersHolder;
+import tuan.anh.giang.project.view.MaskedImageView;
+
 
 public class ChatAdapter extends BaseListAdapter<QBChatMessage> implements StickyListHeadersAdapter {
 
@@ -63,7 +63,7 @@ public class ChatAdapter extends BaseListAdapter<QBChatMessage> implements Stick
         final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.list_item_chat_message, parent, false);
+            convertView = inflater.inflate(R.layout.item_list_chat_message, parent, false);
 
             holder.messageBodyTextView = (TextView) convertView.findViewById(R.id.text_image_message);
             holder.messageAuthorTextView = (TextView) convertView.findViewById(R.id.text_message_author);

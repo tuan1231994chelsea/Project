@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.adapter;
+package tuan.anh.giang.testtextchat.ui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -9,13 +9,14 @@ import android.widget.TextView;
 
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBDialogType;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.utils.qb.QbDialogUtils;
-import com.quickblox.sample.core.ui.adapter.BaseSelectableListAdapter;
-import com.quickblox.sample.core.utils.ResourceUtils;
-import com.quickblox.sample.core.utils.UiUtils;
 
 import java.util.List;
+
+import tuan.anh.giang.core.ui.adapter.BaseSelectableListAdapter;
+import tuan.anh.giang.core.utils.ResourceUtils;
+import tuan.anh.giang.core.utils.UiUtils;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.utils.qb.QbDialogUtils;
 
 public class DialogsAdapter extends BaseSelectableListAdapter<QBChatDialog> {
 
@@ -44,6 +45,7 @@ public class DialogsAdapter extends BaseSelectableListAdapter<QBChatDialog> {
         }
 
         QBChatDialog dialog = getItem(position);
+        // group and private
         if (dialog.getType().equals(QBDialogType.GROUP)) {
             holder.dialogImageView.setBackgroundDrawable(UiUtils.getGreyCircleDrawable());
             holder.dialogImageView.setImageResource(R.drawable.ic_chat_group);

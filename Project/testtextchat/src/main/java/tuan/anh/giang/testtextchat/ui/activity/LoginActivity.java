@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.activity;
+package tuan.anh.giang.testtextchat.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,20 +12,28 @@ import android.widget.TextView;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBPagedRequestBuilder;
-import com.quickblox.sample.chat.App;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.ui.adapter.UsersAdapter;
-import com.quickblox.sample.chat.utils.chat.ChatHelper;
-import com.quickblox.sample.core.ui.activity.CoreBaseActivity;
-import com.quickblox.sample.core.ui.dialog.ProgressDialogFragment;
-import com.quickblox.sample.core.utils.ErrorUtils;
-import com.quickblox.sample.core.utils.SharedPrefsHelper;
+//import com.quickblox.sample.chat.App;
+//import com.quickblox.sample.chat.R;
+//import com.quickblox.sample.chat.ui.adapter.UsersAdapter;
+//import com.quickblox.sample.chat.utils.chat.ChatHelper;
+//import com.quickblox.sample.core.ui.activity.CoreBaseActivity;
+//import com.quickblox.sample.core.ui.dialog.ProgressDialogFragment;
+//import com.quickblox.sample.core.utils.ErrorUtils;
+//import com.quickblox.sample.core.utils.SharedPrefsHelper;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+
+import tuan.anh.giang.core.ui.activity.CoreBaseActivity;
+import tuan.anh.giang.core.ui.dialog.ProgressDialogFragment;
+import tuan.anh.giang.core.utils.ErrorUtils;
+import tuan.anh.giang.core.utils.SharedPrefsHelper;
+import tuan.anh.giang.testtextchat.App;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.ui.adapter.UsersAdapter;
+import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
 
 public class LoginActivity extends CoreBaseActivity {
 
@@ -55,7 +63,7 @@ public class LoginActivity extends CoreBaseActivity {
 
     private void buildUsersList() {
         List<String> tags = new ArrayList<>();
-// getusertag = testtuan
+// getusertag = testtuan trong file json
         tags.add(App.getSampleConfigs().getUsersTag());
 
         QBPagedRequestBuilder requestBuilder = new QBPagedRequestBuilder();

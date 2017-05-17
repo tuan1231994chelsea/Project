@@ -44,7 +44,7 @@
         android:numColumns="3"
         android:verticalSpacing="@dimen/margin_small"
         android:visibility="invisible"
-        tools:listitem="@layout/list_item_opponent_from_call">
+        tools:listitem="@layout/item_list_opponent_from_call">
 
     </android.support.v7.widget.RecyclerView>
 

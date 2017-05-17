@@ -25,45 +25,70 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                <TableLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:stretchColumns="*">
-
-                    <TableRow>
-
-                        <ImageView
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
-                            android:id="@+id/img_message"
-                            android:layout_width="?attr/actionBarSize"
-                            android:layout_height="?attr/actionBarSize"
-                            android:src="@drawable/message"
-                            android:tint="@color/white" />
-
-                        <ImageView
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:id="@+id/img_videocall"
-                            android:layout_width="?attr/actionBarSize"
-                            android:layout_height="?attr/actionBarSize"
-                            android:src="@drawable/camcorder"
-                            android:tint="@color/white" />
-
-                        <ImageView
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:id="@+id/img_phonecall"
-                            android:layout_width="?attr/actionBarSize"
-                            android:layout_height="?attr/actionBarSize"
-                            android:src="@drawable/phone"
-                            android:tint="@color/white" />
-                    </TableRow>
-                </TableLayout>
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/img_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:padding="12dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/arrow_left"
+                        android:tint="@color/white" />
+                    <TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Chat"
+                        android:textColor="#fff"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
+        <TableLayout
+            android:background="@color/colorPrimaryLight"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:stretchColumns="*">
+
+            <TableRow>
+
+                <ImageView
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:id="@+id/img_message"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:src="@drawable/message"
+                    android:tint="@color/white" />
+
+                <ImageView
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:id="@+id/img_videocall"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:src="@drawable/camcorder"
+                    android:tint="@color/white" />
+
+                <ImageView
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:id="@+id/img_phonecall"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:src="@drawable/phone"
+                    android:tint="@color/white" />
+            </TableRow>
+        </TableLayout>
 
 
         <android.support.v4.widget.SwipeRefreshLayout

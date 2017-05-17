@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.activity;
+package tuan.anh.giang.testtextchat.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,25 +17,12 @@ import android.widget.ProgressBar;
 
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.model.QBAttachment;
-import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.chat.model.QBChatDialog;
+import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.ui.adapter.AttachmentPreviewAdapter;
-import com.quickblox.sample.chat.ui.adapter.ChatAdapter;
-import com.quickblox.sample.chat.ui.widget.AttachmentPreviewAdapterView;
-import com.quickblox.sample.chat.utils.chat.ChatHelper;
-import com.quickblox.sample.chat.utils.qb.PaginationHistoryListener;
-import com.quickblox.sample.chat.utils.qb.QbChatDialogMessageListenerImp;
-import com.quickblox.sample.chat.utils.qb.QbDialogHolder;
-import com.quickblox.sample.chat.utils.qb.QbDialogUtils;
-import com.quickblox.sample.chat.utils.qb.VerboseQbChatConnectionListener;
-import com.quickblox.sample.core.ui.dialog.ProgressDialogFragment;
-import com.quickblox.sample.core.utils.Toaster;
-import com.quickblox.sample.core.utils.imagepick.ImagePickHelper;
-import com.quickblox.sample.core.utils.imagepick.OnImagePickedListener;
+
 import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.ConnectionListener;
@@ -49,6 +36,20 @@ import java.util.Collections;
 import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import tuan.anh.giang.core.ui.dialog.ProgressDialogFragment;
+import tuan.anh.giang.core.utils.Toaster;
+import tuan.anh.giang.core.utils.imagepick.ImagePickHelper;
+import tuan.anh.giang.core.utils.imagepick.OnImagePickedListener;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.ui.adapter.AttachmentPreviewAdapter;
+import tuan.anh.giang.testtextchat.ui.adapter.ChatAdapter;
+import tuan.anh.giang.testtextchat.ui.widget.AttachmentPreviewAdapterView;
+import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
+import tuan.anh.giang.testtextchat.utils.qb.PaginationHistoryListener;
+import tuan.anh.giang.testtextchat.utils.qb.QbChatDialogMessageListenerImp;
+import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
+import tuan.anh.giang.testtextchat.utils.qb.QbDialogUtils;
+import tuan.anh.giang.testtextchat.utils.qb.VerboseQbChatConnectionListener;
 
 public class ChatActivity extends BaseActivity implements OnImagePickedListener {
     private static final String TAG = ChatActivity.class.getSimpleName();

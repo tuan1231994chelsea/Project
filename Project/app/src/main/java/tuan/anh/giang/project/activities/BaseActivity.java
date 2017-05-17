@@ -3,7 +3,10 @@ package tuan.anh.giang.project.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
@@ -33,6 +36,11 @@ public abstract class BaseActivity extends CoreBaseActivity {
         requestExecutor = App.getInstance().getQbResRequestExecutor();
         sharedPrefsHelper = SharedPrefsHelper.getInstance();
         googlePlayServicesHelper = new GooglePlayServicesHelper();
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putInt("dummy_value", 0);
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     public void initDefaultActionBar() {
@@ -119,12 +127,14 @@ public abstract class BaseActivity extends CoreBaseActivity {
                 .show();
     }
 
-    protected void showErrorSnackbar(@StringRes int resId, Exception e,
-                                     View.OnClickListener clickListener) {
+
+    protected Snackbar showErrorSnackbar(@StringRes int resId, Exception e,
+                                         View.OnClickListener clickListener) {
         if (getSnackbarAnchorView() != null) {
-            ErrorUtils.showSnackbar(getSnackbarAnchorView(), resId, e,
+            return ErrorUtils.showSnackbar(getSnackbarAnchorView(), resId, e,
                     tuan.anh.giang.core.R.string.dlg_retry, clickListener);
         }
+        return null;
     }
 
     protected abstract View getSnackbarAnchorView();

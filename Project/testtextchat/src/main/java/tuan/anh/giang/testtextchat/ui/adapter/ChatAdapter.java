@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.adapter;
+package tuan.anh.giang.testtextchat.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,16 +20,7 @@ import com.quickblox.chat.model.QBAttachment;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.core.helper.CollectionsUtil;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.ui.activity.AttachmentImageActivity;
-import com.quickblox.sample.chat.ui.widget.MaskedImageView;
-import com.quickblox.sample.chat.utils.Consts;
-import com.quickblox.sample.chat.utils.TimeUtils;
-import com.quickblox.sample.chat.utils.chat.ChatHelper;
-import com.quickblox.sample.chat.utils.qb.PaginationHistoryListener;
-import com.quickblox.sample.chat.utils.qb.QbUsersHolder;
-import com.quickblox.sample.core.ui.adapter.BaseListAdapter;
-import com.quickblox.sample.core.utils.ResourceUtils;
+
 import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.SmackException;
@@ -39,6 +30,16 @@ import java.util.Collection;
 import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import tuan.anh.giang.core.ui.adapter.BaseListAdapter;
+import tuan.anh.giang.core.utils.ResourceUtils;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.ui.activity.AttachmentImageActivity;
+import tuan.anh.giang.testtextchat.ui.widget.MaskedImageView;
+import tuan.anh.giang.testtextchat.utils.Consts;
+import tuan.anh.giang.testtextchat.utils.TimeUtils;
+import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
+import tuan.anh.giang.testtextchat.utils.qb.PaginationHistoryListener;
+import tuan.anh.giang.testtextchat.utils.qb.QbUsersHolder;
 
 public class ChatAdapter extends BaseListAdapter<QBChatMessage> implements StickyListHeadersAdapter {
 

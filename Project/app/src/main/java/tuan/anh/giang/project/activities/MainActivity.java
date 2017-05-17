@@ -127,10 +127,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                 public void handleResponse(BackendlessUser response) {
                                     Backendless.UserService.setCurrentUser(response);
                                     currentBackendlessUser = response;
-                                    tvTitle.post(new Runnable() {
+                                    runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            tvTitle.setText(currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                                            tvTitle.setText("Hello "+currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
                                         }
                                     });
 
@@ -182,6 +182,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //            } else {
 //                signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
 //            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvTitle.setText("Hello "+currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                }
+            });
             String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
             currentQBUser = new QBUser(loginQBUser,Consts.DEFAULT_USER_PASSWORD);
             signInCreatedUser(currentQBUser, false);
@@ -206,9 +212,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     @Override
                     public void run() {
                         questionAdapter.notifyDataSetChanged();
+                        hideProgressDialog();
                     }
                 });
-                hideProgressDialog();
+
                 Log.d("kiemtratime", "load xong questions");
             }
 
@@ -243,9 +250,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     public void run() {
                         questionAdapter.notifyDataSetChanged();
                         refreshLayout.setRefreshing(false);
+                        hideProgressDialog();
                     }
                 });
-                hideProgressDialog();
+
                 Log.d("kiemtratime", "load xong questions");
             }
 
@@ -258,7 +266,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // load more 1 page question
     private void loadMoreQuestion() {
-        showProgressDialog(R.string.loading_more_answer);
+        showProgressDialog(R.string.loading_more_questions);
         queryQuestion.prepareNextPage();
         Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
             @Override
@@ -268,13 +276,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         isAllOfQuestion = true;
                     }
                     listOldQuestion.addAll(response);
-                    lvOldQuestion.post(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             questionAdapter.notifyDataSetChanged();
+                            hideProgressDialog();
                         }
                     });
-                    hideProgressDialog();
                 } else {
                     isAllOfQuestion = true;
                 }
@@ -351,6 +359,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         tvTitle = (TextView) findViewById(R.id.toolbar_title);
         lvOldQuestion.setVerticalScrollBarEnabled(false);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipetop);
+        refreshLayout.setColorSchemeResources(R.color.fb_color);
         questionAdapter = new QuestionAdapter(mainActivity, R.layout.item_list_question, listOldQuestion);
         lvOldQuestion.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -581,6 +590,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 showInfoUser();
                 break;
             case R.id.nav_video_setting:
+                showVideoSettings();
                 break;
             case R.id.nav_rate:
 
@@ -599,6 +609,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void showVideoSettings() {
+        SettingsActivity.start(this);
     }
 
     private void showInfoUser() {

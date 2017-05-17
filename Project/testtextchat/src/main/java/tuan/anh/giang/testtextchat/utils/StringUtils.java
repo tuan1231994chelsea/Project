@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.utils;
+package tuan.anh.giang.testtextchat.utils;
 
 public class StringUtils {
     private static final String NULL_TEXT = "null";

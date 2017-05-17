@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.utils.chat;
+package tuan.anh.giang.project.utils.chat;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +21,6 @@ import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.core.request.QBRequestGetBuilder;
-
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
@@ -39,14 +38,15 @@ import java.util.List;
 import java.util.Set;
 
 import tuan.anh.giang.core.utils.Toaster;
-import tuan.anh.giang.testtextchat.App;
-import tuan.anh.giang.testtextchat.R;
-import tuan.anh.giang.testtextchat.models.SampleConfigs;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogUtils;
-import tuan.anh.giang.testtextchat.utils.qb.QbUsersHolder;
-import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackTwoTypeWrapper;
-import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackWrapper;
+import tuan.anh.giang.project.App;
+import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.models.SampleConfigs;
+import tuan.anh.giang.project.utils.qb.QbDialogHolder;
+import tuan.anh.giang.project.utils.qb.QbDialogUtils;
+import tuan.anh.giang.project.utils.qb.QbUsersHolder;
+import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackTwoTypeWrapper;
+import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackWrapper;
+
 
 public class ChatHelper {
     private static final String TAG = ChatHelper.class.getSimpleName();
@@ -164,6 +164,20 @@ public class ChatHelper {
                     public void onSuccess(QBChatDialog dialog, Bundle args) {
                         QbDialogHolder.getInstance().addDialog(dialog);
                         QbUsersHolder.getInstance().putUsers(users);
+                        super.onSuccess(dialog, args);
+                    }
+                });
+    }
+    public void createDialogWithSelectedUser(final QBUser user,
+                                              final QBEntityCallback<QBChatDialog> callback) {
+        final ArrayList<QBUser> selectUser = new ArrayList<>();
+        selectUser.add(user);
+        QBRestChatService.createChatDialog(QbDialogUtils.createDialog(selectUser)).performAsync(
+                new QbEntityCallbackWrapper<QBChatDialog>(callback) {
+                    @Override
+                    public void onSuccess(QBChatDialog dialog, Bundle args) {
+                        QbDialogHolder.getInstance().addDialog(dialog);
+                        QbUsersHolder.getInstance().putUsers(selectUser);
                         super.onSuccess(dialog, args);
                     }
                 });

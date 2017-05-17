@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.utils;
+package tuan.anh.giang.testtextchat.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

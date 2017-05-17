@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.utils.qb;
+package tuan.anh.giang.testtextchat.utils.qb;
 
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
@@ -91,8 +91,8 @@ public class QbDialogHolder {
         return null;
     }
 
-    private Map<String, QBChatDialog> getSortedMap(Map <String, QBChatDialog> unsortedMap){
-        Map <String, QBChatDialog> sortedMap = new TreeMap(new LastMessageDateSentComparator(unsortedMap));
+    private Map<String, QBChatDialog> getSortedMap(Map<String, QBChatDialog> unsortedMap){
+        Map<String, QBChatDialog> sortedMap = new TreeMap(new LastMessageDateSentComparator(unsortedMap));
         sortedMap.putAll(unsortedMap);
         return sortedMap;
     }
@@ -109,9 +109,9 @@ public class QbDialogHolder {
     }
 
     static class LastMessageDateSentComparator implements Comparator<String> {
-        Map <String, QBChatDialog> map;
+        Map<String, QBChatDialog> map;
 
-        public LastMessageDateSentComparator(Map <String, QBChatDialog> map) {
+        public LastMessageDateSentComparator(Map<String, QBChatDialog> map) {
 
             this.map = map;
         }

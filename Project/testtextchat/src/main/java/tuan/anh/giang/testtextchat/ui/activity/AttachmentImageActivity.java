@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.activity;
+package tuan.anh.giang.testtextchat.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.utils.Consts;
+
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.utils.Consts;
+
 
 public class AttachmentImageActivity extends BaseActivity {
 

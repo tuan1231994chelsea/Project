@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.utils;
+package tuan.anh.giang.project.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

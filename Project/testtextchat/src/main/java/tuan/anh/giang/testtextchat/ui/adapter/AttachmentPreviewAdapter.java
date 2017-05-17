@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.adapter;
+package tuan.anh.giang.testtextchat.ui.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,11 +15,7 @@ import com.quickblox.chat.model.QBAttachment;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBProgressCallback;
 import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.sample.chat.App;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.utils.chat.ChatHelper;
-import com.quickblox.sample.core.ui.adapter.BaseListAdapter;
-import com.quickblox.sample.core.utils.ResourceUtils;
+
 
 import java.io.File;
 import java.util.Collection;
@@ -27,6 +23,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import tuan.anh.giang.core.ui.adapter.BaseListAdapter;
+import tuan.anh.giang.core.utils.ResourceUtils;
+import tuan.anh.giang.testtextchat.App;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
 
 public class AttachmentPreviewAdapter extends BaseListAdapter<File> {
 

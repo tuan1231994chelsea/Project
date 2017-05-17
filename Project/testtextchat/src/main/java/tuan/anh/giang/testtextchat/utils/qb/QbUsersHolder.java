@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.utils.qb;
+package tuan.anh.giang.testtextchat.utils.qb;
 
 import android.util.SparseArray;
 

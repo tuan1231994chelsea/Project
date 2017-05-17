@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.activity;
+package tuan.anh.giang.testtextchat.ui.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,14 +7,16 @@ import android.view.View;
 import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.sample.chat.App;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.utils.Consts;
-import com.quickblox.sample.chat.utils.chat.ChatHelper;
-import com.quickblox.sample.core.ui.activity.CoreSplashActivity;
-import com.quickblox.sample.core.ui.dialog.ProgressDialogFragment;
-import com.quickblox.sample.core.utils.SharedPrefsHelper;
+
 import com.quickblox.users.model.QBUser;
+
+import tuan.anh.giang.core.ui.activity.CoreSplashActivity;
+import tuan.anh.giang.core.ui.dialog.ProgressDialogFragment;
+import tuan.anh.giang.core.utils.SharedPrefsHelper;
+import tuan.anh.giang.testtextchat.App;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
+
 
 public class SplashActivity extends CoreSplashActivity {
 
@@ -39,7 +41,6 @@ public class SplashActivity extends CoreSplashActivity {
         if (checkSignIn()) {
             restoreChatSession();
         } else {
-
             LoginActivity.start(this);
             finish();
         }

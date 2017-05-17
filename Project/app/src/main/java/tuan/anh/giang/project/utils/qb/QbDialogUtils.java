@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.utils.qb;
+package tuan.anh.giang.project.utils.qb;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -6,14 +6,14 @@ import android.util.Log;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.chat.utils.DialogUtils;
-
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
+import tuan.anh.giang.project.utils.chat.ChatHelper;
+
 
 public class QbDialogUtils {
     private static final String TAG = QbDialogUtils.class.getSimpleName();

@@ -1,10 +1,10 @@
-package com.quickblox.sample.chat.utils.qb;
+package tuan.anh.giang.testtextchat.utils.qb;
 
 import com.quickblox.chat.exception.QBChatException;
 import com.quickblox.chat.listeners.QBChatDialogMessageListener;
 import com.quickblox.chat.model.QBChatMessage;
 
-public class QbChatDialogMessageListenerImp implements QBChatDialogMessageListener{
+public class QbChatDialogMessageListenerImp implements QBChatDialogMessageListener {
     public QbChatDialogMessageListenerImp() {
     }
 

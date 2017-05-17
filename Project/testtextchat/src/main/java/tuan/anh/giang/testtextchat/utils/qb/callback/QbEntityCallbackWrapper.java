@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.utils.qb.callback;
+package tuan.anh.giang.testtextchat.utils.qb.callback;
 
 import android.os.Bundle;
 

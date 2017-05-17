@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.utils.qb;
+package tuan.anh.giang.project.utils.qb;
 
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;

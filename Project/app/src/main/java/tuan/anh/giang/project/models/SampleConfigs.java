@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.models;
+package tuan.anh.giang.project.models;
 
 import com.google.gson.annotations.SerializedName;
 

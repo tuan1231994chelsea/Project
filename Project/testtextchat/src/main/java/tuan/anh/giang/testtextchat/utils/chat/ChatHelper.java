@@ -1,6 +1,5 @@
-package com.quickblox.sample.chat.utils.chat;
+package tuan.anh.giang.testtextchat.utils.chat;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -22,17 +21,7 @@ import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.core.request.QBRequestGetBuilder;
-import com.quickblox.messages.services.SubscribeService;
-import com.quickblox.sample.chat.App;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.models.SampleConfigs;
-import com.quickblox.sample.chat.ui.activity.DialogsActivity;
-import com.quickblox.sample.chat.utils.qb.QbDialogHolder;
-import com.quickblox.sample.chat.utils.qb.QbDialogUtils;
-import com.quickblox.sample.chat.utils.qb.QbUsersHolder;
-import com.quickblox.sample.chat.utils.qb.callback.QbEntityCallbackTwoTypeWrapper;
-import com.quickblox.sample.chat.utils.qb.callback.QbEntityCallbackWrapper;
-import com.quickblox.sample.core.utils.Toaster;
+
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
@@ -48,6 +37,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import tuan.anh.giang.core.utils.Toaster;
+import tuan.anh.giang.testtextchat.App;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.models.SampleConfigs;
+import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
+import tuan.anh.giang.testtextchat.utils.qb.QbDialogUtils;
+import tuan.anh.giang.testtextchat.utils.qb.QbUsersHolder;
+import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackTwoTypeWrapper;
+import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackWrapper;
 
 public class ChatHelper {
     private static final String TAG = ChatHelper.class.getSimpleName();

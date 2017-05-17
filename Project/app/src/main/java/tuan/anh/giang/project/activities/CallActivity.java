@@ -32,7 +32,7 @@ import com.quickblox.chat.QBChatService;
 //import com.quickblox.sample.groupchatwebrtc.fragments.VideoConversationFragment;
 //import com.quickblox.sample.groupchatwebrtc.util.NetworkConnectionChecker;
 //import com.quickblox.sample.groupchatwebrtc.utils.Consts;
-//import com.quickblox.sample.groupchatwebrtc.utils.FragmentExecuotr;
+//import com.quickblox.sample.groupchatwebrtc.utils.FragmentExecutor;
 //import com.quickblox.sample.groupchatwebrtc.utils.PermissionsChecker;
 //import com.quickblox.sample.groupchatwebrtc.utils.QBEntityCallbackImpl;
 //import com.quickblox.sample.groupchatwebrtc.utils.RingtonePlayer;
@@ -75,7 +75,7 @@ import tuan.anh.giang.project.listener.IncomeCallFragmentCallbackListener;
 import tuan.anh.giang.project.listener.OnCallEventsController;
 import tuan.anh.giang.project.util.NetworkConnectionChecker;
 import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.FragmentExecuotr;
+import tuan.anh.giang.project.utils.FragmentExecutor;
 import tuan.anh.giang.project.utils.PermissionsChecker;
 import tuan.anh.giang.project.utils.QBEntityCallbackImpl;
 import tuan.anh.giang.project.utils.RingtonePlayer;
@@ -173,7 +173,7 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
 
     private void startScreenSharing(final Intent data){
         ScreenShareFragment screenShareFragment = ScreenShareFragment.newIntstance();
-        FragmentExecuotr.addFragmentWithBackStack(getSupportFragmentManager(), R.id.fragment_container, screenShareFragment, ScreenShareFragment.TAG);
+        FragmentExecutor.addFragmentWithBackStack(getSupportFragmentManager(), R.id.fragment_container, screenShareFragment, ScreenShareFragment.TAG);
         currentSession.getMediaStreamManager().setVideoCapturer(new QBRTCScreenCapturer(data, null));
     }
 
@@ -656,7 +656,7 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
 
         if (currentSession != null) {
             IncomeCallFragment fragment = new IncomeCallFragment();
-            FragmentExecuotr.addFragment(getSupportFragmentManager(), R.id.fragment_container, fragment, INCOME_CALL_FRAGMENT);
+            FragmentExecutor.addFragment(getSupportFragmentManager(), R.id.fragment_container, fragment, INCOME_CALL_FRAGMENT);
         } else {
             Log.d(TAG, "SKIP addIncomeCallFragment method");
         }
@@ -668,7 +668,7 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
                         ? new VideoConversationFragment()
                         : new AudioConversationFragment(),
                 isIncomingCall);
-        FragmentExecuotr.addFragment(getSupportFragmentManager(), R.id.fragment_container, conversationFragment, conversationFragment.getClass().getSimpleName());
+        FragmentExecutor.addFragment(getSupportFragmentManager(), R.id.fragment_container, conversationFragment, conversationFragment.getClass().getSimpleName());
     }
 
     public SharedPreferences getDefaultSharedPrefs() {

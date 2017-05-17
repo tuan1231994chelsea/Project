@@ -2,8 +2,16 @@ package tuan.anh.giang.project.utils;
 
 import android.Manifest;
 
+import tuan.anh.giang.core.utils.ResourceUtils;
+import tuan.anh.giang.project.R;
+
 
 public interface Consts {
+    String SAMPLE_CONFIG_FILE_NAME = "sample_config.json";
+
+    int PREFERRED_IMAGE_SIZE_PREVIEW = ResourceUtils.getDimen(R.dimen.chat_attachment_preview_size);
+    int PREFERRED_IMAGE_SIZE_FULL = ResourceUtils.dpToPx(320);
+    String QB_USER_PASSWORD = "qb_user_password";
 
     String QB_CONFIG_FILE_NAME = "qb_config.json";
 

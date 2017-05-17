@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.adapter;
+package tuan.anh.giang.testtextchat.ui.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -8,13 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.quickblox.chat.QBChatService;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.core.ui.adapter.BaseListAdapter;
-import com.quickblox.sample.core.utils.ResourceUtils;
-import com.quickblox.sample.core.utils.UiUtils;
+
 import com.quickblox.users.model.QBUser;
 
 import java.util.List;
+
+import tuan.anh.giang.core.ui.adapter.BaseListAdapter;
+import tuan.anh.giang.core.utils.ResourceUtils;
+import tuan.anh.giang.core.utils.UiUtils;
+import tuan.anh.giang.testtextchat.R;
 
 public class UsersAdapter extends BaseListAdapter<QBUser> {
 

@@ -77,7 +77,7 @@ public class OpponentsFromCallAdapter extends RecyclerView.Adapter<OpponentsFrom
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = inflater.inflate(R.layout.list_item_opponent_from_call, null);
+        View v = inflater.inflate(R.layout.item_list_opponent_from_call, null);
         v.findViewById(R.id.innerLayout).setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
 
         ViewHolder vh = new ViewHolder(v);

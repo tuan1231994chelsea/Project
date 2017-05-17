@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.models;
+package tuan.anh.giang.testtextchat.models;
 
 import com.google.gson.annotations.SerializedName;
 

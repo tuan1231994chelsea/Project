@@ -1,12 +1,14 @@
-package com.quickblox.sample.chat;
+package tuan.anh.giang.testtextchat;
 
-import com.quickblox.sample.chat.models.SampleConfigs;
-import com.quickblox.sample.chat.utils.Consts;
-import com.quickblox.sample.chat.utils.configs.ConfigUtils;
-import com.quickblox.sample.core.CoreApp;
-import com.quickblox.sample.core.utils.ActivityLifecycle;
+
 
 import java.io.IOException;
+
+import tuan.anh.giang.core.CoreApp;
+import tuan.anh.giang.core.utils.ActivityLifecycle;
+import tuan.anh.giang.testtextchat.models.SampleConfigs;
+import tuan.anh.giang.testtextchat.utils.Consts;
+import tuan.anh.giang.testtextchat.utils.configs.ConfigUtils;
 
 public class App extends CoreApp {
     private static final String TAG = App.class.getSimpleName();

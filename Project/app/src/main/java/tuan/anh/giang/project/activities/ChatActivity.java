@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.ui.activity;
+package tuan.anh.giang.project.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,7 +22,6 @@ import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
-
 import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.ConnectionListener;
@@ -40,16 +39,17 @@ import tuan.anh.giang.core.ui.dialog.ProgressDialogFragment;
 import tuan.anh.giang.core.utils.Toaster;
 import tuan.anh.giang.core.utils.imagepick.ImagePickHelper;
 import tuan.anh.giang.core.utils.imagepick.OnImagePickedListener;
-import tuan.anh.giang.testtextchat.R;
-import tuan.anh.giang.testtextchat.ui.adapter.AttachmentPreviewAdapter;
-import tuan.anh.giang.testtextchat.ui.adapter.ChatAdapter;
-import tuan.anh.giang.testtextchat.ui.widget.AttachmentPreviewAdapterView;
-import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
-import tuan.anh.giang.testtextchat.utils.qb.PaginationHistoryListener;
-import tuan.anh.giang.testtextchat.utils.qb.QbChatDialogMessageListenerImp;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogUtils;
-import tuan.anh.giang.testtextchat.utils.qb.VerboseQbChatConnectionListener;
+import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.adapters.AttachmentPreviewAdapter;
+import tuan.anh.giang.project.adapters.ChatAdapter;
+import tuan.anh.giang.project.utils.chat.ChatHelper;
+import tuan.anh.giang.project.utils.qb.PaginationHistoryListener;
+import tuan.anh.giang.project.utils.qb.QbChatDialogMessageListenerImp;
+import tuan.anh.giang.project.utils.qb.QbDialogHolder;
+import tuan.anh.giang.project.utils.qb.QbDialogUtils;
+import tuan.anh.giang.project.utils.qb.VerboseQbChatConnectionListener;
+import tuan.anh.giang.project.view.AttachmentPreviewAdapterView;
+
 
 public class ChatActivity extends BaseActivity implements OnImagePickedListener {
     private static final String TAG = ChatActivity.class.getSimpleName();
@@ -78,8 +78,15 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
 
     public static void startForResult(Activity activity, int code, QBChatDialog dialogId) {
         Intent intent = new Intent(activity, ChatActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intent.putExtra(ChatActivity.EXTRA_DIALOG_ID, dialogId);
         activity.startActivityForResult(intent, code);
+    }
+    public static void start(Activity activity, QBChatDialog dialogId) {
+        Intent intent = new Intent(activity, ChatActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra(ChatActivity.EXTRA_DIALOG_ID, dialogId);
+        activity.startActivity(intent);
     }
 
     @Override
@@ -162,11 +169,12 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
         int id = item.getItemId();
         switch (id) {
             case R.id.menu_chat_action_info:
-                ChatInfoActivity.start(this, qbChatDialog);
+//                ChatInfoActivity.start(this, qbChatDialog);
                 return true;
 
             case R.id.menu_chat_action_add:
-                SelectUsersActivity.startForResult(this, REQUEST_CODE_SELECT_PEOPLE, qbChatDialog);
+//                SelectUsersActivity.startForResult(this, REQUEST_CODE_SELECT_PEOPLE, qbChatDialog);
+                EmployeesActivity.startForResult(this, REQUEST_CODE_SELECT_PEOPLE, qbChatDialog);
                 return true;
 
             case R.id.menu_chat_action_leave:
@@ -221,8 +229,10 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_SELECT_PEOPLE) {
+//                ArrayList<QBUser> selectedUsers = (ArrayList<QBUser>) data.getSerializableExtra(
+//                        SelectUsersActivity.EXTRA_QB_USERS);
                 ArrayList<QBUser> selectedUsers = (ArrayList<QBUser>) data.getSerializableExtra(
-                        SelectUsersActivity.EXTRA_QB_USERS);
+                        EmployeesActivity.EXTRA_QB_USERS);
 
                 updateDialog(selectedUsers);
             }
@@ -290,7 +300,6 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
 
     private void initViews() {
         actionBar.setDisplayHomeAsUpEnabled(true);
-
         messagesListView = _findViewById(R.id.list_chat_messages);
         messageEditText = _findViewById(R.id.edit_chat_message);
         progressBar = _findViewById(R.id.progress_chat);

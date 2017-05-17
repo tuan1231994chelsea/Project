@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.ui.adapter;
+package tuan.anh.giang.project.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -15,8 +15,9 @@ import java.util.List;
 import tuan.anh.giang.core.ui.adapter.BaseSelectableListAdapter;
 import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.core.utils.UiUtils;
-import tuan.anh.giang.testtextchat.R;
-import tuan.anh.giang.testtextchat.utils.qb.QbDialogUtils;
+import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.utils.qb.QbDialogUtils;
+
 
 public class DialogsAdapter extends BaseSelectableListAdapter<QBChatDialog> {
 
@@ -30,7 +31,7 @@ public class DialogsAdapter extends BaseSelectableListAdapter<QBChatDialog> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_dialog, parent, false);
+            convertView = inflater.inflate(R.layout.item_list_dialog, parent, false);
 
             holder = new ViewHolder();
             holder.rootLayout = (ViewGroup) convertView.findViewById(R.id.root);

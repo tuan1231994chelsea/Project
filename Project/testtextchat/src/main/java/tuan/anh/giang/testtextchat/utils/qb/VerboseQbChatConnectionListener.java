@@ -1,14 +1,15 @@
-package com.quickblox.sample.chat.utils.qb;
+package tuan.anh.giang.testtextchat.utils.qb;
 
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
-import com.quickblox.sample.chat.App;
-import com.quickblox.sample.chat.R;
 
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
+
+import tuan.anh.giang.testtextchat.App;
+import tuan.anh.giang.testtextchat.R;
 
 public class VerboseQbChatConnectionListener implements ConnectionListener {
     private static final String TAG = VerboseQbChatConnectionListener.class.getSimpleName();

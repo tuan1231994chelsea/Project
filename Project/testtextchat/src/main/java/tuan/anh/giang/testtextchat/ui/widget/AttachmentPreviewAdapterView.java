@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.widget;
+package tuan.anh.giang.testtextchat.ui.widget;
 
 import android.content.Context;
 import android.database.DataSetObserver;

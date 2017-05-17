@@ -1,10 +1,12 @@
-package com.quickblox.sample.chat.gcm;
+package tuan.anh.giang.testtextchat.gcm;
 
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.ui.activity.SplashActivity;
-import com.quickblox.sample.core.gcm.CoreGcmPushListenerService;
-import com.quickblox.sample.core.utils.NotificationUtils;
-import com.quickblox.sample.core.utils.ResourceUtils;
+
+
+import tuan.anh.giang.core.gcm.CoreGcmPushListenerService;
+import tuan.anh.giang.core.utils.NotificationUtils;
+import tuan.anh.giang.core.utils.ResourceUtils;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.ui.activity.SplashActivity;
 
 public class GcmPushListenerService extends CoreGcmPushListenerService {
     private static final int NOTIFICATION_ID = 1;

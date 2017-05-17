@@ -1,4 +1,4 @@
-package tuan.anh.giang.testtextchat.utils.qb.callback;
+package tuan.anh.giang.project.utils.qb.callback;
 
 import android.os.Bundle;
 

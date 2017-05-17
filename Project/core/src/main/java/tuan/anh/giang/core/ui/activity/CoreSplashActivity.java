@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.StringRes;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -43,7 +44,9 @@ public abstract class CoreSplashActivity extends CoreBaseActivity {
     protected abstract void proceedToTheNextActivity();
 
     protected boolean sampleConfigIsCorrect(){
+        Log.d("kiemtra","test "+ CoreApp.getInstance().getQbConfigs().toString());
         return CoreApp.getInstance().getQbConfigs() != null;
+
     }
 
     protected void proceedToTheNextActivityWithDelay() {

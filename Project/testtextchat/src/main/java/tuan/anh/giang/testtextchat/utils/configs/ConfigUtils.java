@@ -1,11 +1,13 @@
-package com.quickblox.sample.chat.utils.configs;
+package tuan.anh.giang.testtextchat.utils.configs;
 
 import com.google.gson.Gson;
-import com.quickblox.sample.chat.models.SampleConfigs;
-import com.quickblox.sample.core.utils.configs.ConfigParser;
-import com.quickblox.sample.core.utils.configs.CoreConfigUtils;
+
 
 import java.io.IOException;
+
+import tuan.anh.giang.core.utils.configs.ConfigParser;
+import tuan.anh.giang.core.utils.configs.CoreConfigUtils;
+import tuan.anh.giang.testtextchat.models.SampleConfigs;
 
 public class ConfigUtils extends CoreConfigUtils {
 

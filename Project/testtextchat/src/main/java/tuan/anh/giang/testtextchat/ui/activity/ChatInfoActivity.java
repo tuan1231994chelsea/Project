@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.activity;
+package tuan.anh.giang.testtextchat.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.quickblox.chat.model.QBChatDialog;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.ui.adapter.UsersAdapter;
-import com.quickblox.sample.chat.utils.qb.QbUsersHolder;
+
 import com.quickblox.users.model.QBUser;
 
 import java.util.List;
+
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.ui.adapter.UsersAdapter;
+import tuan.anh.giang.testtextchat.utils.qb.QbUsersHolder;
 
 public class ChatInfoActivity extends BaseActivity {
     private static final String EXTRA_DIALOG = "dialog";

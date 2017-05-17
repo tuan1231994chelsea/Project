@@ -1,4 +1,4 @@
-package com.quickblox.sample.chat.ui.activity;
+package tuan.anh.giang.testtextchat.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,16 +16,18 @@ import android.widget.TextView;
 import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.sample.chat.App;
-import com.quickblox.sample.chat.R;
-import com.quickblox.sample.chat.ui.adapter.CheckboxUsersAdapter;
-import com.quickblox.sample.core.utils.Toaster;
+
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import tuan.anh.giang.core.utils.Toaster;
+import tuan.anh.giang.testtextchat.App;
+import tuan.anh.giang.testtextchat.R;
+import tuan.anh.giang.testtextchat.ui.adapter.CheckboxUsersAdapter;
 
 public class SelectUsersActivity extends BaseActivity {
     public static final String EXTRA_QB_USERS = "qb_users";
