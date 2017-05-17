@@ -50,14 +50,6 @@ import tuan.anh.giang.project.utils.chat.ChatHelper;
 import tuan.anh.giang.project.utils.qb.QbChatDialogMessageListenerImp;
 import tuan.anh.giang.project.utils.qb.QbDialogHolder;
 import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackImpl;
-//import tuan.anh.giang.testtextchat.R;
-//import tuan.anh.giang.testtextchat.managers.DialogsManager;
-//import tuan.anh.giang.testtextchat.ui.adapter.DialogsAdapter;
-//import tuan.anh.giang.testtextchat.utils.chat.ChatHelper;
-//import tuan.anh.giang.testtextchat.utils.qb.QbChatDialogMessageListenerImp;
-//import tuan.anh.giang.testtextchat.utils.qb.QbDialogHolder;
-//import tuan.anh.giang.testtextchat.utils.qb.callback.QbEntityCallbackImpl;
-
 
 
 public class DialogsActivity extends BaseActivity implements DialogsManager.ManagingDialogsCallbacks {
@@ -106,9 +98,9 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         currentUser = ChatHelper.getCurrentUser();
 
         initUi();
-
-        setActionBarTitle(getString(R.string.dialogs_logged_in_as, currentUser.getFullName()));
-
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        setActionBarTitle("Select a dialog to chat");
         registerQbChatListeners();
         if (QbDialogHolder.getInstance().getDialogs().size() > 0) {
             loadDialogsFromQb(true, true);
@@ -139,30 +131,30 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         unregisterQbChatListeners();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_dialogs, menu);
-        this.menu = menu;
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (isProcessingResultInProgress) {
-            return super.onOptionsItemSelected(item);
-        }
-
-        switch (item.getItemId()) {
-            case R.id.menu_dialogs_action_logout:
-                userLogout();
-                item.setEnabled(false);
-                invalidateOptionsMenu();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.activity_dialogs, menu);
+//        this.menu = menu;
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (isProcessingResultInProgress) {
+//            return super.onOptionsItemSelected(item);
+//        }
+//
+//        switch (item.getItemId()) {
+//            case R.id.menu_dialogs_action_logout:
+//                userLogout();
+//                item.setEnabled(false);
+//                invalidateOptionsMenu();
+//                return true;
+//
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -171,7 +163,7 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         if (resultCode == RESULT_OK) {
             isProcessingResultInProgress = true;
             if (requestCode == REQUEST_SELECT_PEOPLE) {
-
+                int i = 1;
 //                ArrayList<QBUser> selectedUsers = (ArrayList<QBUser>) data
 //                        .getSerializableExtra(SelectUsersActivity.EXTRA_QB_USERS);
 //
@@ -248,12 +240,12 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
     }
 
     public void onStartNewChatClick(View view) {
-        EmployeesActivity.start(DialogsActivity.this,false);
+        EmployeesActivity.start(DialogsActivity.this, false);
         //        SelectUsersActivity.startForResult(this, REQUEST_SELECT_PEOPLE);
     }
 
     private void initUi() {
-        LinearLayout emptyHintLayout = _findViewById(R.id.layout_chat_empty);
+//        LinearLayout emptyHintLayout = _findViewById(R.id.layout_chat_empty);
         ListView dialogsListView = _findViewById(R.id.list_dialogs_chats);
         progressBar = _findViewById(R.id.progress_dialogs);
         fab = _findViewById(R.id.fab_dialogs_new_chat);
@@ -261,11 +253,11 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
 
         dialogsAdapter = new DialogsAdapter(this, new ArrayList<>(QbDialogHolder.getInstance().getDialogs().values()));
 
-        TextView listHeader = (TextView) LayoutInflater.from(this)
-                .inflate(R.layout.include_list_hint_header, dialogsListView, false);
-        listHeader.setText(R.string.dialogs_list_hint);
-        dialogsListView.setEmptyView(emptyHintLayout);
-        dialogsListView.addHeaderView(listHeader, null, false);
+//        TextView listHeader = (TextView) LayoutInflater.from(this)
+//                .inflate(R.layout.include_list_hint_header, dialogsListView, false);
+//        listHeader.setText(R.string.dialogs_list_hint);
+//        dialogsListView.setEmptyView(emptyHintLayout);
+//        dialogsListView.addHeaderView(listHeader, null, false);
 
         dialogsListView.setAdapter(dialogsAdapter);
 

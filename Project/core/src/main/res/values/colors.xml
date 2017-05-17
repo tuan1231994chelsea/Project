@@ -8,6 +8,8 @@
     <color name="colorPrimaryDark">#125688</color>
     <color name="colorAccentPress">#FFA000</color>
     <color name="colorAccent">#c8e8ff</color>
+    <color name="action_button_color">#009688</color>
+    <color name="press_action_button_color">#aa009688</color>
 
     <color name="color_primary">@color/white</color>
     <color name="color_primary_dark">#d0d0d0</color>
@@ -27,15 +29,16 @@
     <color name="text_color_dark_grey">#6e6e6e</color>
     <color name="text_color_green">@color/color_green_qb</color>
 
-    <color name="random_color_1">#ff9500</color>
-    <color name="random_color_2">#007aff</color>
-    <color name="random_color_3">#ff0091</color>
-    <color name="random_color_4">#4cd964</color>
-    <color name="random_color_5">#c3c1f2</color>
-    <color name="random_color_6">#a727a5</color>
-    <color name="random_color_7">#77a6d0</color>
-    <color name="random_color_8">#d0021b</color>
-    <color name="random_color_9">#166642</color>
-    <color name="random_color_10">#bdbdbd</color>
+    <color name="random_color_1">#F44336</color>
+    <color name="random_color_2">#673AB7</color>
+    <color name="random_color_3">#9C27B0</color>
+    <color name="random_color_4">#E91E63</color>
+    <color name="random_color_5">#3F51B5</color>
+    <color name="random_color_6">#2196F3</color>
+    <color name="random_color_7">#03A9F4</color>
+    <color name="random_color_8">#00BCD4</color>
+    <color name="random_color_9">#009688</color>
+    <color name="random_color_10">#FFEB3B</color>
+
 
 </resources>

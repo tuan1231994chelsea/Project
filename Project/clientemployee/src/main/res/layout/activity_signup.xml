@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchParent">
+
+    <LinearLayout
+        android:id="@+id/root_view_signup_activity"
+        style="@style/MatchParent"
+        android:orientation="vertical"
+        android:background="#EEEEEE">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_back"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:padding="12dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/arrow_left"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Sign Up"
+                        android:textColor="#fff"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/padding_start"
+            android:layout_marginRight="@dimen/padding_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:background="@drawable/border_send_reply"
+                android:id="@+id/user_name"
+                style="@style/MatchWidth"
+                android:layout_marginTop="10dp"
+                android:hint="@string/UserName"
+                android:paddingTop="@dimen/padding_top"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="20sp" />
+
+            <EditText
+                android:background="@drawable/border_send_reply"
+                android:id="@+id/password"
+                style="@style/MatchWidth"
+                android:layout_marginTop="10dp"
+                android:hint="@string/Password"
+                android:inputType="textPassword"
+                android:paddingTop="@dimen/padding_top"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="20sp" />
+
+            <EditText
+                android:background="@drawable/border_send_reply"
+                android:id="@+id/confirm_password"
+                style="@style/MatchWidth"
+                android:layout_marginTop="10dp"
+                android:hint="@string/ConfirmPassword"
+                android:inputType="textPassword"
+                android:paddingTop="@dimen/padding_top"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="20sp" />
+
+            <EditText
+                android:background="@drawable/border_send_reply"
+                android:id="@+id/email"
+                style="@style/MatchWidth"
+                android:layout_marginTop="10dp"
+                android:hint="@string/Email"
+                android:paddingTop="@dimen/padding_top"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="20sp" />
+
+            <EditText
+                android:background="@drawable/border_send_reply"
+                android:id="@+id/full_name"
+                style="@style/MatchWidth"
+                android:layout_marginTop="10dp"
+                android:hint="@string/FullName"
+                android:paddingTop="@dimen/padding_top"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/bt_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/background_submit"
+                android:text="@string/SignUp"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

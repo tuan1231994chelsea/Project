@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +30,11 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.persistence.LoadRelationsQueryBuilder;
+import com.quickblox.chat.model.QBChatDialog;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.helper.StringifyArrayList;
+import com.quickblox.users.model.QBUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,10 +42,14 @@ import java.util.List;
 
 import tuan.anh.giang.core.utils.KeyboardUtils;
 import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.activities.ChatActivity;
+import tuan.anh.giang.project.activities.EmployeesActivity;
 import tuan.anh.giang.project.adapters.AnswerAdapter;
 import tuan.anh.giang.project.adapters.QuestionAdapter;
 import tuan.anh.giang.project.entities.Answer;
 import tuan.anh.giang.project.entities.Question;
+import tuan.anh.giang.project.utils.Consts;
+import tuan.anh.giang.project.utils.chat.ChatHelper;
 
 import static tuan.anh.giang.project.activities.MainActivity.currentBackendlessUser;
 
@@ -113,6 +124,37 @@ public class AnswerFragment extends Fragment {
     }
 
     private void onClick() {
+
+        lvAnswer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                BackendlessUser backendlessUser = null;
+                if(tvMoreAnswer.getText().toString().equals(getString(R.string.view_all_answer))){
+                    backendlessUser = listLessAnswer.get(i).getUser();
+                }else{
+                    backendlessUser = listAnswer.get(i).getUser();
+                }
+                boolean userIsEmployee = (boolean) backendlessUser.getProperty(getString(R.string.is_employee));
+                if(userIsEmployee){
+                    QBUser qbUser = new QBUser((String) backendlessUser.getProperty(getString(R.string.login)), Consts.DEFAULT_USER_PASSWORD);
+                    qbUser.setId((Integer) backendlessUser.getProperty(getString(R.string.id_qb)));
+                    qbUser.setFullName((String) backendlessUser.getProperty(getString(R.string.full_name)));
+                    StringifyArrayList<String> tags = new StringifyArrayList<>();
+                    tags.add((String) backendlessUser.getProperty(getString(R.string.tags)));
+                    qbUser.setTags(tags);
+                    startChatWithEmployee(qbUser);
+                }else{
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                    alertDialog.setTitle("")
+                            .setIcon(R.drawable.error)
+                            .setMessage(getString(R.string.user_not_employee))
+                            .create()
+                            .show();
+                }
+                return false;
+            }
+        });
         // có hiện click là có nhiều hơn 10 answers
         layoutMoreAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,6 +283,19 @@ public class AnswerFragment extends Fragment {
             }
         });
 
+    }
+    private void startChatWithEmployee(QBUser employee){
+        ChatHelper.getInstance().createDialogWithSelectedUser(employee,
+                new QBEntityCallback<QBChatDialog>() {
+                    @Override
+                    public void onSuccess(QBChatDialog qbChatDialog, Bundle bundle) {
+                        ChatActivity.start(getActivity(),qbChatDialog);
+                    }
+                    @Override
+                    public void onError(QBResponseException e) {
+
+                    }
+                });
     }
     private void updateListAnswer(){
         String whereclause = "Question[answers].objectId = '" + question.getObjectId() + "'";

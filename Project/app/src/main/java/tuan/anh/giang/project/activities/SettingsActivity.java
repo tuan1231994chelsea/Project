@@ -44,6 +44,7 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
     }
 
     private void initActionBar() {
+        actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.actionbar_title_settings);
     }
 

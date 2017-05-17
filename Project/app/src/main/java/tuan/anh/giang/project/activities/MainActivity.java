@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.Toaster;
+import tuan.anh.giang.floatingactionmenu.FloatingActionButton;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.adapters.OpponentsAdapter;
 import tuan.anh.giang.project.adapters.QuestionAdapter;
@@ -91,6 +92,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Fragment currentFragment;
     SwipeRefreshLayout refreshLayout;
     boolean isAllOfQuestion = false;
+    FloatingActionButton oldChat,newChat;
 
 
     @Override
@@ -297,6 +299,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 
     private void onClick() {
+        oldChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogsActivity.start(MainActivity.this);
+            }
+        });
+        newChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EmployeesActivity.start(MainActivity.this,false);
+            }
+        });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -358,6 +372,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         tvNewQuestion = (TextView) findViewById(R.id.tv_new_question);
         tvTitle = (TextView) findViewById(R.id.toolbar_title);
         lvOldQuestion.setVerticalScrollBarEnabled(false);
+        oldChat = (FloatingActionButton) findViewById(R.id.action_old_chat);
+        newChat = (FloatingActionButton) findViewById(R.id.action_new_chat);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipetop);
         refreshLayout.setColorSchemeResources(R.color.fb_color);
         questionAdapter = new QuestionAdapter(mainActivity, R.layout.item_list_question, listOldQuestion);
@@ -599,9 +615,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 break;
             case R.id.nav_share:
-                break;
-            case R.id.nav_list_employee:
-                showListEmployee();
                 break;
             case R.id.nav_logout:
                 logOut();

@@ -23,6 +23,9 @@ import com.quickblox.chat.model.QBDialogType;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
+import com.quickblox.videochat.webrtc.QBRTCClient;
+import com.quickblox.videochat.webrtc.QBRTCSession;
+import com.quickblox.videochat.webrtc.QBRTCTypes;
 
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SmackException;
@@ -42,6 +45,12 @@ import tuan.anh.giang.core.utils.imagepick.OnImagePickedListener;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.adapters.AttachmentPreviewAdapter;
 import tuan.anh.giang.project.adapters.ChatAdapter;
+import tuan.anh.giang.project.services.CallService;
+import tuan.anh.giang.project.utils.CollectionsUtils;
+import tuan.anh.giang.project.utils.Consts;
+import tuan.anh.giang.project.utils.PermissionsChecker;
+import tuan.anh.giang.project.utils.PushNotificationSender;
+import tuan.anh.giang.project.utils.WebRtcSessionManager;
 import tuan.anh.giang.project.utils.chat.ChatHelper;
 import tuan.anh.giang.project.utils.qb.PaginationHistoryListener;
 import tuan.anh.giang.project.utils.qb.QbChatDialogMessageListenerImp;
@@ -75,16 +84,15 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
     private ArrayList<QBChatMessage> unShownMessages;
     private int skipPagination = 0;
     private ChatMessageListener chatMessageListener;
+    private PermissionsChecker checker;
 
     public static void startForResult(Activity activity, int code, QBChatDialog dialogId) {
         Intent intent = new Intent(activity, ChatActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intent.putExtra(ChatActivity.EXTRA_DIALOG_ID, dialogId);
         activity.startActivityForResult(intent, code);
     }
     public static void start(Activity activity, QBChatDialog dialogId) {
         Intent intent = new Intent(activity, ChatActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intent.putExtra(ChatActivity.EXTRA_DIALOG_ID, dialogId);
         activity.startActivity(intent);
     }
@@ -104,7 +112,7 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
         chatMessageListener = new ChatMessageListener();
 
         qbChatDialog.addMessageListener(chatMessageListener);
-
+        checker = new PermissionsChecker(getApplicationContext());
         initChatConnectionListener();
 
         initViews();
@@ -150,17 +158,6 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_chat, menu);
-
-        MenuItem menuItemLeave = menu.findItem(R.id.menu_chat_action_leave);
-        MenuItem menuItemAdd = menu.findItem(R.id.menu_chat_action_add);
-        MenuItem menuItemDelete = menu.findItem(R.id.menu_chat_action_delete);
-        if (qbChatDialog.getType() == QBDialogType.PRIVATE) {
-            menuItemLeave.setVisible(false);
-            menuItemAdd.setVisible(false);
-        } else {
-            menuItemDelete.setVisible(false);
-        }
-
         return true;
     }
 
@@ -168,30 +165,62 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.menu_chat_action_info:
-//                ChatInfoActivity.start(this, qbChatDialog);
+            case R.id.menu_call:
+                if (isLoggedInChat()) {
+                    startCall(false);
+                }
+                if (checker.lacksPermissions(Consts.PERMISSIONS[1])) {
+                    startPermissionsActivity(true);
+                }
                 return true;
 
-            case R.id.menu_chat_action_add:
-//                SelectUsersActivity.startForResult(this, REQUEST_CODE_SELECT_PEOPLE, qbChatDialog);
-                EmployeesActivity.startForResult(this, REQUEST_CODE_SELECT_PEOPLE, qbChatDialog);
+            case R.id.menu_video_call:
+                if (isLoggedInChat()) {
+                    startCall(true);
+                }
+                if (checker.lacksPermissions(Consts.PERMISSIONS)) {
+                    startPermissionsActivity(false);
+                }
                 return true;
-
-            case R.id.menu_chat_action_leave:
-                leaveGroupChat();
-                return true;
-
-            case R.id.menu_chat_action_delete:
-                deleteChat();
-                return true;
-
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private void startPermissionsActivity(boolean checkOnlyAudio) {
+        PermissionsActivity.startActivity(this, checkOnlyAudio, Consts.PERMISSIONS);
+    }
+    private boolean isLoggedInChat() {
+        if (!QBChatService.getInstance().isLoggedIn()) {
+            Toaster.shortToast(R.string.dlg_signal_error);
+            tryReLoginToChat();
+            return false;
+        }
+        return true;
+    }
+    private void tryReLoginToChat() {
+        if (sharedPrefsHelper.hasQbUser()) {
+            QBUser qbUser = sharedPrefsHelper.getQbUser();
+            CallService.start(this, qbUser);
+        }
+    }
+    private void startCall(boolean isVideoCall) {
+
+        QBUser currentUser = ChatHelper.getInstance().getCurrentUser();
+        QBUser  employee = QbDialogUtils.getRecipient(qbChatDialog);
+        ArrayList<Integer> opponentsList = CollectionsUtils.getIdSelectedEmployee(employee);
+        QBRTCTypes.QBConferenceType conferenceType = isVideoCall
+                ? QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_VIDEO
+                : QBRTCTypes.QBConferenceType.QB_CONFERENCE_TYPE_AUDIO;
+
+        QBRTCClient qbrtcClient = QBRTCClient.getInstance(getApplicationContext());
+
+        QBRTCSession newQbRtcSession = qbrtcClient.createNewSessionWithOpponents(opponentsList, conferenceType);
+
+        WebRtcSessionManager.getInstance(this).setCurrentSession(newQbRtcSession);
+
+        PushNotificationSender.sendPushMessage(opponentsList, currentUser.getFullName());
+
+        CallActivity.start(this, false);
     }
 
     private void sendDialogId() {
@@ -533,26 +562,26 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
         messagesListView.setSelection(messagesListView.getCount() - 1);
     }
 
-    private void deleteChat() {
-        ChatHelper.getInstance().deleteDialog(qbChatDialog, new QBEntityCallback<Void>() {
-            @Override
-            public void onSuccess(Void aVoid, Bundle bundle) {
-                setResult(RESULT_OK);
-                finish();
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-                showErrorSnackbar(R.string.dialogs_deletion_error, e,
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                deleteChat();
-                            }
-                        });
-            }
-        });
-    }
+//    private void deleteChat() {
+//        ChatHelper.getInstance().deleteDialog(qbChatDialog, new QBEntityCallback<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid, Bundle bundle) {
+//                setResult(RESULT_OK);
+//                finish();
+//            }
+//
+//            @Override
+//            public void onError(QBResponseException e) {
+//                showErrorSnackbar(R.string.dialogs_deletion_error, e,
+//                        new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                deleteChat();
+//                            }
+//                        });
+//            }
+//        });
+//    }
 
     private void initChatConnectionListener() {
         chatConnectionListener = new VerboseQbChatConnectionListener(getSnackbarAnchorView()) {

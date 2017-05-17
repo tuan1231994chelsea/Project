@@ -117,6 +117,10 @@ public class QbDialogUtils {
             }
         }
     }
+    public static QBUser getRecipient(QBChatDialog dialog){
+        Integer opponentId = dialog.getRecipientId();
+        return QbUsersHolder.getInstance().getUserById(opponentId);
+    }
 
     private static List<QBUser> getQbUsersFromQbDialog(QBChatDialog dialog) {
         List<QBUser> previousDialogUsers = new ArrayList<>();
