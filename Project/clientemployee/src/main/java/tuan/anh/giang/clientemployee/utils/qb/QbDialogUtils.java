@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import tuan.anh.giang.project.utils.chat.ChatHelper;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
 
 
 public class QbDialogUtils {

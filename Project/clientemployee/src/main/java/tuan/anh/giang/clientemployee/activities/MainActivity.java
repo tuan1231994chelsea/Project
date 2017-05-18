@@ -28,6 +28,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
@@ -39,27 +40,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.adapters.OpponentsAdapter;
+import tuan.anh.giang.clientemployee.adapters.QuestionAdapter;
+import tuan.anh.giang.clientemployee.db.QbUsersDbManager;
+import tuan.anh.giang.clientemployee.entities.Question;
+import tuan.anh.giang.clientemployee.fragments.AnswerFragment;
+import tuan.anh.giang.clientemployee.fragments.UserInforFragment;
+import tuan.anh.giang.clientemployee.services.CallService;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.PermissionsChecker;
+import tuan.anh.giang.clientemployee.utils.QBEntityCallbackImpl;
+import tuan.anh.giang.clientemployee.utils.UsersUtils;
+import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.Toaster;
-import tuan.anh.giang.floatingactionmenu.FloatingActionButton;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.adapters.OpponentsAdapter;
-import tuan.anh.giang.project.adapters.QuestionAdapter;
-import tuan.anh.giang.project.db.QbUsersDbManager;
-import tuan.anh.giang.project.entities.Question;
-import tuan.anh.giang.project.fragments.AnswerFragment;
-import tuan.anh.giang.project.fragments.NewQuestionFragment;
-import tuan.anh.giang.project.fragments.UserInforFragment;
-import tuan.anh.giang.project.services.CallService;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.PermissionsChecker;
-import tuan.anh.giang.project.utils.QBEntityCallbackImpl;
-import tuan.anh.giang.project.utils.UsersUtils;
-import tuan.anh.giang.project.utils.WebRtcSessionManager;
 
-/**
- * Created by GIANG ANH TUAN on 17/04/2017.
- */
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -69,8 +65,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private ListView opponentsListView;
     private ArrayList<QBUser> currentOpponentsList;
     private QbUsersDbManager dbManager;
-    private boolean isRunForCall;
-    private WebRtcSessionManager webRtcSessionManager;
+//    private boolean isRunForCall;
+//    private WebRtcSessionManager webRtcSessionManager;
     private QBUser userForSave;
     private PermissionsChecker checker;
     private ArrayList<BackendlessUser> employeeList;
@@ -80,7 +76,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public static QBUser currentQBUser;
     private ArrayList<Question> listOldQuestion;
     private ListView lvOldQuestion;
-    private TextView tvNewQuestion,tvTitle;
+    private TextView tvNewQuestion, tvTitle;
     private QuestionAdapter questionAdapter;
     public static FragmentManager fragmentManager;
     public static MainActivity mainActivity;
@@ -88,7 +84,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Fragment currentFragment;
     SwipeRefreshLayout refreshLayout;
     boolean isAllOfQuestion = false;
-    FloatingActionButton oldChat,newChat;
+    FloatingActionButton oldChat;
 
 
     @Override
@@ -102,13 +98,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             sharedPrefsHelper = SharedPrefsHelper.getInstance();
         }
         listOldQuestion = new ArrayList<>();
+//        initFields();
         findViewById();
         onClick();
         getCurrentBELUser();
-
-
-
+//        if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
+//            CallActivity.start(MainActivity.this, true);
+//        }
     }
+//    private void initFields() {
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            isRunForCall = extras.getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
+//        }
+//        webRtcSessionManager = WebRtcSessionManager.getInstance(getApplicationContext());
+//    }
 
     private void getCurrentBELUser() {
         showProgressDialog(R.string.loading);
@@ -128,26 +132,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            tvTitle.setText("Hello "+currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                                            tvTitle.setText("Hello " + currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
                                         }
                                     });
-
-                                    // check sharepreferences haven't Backendless User -> save current BELUser
-                                    Log.d("kiemtratime", "lay duoc current backendless user");
-//                                    if (!checkHasBELUser()) {
-//                                        sharedPrefsHelper.saveBELUser(currentBackendlessUser);
-//                                    }
-                                    /** check sharepreferences haven't QuickBlox User -> Sign Up new Quickblox User by
-                                     * current BEL User -> save QB User and sign in this user
-                                     * else get QB user from sharepreferences and sign in this user
-                                     **/
-//                                    if (!checkHasQbUser()) {
-//                                        startSignUpNewUser(createQBUserWithCurrentData(currentBackendlessUser));
-//                                    } else {
-//                                        signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
-//                                    }
                                     String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
-                                    currentQBUser = new QBUser(loginQBUser,Consts.DEFAULT_USER_PASSWORD);
+                                    currentQBUser = new QBUser(loginQBUser, Consts.DEFAULT_USER_PASSWORD);
                                     signInCreatedUser(currentQBUser, false);
                                     getOldQuestionFirst();
                                 }
@@ -167,27 +156,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
             });
         } else {
-            // check sharepreferences haven't Backendless User -> save current BELUser
-//            if (!checkHasBELUser()) {
-//                sharedPrefsHelper.saveBELUser(currentBackendlessUser);
-//            }
-            /** check sharepreferences haven't QuickBlox User -> Sign Up new Quickblox User by
-             * current BEL User -> save QB User and sign in this user
-             * else get QB user from sharepreferences and sign in this user
-             **/
-//            if (!checkHasQbUser()) {
-//                startSignUpNewUser(createQBUserWithCurrentData(currentBackendlessUser));
-//            } else {
-//                signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
-//            }
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tvTitle.setText("Hello "+currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                    tvTitle.setText("Hello " + currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
                 }
             });
             String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
-            currentQBUser = new QBUser(loginQBUser,Consts.DEFAULT_USER_PASSWORD);
+            currentQBUser = new QBUser(loginQBUser, Consts.DEFAULT_USER_PASSWORD);
             signInCreatedUser(currentQBUser, false);
             getOldQuestionFirst();
         }
@@ -196,13 +173,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // first load old question, load first page
     private void getOldQuestionFirst() {
         isAllOfQuestion = false;
-        queryQuestion.setWhereClause("user.objectId = '" + currentBackendlessUser.getObjectId() + "'");
+        // status question = 0 => cho nhan vien tra loi
+        // = 1=> cho nguoi dung phan hoi
+        // = 2 => nguoi dung leave question
+        queryQuestion.setWhereClause("status = " + Consts.WAIT_EMPLOYEE_REPLY);
         queryQuestion.setSortBy("created DESC");
-        queryQuestion.setPageSize(10);
+        queryQuestion.setPageSize(20);
         Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
             @Override
             public void handleResponse(List<Question> response) {
-                if (response.size() < 10) {
+                if (response.size() < 20) {
                     isAllOfQuestion = true;
                 }
                 listOldQuestion.addAll(response);
@@ -214,7 +194,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
                 });
 
-                Log.d("kiemtratime", "load xong questions");
             }
 
             @Override
@@ -230,16 +209,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      */
     private void updateOldQuestion() {
         isAllOfQuestion = false;
-        showProgressDialog(R.string.refreshing_your_question);
         queryQuestion = DataQueryBuilder.create();
-        queryQuestion.setWhereClause("user.objectId = '" + currentBackendlessUser.getObjectId() + "'");
+        queryQuestion.setWhereClause("status = " + Consts.WAIT_EMPLOYEE_REPLY);
         queryQuestion.setSortBy("created DESC");
-        queryQuestion.setPageSize(10);
+        queryQuestion.setPageSize(20);
         listOldQuestion.clear();
         Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
             @Override
             public void handleResponse(List<Question> response) {
-                if (response.size() < 10) {
+                if (response.size() < 20) {
                     isAllOfQuestion = true;
                 }
                 listOldQuestion.addAll(response);
@@ -248,7 +226,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     public void run() {
                         questionAdapter.notifyDataSetChanged();
                         refreshLayout.setRefreshing(false);
-                        hideProgressDialog();
                     }
                 });
 
@@ -270,7 +247,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void handleResponse(List<Question> response) {
                 if (response.size() != 0) {
-                    if(response.size() < 10){
+                    if (response.size() < 20) {
                         isAllOfQuestion = true;
                     }
                     listOldQuestion.addAll(response);
@@ -301,26 +278,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 DialogsActivity.start(MainActivity.this);
             }
         });
-        newChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EmployeesActivity.start(MainActivity.this,false);
-            }
-        });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 updateOldQuestion();
-            }
-        });
-        tvNewQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentFragment = new NewQuestionFragment();
-                fragmentManager.beginTransaction().replace(R.id.root_view_main_activity, currentFragment)
-                        .addToBackStack(null)
-                        .commit();
-
             }
         });
         imgMenu.setOnClickListener(new View.OnClickListener() {
@@ -369,7 +330,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         tvTitle = (TextView) findViewById(R.id.toolbar_title);
         lvOldQuestion.setVerticalScrollBarEnabled(false);
         oldChat = (FloatingActionButton) findViewById(R.id.action_old_chat);
-        newChat = (FloatingActionButton) findViewById(R.id.action_new_chat);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipetop);
         refreshLayout.setColorSchemeResources(R.color.fb_color);
         questionAdapter = new QuestionAdapter(mainActivity, R.layout.item_list_question, listOldQuestion);
@@ -381,9 +341,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int lastVisibleItem = firstVisibleItem + visibleItemCount;
-                if(!isAllOfQuestion && listOldQuestion.size() != 0){
-                    if(((listOldQuestion.size()-1) == lastVisibleItem))
-                    loadMoreQuestion();
+                if (!isAllOfQuestion && listOldQuestion.size() != 0) {
+                    if (((listOldQuestion.size() - 1) == lastVisibleItem))
+                        loadMoreQuestion();
                 }
             }
         });
@@ -446,7 +406,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //            return true;
 //        }
 //    }
-
     public static void start(Context context, boolean isRunForCall) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -562,6 +521,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
     }
+
     private boolean checkSignIn() {
         return QBSessionManager.getInstance().getSessionParameters() != null;
     }
@@ -619,6 +579,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void showVideoSettings() {
         SettingsActivity.start(this);
     }
@@ -643,7 +604,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.d("error",fault.getMessage());
+                Log.d("error", fault.getMessage());
             }
         });
     }
@@ -653,20 +614,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (fragmentManager.getBackStackEntryCount() > 0) {
             Log.i("MainActivity", "popping backstack");
             fragmentManager.popBackStack();
-            if (currentFragment instanceof NewQuestionFragment) {
-                if (((NewQuestionFragment) currentFragment).isUpdateMain) {
-                    updateOldQuestion();
-                }
-            } else if (currentFragment instanceof AnswerFragment) {
+            if (currentFragment instanceof AnswerFragment) {
                 if (((AnswerFragment) currentFragment).isUpdateMain) {
                     updateOldQuestion();
                 }
             }
-
         } else {
             Log.i("MainActivity", "nothing on backstack, calling super");
             super.onBackPressed();
         }
     }
-
+//
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        if (intent.getExtras() != null) {
+//            isRunForCall = intent.getExtras().getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
+//            if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
+//                CallActivity.start(MainActivity.this, true);
+//            }
+//        }
+//    }
 }

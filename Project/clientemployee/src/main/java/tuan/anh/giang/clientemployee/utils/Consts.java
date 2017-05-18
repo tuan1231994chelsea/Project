@@ -2,8 +2,9 @@ package tuan.anh.giang.clientemployee.utils;
 
 import android.Manifest;
 
+import tuan.anh.giang.clientemployee.R;
 import tuan.anh.giang.core.utils.ResourceUtils;
-import tuan.anh.giang.project.R;
+
 
 
 public interface Consts {
@@ -63,6 +64,9 @@ public interface Consts {
     String ALREADY_LOGGED_IN = "You have already logged in chat";
     String COUNTER_QUESTION="counter_question";
     String COUNTER_ANSWER ="counter_answer";
+    int WAIT_EMPLOYEE_REPLY = 0;
+    int WAIT_USER_REPLY =1;
+    int USER_LEAVE_QUESTION = 2;
 
     enum StartConversationReason {
         INCOME_CALL_FOR_ACCEPTION,

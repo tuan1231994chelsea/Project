@@ -1,8 +1,5 @@
 package tuan.anh.giang.clientemployee.listener;
 
-/**
- * Created by tereha on 23.05.16.
- */
 public interface IncomeCallFragmentCallbackListener {
 
     void onAcceptCurrentSession();

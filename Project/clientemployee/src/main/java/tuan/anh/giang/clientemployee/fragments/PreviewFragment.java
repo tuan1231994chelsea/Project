@@ -11,8 +11,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import tuan.anh.giang.clientemployee.R;
 import tuan.anh.giang.core.utils.ResourceUtils;
-import tuan.anh.giang.project.R;
+
 
 public class PreviewFragment extends Fragment {
 

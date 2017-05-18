@@ -15,14 +15,12 @@ import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.activities.CallActivity;
+import tuan.anh.giang.clientemployee.utils.CollectionsUtils;
 import tuan.anh.giang.core.utils.UiUtils;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.activities.CallActivity;
-import tuan.anh.giang.project.utils.CollectionsUtils;
 
-/**
- * Created by tereha on 25.05.16.
- */
+
 public class AudioConversationFragment extends BaseConversationFragment implements CallActivity.OnChangeDynamicToggle {
     private static final String TAG = AudioConversationFragment.class.getSimpleName();
 

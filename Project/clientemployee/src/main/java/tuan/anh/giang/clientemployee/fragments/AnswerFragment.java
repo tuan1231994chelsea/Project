@@ -33,38 +33,32 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.activities.ChatActivity;
+import tuan.anh.giang.clientemployee.adapters.AnswerAdapter;
+import tuan.anh.giang.clientemployee.entities.Answer;
+import tuan.anh.giang.clientemployee.entities.Question;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
 import tuan.anh.giang.core.utils.KeyboardUtils;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.activities.ChatActivity;
-import tuan.anh.giang.project.adapters.AnswerAdapter;
-import tuan.anh.giang.project.entities.Answer;
-import tuan.anh.giang.project.entities.Question;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.chat.ChatHelper;
 
-import static tuan.anh.giang.project.activities.MainActivity.currentBackendlessUser;
+import static tuan.anh.giang.clientemployee.activities.MainActivity.currentBackendlessUser;
 
-/**
- * Created by GIANG ANH TUAN on 04/05/2017.
- */
 
 public class AnswerFragment extends Fragment {
     View view;
     private ProgressDialog progressDialog;
     Question question;
-    TextView tvFullName, tvQuestion, tvCreated,tvMoreAnswer;
+    TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer;
     EditText edReply;
     LinearLayout layoutMoreAnswer;
-    ImageView imgBack,imgMoreAnswer,imgUser,imgSend;
+    ImageView imgBack, imgMoreAnswer, imgUser, imgSend;
     ListView lvAnswer;
     ArrayList<Answer> listAnswer;
     ArrayList<Answer> listLessAnswer;
     AnswerAdapter answerAdapter;
     DataQueryBuilder queryAnswer;
     public boolean isUpdateMain = false;
-//    SwipeRefreshLayout refreshLayout;
-
-
 
 
     @Override
@@ -90,6 +84,7 @@ public class AnswerFragment extends Fragment {
         getAllListAnswer();
         return view;
     }
+
     private void findViewById() {
         imgBack = (ImageView) view.findViewById(R.id.img_back);
         imgUser = (ImageView) view.findViewById(R.id.img_user);
@@ -108,7 +103,7 @@ public class AnswerFragment extends Fragment {
         tvQuestion.setText(question.getContent());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         tvCreated.setText("● " + sdf.format(question.getCreated()));
-        answerAdapter = new AnswerAdapter(getActivity(),R.layout.item_list_answer,listAnswer);
+        answerAdapter = new AnswerAdapter(getActivity(), R.layout.item_list_answer, listAnswer);
         lvAnswer.setAdapter(answerAdapter);
 
 
@@ -116,42 +111,42 @@ public class AnswerFragment extends Fragment {
 
     private void onClick() {
 
-        lvAnswer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                BackendlessUser backendlessUser = null;
-                if(tvMoreAnswer.getText().toString().equals(getString(R.string.view_all_answer))){
-                    backendlessUser = listLessAnswer.get(i).getUser();
-                }else{
-                    backendlessUser = listAnswer.get(i).getUser();
-                }
-                boolean userIsEmployee = (boolean) backendlessUser.getProperty(getString(R.string.is_employee));
-                if(userIsEmployee){
-                    QBUser qbUser = new QBUser((String) backendlessUser.getProperty(getString(R.string.login)), Consts.DEFAULT_USER_PASSWORD);
-                    qbUser.setId((Integer) backendlessUser.getProperty(getString(R.string.id_qb)));
-                    qbUser.setFullName((String) backendlessUser.getProperty(getString(R.string.full_name)));
-                    StringifyArrayList<String> tags = new StringifyArrayList<>();
-                    tags.add((String) backendlessUser.getProperty(getString(R.string.tags)));
-                    qbUser.setTags(tags);
-                    startChatWithEmployee(qbUser);
-                }else{
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                    alertDialog.setTitle("")
-                            .setIcon(R.drawable.error)
-                            .setMessage(getString(R.string.user_not_employee))
-                            .create()
-                            .show();
-                }
-                return false;
-            }
-        });
+//        lvAnswer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                BackendlessUser backendlessUser = null;
+//                if (tvMoreAnswer.getText().toString().equals(getString(R.string.view_all_answer))) {
+//                    backendlessUser = listLessAnswer.get(i).getUser();
+//                } else {
+//                    backendlessUser = listAnswer.get(i).getUser();
+//                }
+//                boolean userIsEmployee = (boolean) backendlessUser.getProperty(getString(R.string.is_employee));
+//                if (userIsEmployee) {
+//                    QBUser qbUser = new QBUser((String) backendlessUser.getProperty(getString(R.string.login)), Consts.DEFAULT_USER_PASSWORD);
+//                    qbUser.setId((Integer) backendlessUser.getProperty(getString(R.string.id_qb)));
+//                    qbUser.setFullName((String) backendlessUser.getProperty(getString(R.string.full_name)));
+//                    StringifyArrayList<String> tags = new StringifyArrayList<>();
+//                    tags.add((String) backendlessUser.getProperty(getString(R.string.tags)));
+//                    qbUser.setTags(tags);
+//                    startChatWithEmployee(qbUser);
+//                } else {
+//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+//                    alertDialog.setTitle("")
+//                            .setIcon(R.drawable.error)
+//                            .setMessage(getString(R.string.user_not_employee))
+//                            .create()
+//                            .show();
+//                }
+//                return false;
+//            }
+//        });
         // có hiện click là có nhiều hơn 10 answers
         layoutMoreAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String tv = tvMoreAnswer.getText().toString();
-                if(tv.equals(getString(R.string.view_all_answer))){
+                if (tv.equals(getString(R.string.view_all_answer))) {
                     tvMoreAnswer.setText(getString(R.string.view_less_answer));
                     lvAnswer.post(new Runnable() {
                         @Override
@@ -160,7 +155,7 @@ public class AnswerFragment extends Fragment {
                             answerAdapter.notifyDataSetChanged();
                         }
                     });
-                }else{
+                } else {
                     tvMoreAnswer.setText(getString(R.string.view_all_answer));
                     answerAdapter.setListAnswer(listLessAnswer);
                     lvAnswer.post(new Runnable() {
@@ -205,8 +200,10 @@ public class AnswerFragment extends Fragment {
                             response.setUser(currentBackendlessUser);
                             listAnswer.add(response);
                             listLessAnswer.clear();
-                            for(int i = listAnswer.size()-10;i<listAnswer.size();i++){
-                                listLessAnswer.add(listAnswer.get(i));
+                            if(listAnswer.size() >= 10){
+                                for (int i = listAnswer.size() - 10; i < listAnswer.size(); i++) {
+                                    listLessAnswer.add(listAnswer.get(i));
+                                }
                             }
                             lvAnswer.post(new Runnable() {
                                 @Override
@@ -218,26 +215,26 @@ public class AnswerFragment extends Fragment {
                             edReply.setText("");
                             hideProgressDialog();
                             scrollMyListViewToBottom();
-                            Log.d("kiemtra", "so answers duoc add: "+response.getContent_answer());
+                            Log.d("kiemtra", "so answers duoc add: " + response.getContent_answer());
                             // add relation with Question table
                             Backendless.Persistence.of(Question.class).addRelation(question, getString(R.string.answers), listAdd,
                                     new AsyncCallback<Integer>() {
                                         @Override
                                         public void handleResponse(Integer response) {
-                                            Log.d("kiemtra", "add relation with question table "+response.toString());
+                                            Log.d("kiemtra", "add relation with question table " + response.toString());
                                             // add relation with Users table
                                             Backendless.Persistence.of(Answer.class).addRelation(answer, getString(R.string.user), listUser,
                                                     new AsyncCallback<Integer>() {
                                                         @Override
                                                         public void handleResponse(Integer response) {
-                                                            Log.d("kiemtra ","add relation with users table"+response.toString());
+                                                            Log.d("kiemtra ", "add relation with users table" + response.toString());
 //                                                            updateListAnswer();
 
                                                         }
 
                                                         @Override
                                                         public void handleFault(BackendlessFault fault) {
-                                                            Log.d("kiemtra", "add relation with question table "+fault.getMessage());
+                                                            Log.d("kiemtra", "add relation with question table " + fault.getMessage());
                                                         }
                                                     });
                                         }
@@ -248,21 +245,21 @@ public class AnswerFragment extends Fragment {
                                         }
                                     });
                             //update object question
-                            if(!question.getIs_reply()){
-                                question.setIs_reply(true);
-                                Backendless.Persistence.of( Question.class ).save(question, new AsyncCallback<Question>() {
-                                    @Override
-                                    public void handleResponse(Question response) {
-                                        // set is_reply = true success
-                                        isUpdateMain = true;
-                                    }
 
-                                    @Override
-                                    public void handleFault(BackendlessFault fault) {
+                            question.setStatus(Consts.WAIT_USER_REPLY);
+                            Backendless.Persistence.of(Question.class).save(question, new AsyncCallback<Question>() {
+                                @Override
+                                public void handleResponse(Question response) {
+                                    // set is_reply = true success
+                                    isUpdateMain = true;
+                                }
 
-                                    }
-                                });
-                            }
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+
+                                }
+                            });
+
 
                         }
 
@@ -275,20 +272,23 @@ public class AnswerFragment extends Fragment {
         });
 
     }
-    private void startChatWithEmployee(QBUser employee){
+
+    private void startChatWithEmployee(QBUser employee) {
         ChatHelper.getInstance().createDialogWithSelectedUser(employee,
                 new QBEntityCallback<QBChatDialog>() {
                     @Override
                     public void onSuccess(QBChatDialog qbChatDialog, Bundle bundle) {
-                        ChatActivity.start(getActivity(),qbChatDialog);
+                        ChatActivity.start(getActivity(), qbChatDialog);
                     }
+
                     @Override
                     public void onError(QBResponseException e) {
 
                     }
                 });
     }
-    private void updateListAnswer(){
+
+    private void updateListAnswer() {
         String whereclause = "Question[answers].objectId = '" + question.getObjectId() + "'";
         queryAnswer = DataQueryBuilder.create();
         queryAnswer.setWhereClause(whereclause);
@@ -305,13 +305,13 @@ public class AnswerFragment extends Fragment {
             @Override
             public void handleResponse(List<Answer> response) {
                 if (response.size() == 0) {
-                    if(listAnswer.size() >10){
+                    if (listAnswer.size() > 10) {
                         layoutMoreAnswer.setVisibility(View.VISIBLE);
-                        for(int i=listAnswer.size()-10;i<listAnswer.size();i++){
+                        for (int i = listAnswer.size() - 10; i < listAnswer.size(); i++) {
                             listLessAnswer.add(listAnswer.get(i));
                         }
                         answerAdapter.setListAnswer(listLessAnswer);
-                    }else{
+                    } else {
                         answerAdapter.setListAnswer(listAnswer);
                         layoutMoreAnswer.setVisibility(View.GONE);
                     }

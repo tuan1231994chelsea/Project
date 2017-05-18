@@ -10,14 +10,11 @@ import com.quickblox.users.model.QBUser;
 
 import java.util.List;
 
+import tuan.anh.giang.clientemployee.R;
 import tuan.anh.giang.core.ui.adapter.BaseSelectableListAdapter;
 import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.core.utils.UiUtils;
-import tuan.anh.giang.project.R;
 
-/**
- * QuickBlox team
- */
 public class OpponentsAdapter extends BaseSelectableListAdapter<QBUser> {
 
     private SelectedItemsCountsChangedListener selectedItemsCountChangedListener;

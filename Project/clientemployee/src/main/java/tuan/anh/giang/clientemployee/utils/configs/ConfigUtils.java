@@ -4,9 +4,10 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 
+import tuan.anh.giang.clientemployee.models.SampleConfigs;
 import tuan.anh.giang.core.utils.configs.ConfigParser;
 import tuan.anh.giang.core.utils.configs.CoreConfigUtils;
-import tuan.anh.giang.project.models.SampleConfigs;
+
 
 
 public class ConfigUtils extends CoreConfigUtils {

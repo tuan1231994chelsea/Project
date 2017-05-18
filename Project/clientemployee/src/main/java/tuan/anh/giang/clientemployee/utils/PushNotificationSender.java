@@ -8,7 +8,7 @@ import com.quickblox.messages.model.QBNotificationType;
 
 import java.util.ArrayList;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
 
 
 public class PushNotificationSender {

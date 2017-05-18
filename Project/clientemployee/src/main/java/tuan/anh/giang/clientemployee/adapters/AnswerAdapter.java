@@ -12,12 +12,9 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.entities.Answer;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.entities.Answer;
 
-/**
- * Created by GIANG ANH TUAN on 04/05/2017.
- */
 
 public class AnswerAdapter extends ArrayAdapter<Answer> {
     Activity context;
@@ -42,16 +39,19 @@ public class AnswerAdapter extends ArrayAdapter<Answer> {
 
         Answer answer = objects.get(position);
         // reponse tra ve khong co user
-        if((Boolean) answer.getUser().getProperty(context.getString(R.string.is_employee))){
-            imgUser.setImageResource(R.drawable.employee);
-        }else{
-            imgUser.setImageResource(R.drawable.account_circle);
-            imgUser.setColorFilter(ContextCompat.getColor(context,R.color.colorFB));
+        if(answer !=null){
+            if((Boolean) answer.getUser().getProperty(context.getString(R.string.is_employee))){
+                imgUser.setImageResource(R.drawable.employee);
+            }else{
+                imgUser.setImageResource(R.drawable.account_circle);
+                imgUser.setColorFilter(ContextCompat.getColor(context,R.color.colorFB));
+            }
+            tvFullName.setText(answer.getUser().getProperty(context.getString(R.string.full_name)).toString());
+            tvAnswer.setText(answer.getContent_answer());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            tvCreated.setText("● "+sdf.format(answer.getCreated()));
         }
-        tvFullName.setText(answer.getUser().getProperty(context.getString(R.string.full_name)).toString());
-        tvAnswer.setText(answer.getContent_answer());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        tvCreated.setText("● "+sdf.format(answer.getCreated()));
+
         return row;
     }
     public void setListAnswer(ArrayList<Answer> listAnswer){

@@ -5,10 +5,11 @@ import android.os.Bundle;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.quickblox.users.model.QBUser;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.services.CallService;
 import tuan.anh.giang.core.ui.activity.CoreSplashActivity;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.services.CallService;
+
 
 public class SplashActivity extends CoreSplashActivity {
         private SharedPrefsHelper sharedPrefsHelper;

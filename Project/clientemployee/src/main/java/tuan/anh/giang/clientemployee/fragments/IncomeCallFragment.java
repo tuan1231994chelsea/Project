@@ -26,26 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.db.QbUsersDbManager;
+import tuan.anh.giang.clientemployee.listener.IncomeCallFragmentCallbackListener;
+import tuan.anh.giang.clientemployee.utils.CollectionsUtils;
+import tuan.anh.giang.clientemployee.utils.RingtonePlayer;
+import tuan.anh.giang.clientemployee.utils.UsersUtils;
+import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
 import tuan.anh.giang.core.utils.UiUtils;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.db.QbUsersDbManager;
-import tuan.anh.giang.project.listener.IncomeCallFragmentCallbackListener;
-import tuan.anh.giang.project.utils.CollectionsUtils;
-import tuan.anh.giang.project.utils.RingtonePlayer;
-import tuan.anh.giang.project.utils.UsersUtils;
-import tuan.anh.giang.project.utils.WebRtcSessionManager;
 
-//import com.quickblox.sample.core.utils.UiUtils;
-//import com.quickblox.sample.groupchatwebrtc.R;
-//import com.quickblox.sample.groupchatwebrtc.db.QbUsersDbManager;
-//import com.quickblox.sample.groupchatwebrtc.utils.CollectionsUtils;
-//import com.quickblox.sample.groupchatwebrtc.utils.RingtonePlayer;
-//import com.quickblox.sample.groupchatwebrtc.utils.UsersUtils;
-//import com.quickblox.sample.groupchatwebrtc.utils.WebRtcSessionManager;
 
-/**
- * QuickBlox team
- */
+
 public class IncomeCallFragment extends Fragment implements Serializable, View.OnClickListener {
 
     private static final String TAG = IncomeCallFragment.class.getSimpleName();

@@ -4,7 +4,8 @@ import android.util.SparseArray;
 
 import com.quickblox.videochat.webrtc.QBRTCTypes;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
+
 
 public class QBRTCSessionUtils {
 

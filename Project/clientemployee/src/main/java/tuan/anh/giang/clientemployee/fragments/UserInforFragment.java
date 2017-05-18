@@ -21,15 +21,12 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.utils.ErrorHandling;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.utils.ErrorHandling;
 
-import static tuan.anh.giang.project.activities.MainActivity.currentBackendlessUser;
-import static tuan.anh.giang.project.activities.MainActivity.mainActivity;
+import static tuan.anh.giang.clientemployee.activities.MainActivity.currentBackendlessUser;
+import static tuan.anh.giang.clientemployee.activities.MainActivity.mainActivity;
 
-/**
- * Created by GIANG ANH TUAN on 10/05/2017.
- */
 
 public class UserInforFragment extends Fragment {
     View view;

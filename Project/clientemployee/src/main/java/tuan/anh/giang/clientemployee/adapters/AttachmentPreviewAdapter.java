@@ -23,11 +23,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import tuan.anh.giang.clientemployee.App;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
 import tuan.anh.giang.core.ui.adapter.BaseListAdapter;
 import tuan.anh.giang.core.utils.ResourceUtils;
-import tuan.anh.giang.project.App;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.utils.chat.ChatHelper;
+
 
 
 public class AttachmentPreviewAdapter extends BaseListAdapter<File> {

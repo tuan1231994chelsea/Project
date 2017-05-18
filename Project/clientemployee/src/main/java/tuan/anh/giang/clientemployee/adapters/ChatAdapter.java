@@ -29,16 +29,16 @@ import java.util.Collection;
 import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.activities.AttachmentImageActivity;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.TimeUtils;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
+import tuan.anh.giang.clientemployee.utils.qb.PaginationHistoryListener;
+import tuan.anh.giang.clientemployee.utils.qb.QbUsersHolder;
+import tuan.anh.giang.clientemployee.view.MaskedImageView;
 import tuan.anh.giang.core.ui.adapter.BaseListAdapter;
 import tuan.anh.giang.core.utils.ResourceUtils;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.activities.AttachmentImageActivity;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.TimeUtils;
-import tuan.anh.giang.project.utils.chat.ChatHelper;
-import tuan.anh.giang.project.utils.qb.PaginationHistoryListener;
-import tuan.anh.giang.project.utils.qb.QbUsersHolder;
-import tuan.anh.giang.project.view.MaskedImageView;
 
 
 public class ChatAdapter extends BaseListAdapter<QBChatMessage> implements StickyListHeadersAdapter {

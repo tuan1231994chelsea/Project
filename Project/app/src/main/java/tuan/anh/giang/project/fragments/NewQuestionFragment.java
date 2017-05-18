@@ -83,7 +83,7 @@ public class NewQuestionFragment extends Fragment {
                     final Question question = new Question();
                     question.setUser(mainActivity.currentBackendlessUser);
                     question.setContent(contentQuestion);
-                    question.setIs_reply(false);
+                    question.setStatus(0);
                     //save new question
                     Backendless.Persistence.save(question, new AsyncCallback<Question>() {
                         public void handleResponse(Question response) {

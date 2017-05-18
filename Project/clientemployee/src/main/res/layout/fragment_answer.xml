@@ -208,8 +208,8 @@
                             android:layout_height="48dp"
                             android:layout_alignParentLeft="true"
                             android:scaleType="fitXY"
-                            android:src="@drawable/account_circle"
-                            android:tint="@color/colorFB" />
+                            android:src="@drawable/employee"
+                            />
 
                         <ImageView
                             android:layout_centerVertical="true"

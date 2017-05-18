@@ -27,21 +27,16 @@ import com.quickblox.videochat.webrtc.QBRTCTypes;
 import java.util.ArrayList;
 import java.util.List;
 
+import tuan.anh.giang.clientemployee.R;
 import tuan.anh.giang.clientemployee.adapters.EmployeeAdapter;
+import tuan.anh.giang.clientemployee.services.CallService;
+import tuan.anh.giang.clientemployee.utils.CollectionsUtils;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.PermissionsChecker;
+import tuan.anh.giang.clientemployee.utils.PushNotificationSender;
+import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
 import tuan.anh.giang.core.utils.Toaster;
-//import tuan.anh.giang.project.R;
-//import tuan.anh.giang.project.adapters.EmployeeAdapter;
-//import tuan.anh.giang.project.services.CallService;
-//import tuan.anh.giang.project.utils.CollectionsUtils;
-//import tuan.anh.giang.project.utils.Consts;
-//import tuan.anh.giang.project.utils.PermissionsChecker;
-//import tuan.anh.giang.project.utils.PushNotificationSender;
-//import tuan.anh.giang.project.utils.WebRtcSessionManager;
-//import tuan.anh.giang.project.utils.chat.ChatHelper;
-
-/**
- * Created by GIANG ANH TUAN on 12/05/2017.
- */
 
 public class EmployeesActivity extends BaseActivity {
     public static final String EXTRA_QB_USERS = "qb_users";
@@ -54,8 +49,8 @@ public class EmployeesActivity extends BaseActivity {
     DataQueryBuilder dataQueryBuilder;
     BackendlessUser currentBELUser;
     QBUser currentQBUser;
-    private boolean isRunForCall;
-    private WebRtcSessionManager webRtcSessionManager;
+//    private boolean isRunForCall;
+//    private WebRtcSessionManager webRtcSessionManager;
     private PermissionsChecker checker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +64,9 @@ public class EmployeesActivity extends BaseActivity {
         findViewById();
         onClick();
         updateListEmployees();
-        if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
-            CallActivity.start(EmployeesActivity.this, true);
-        }
+//        if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
+//            CallActivity.start(EmployeesActivity.this, true);
+//        }
 
         checker = new PermissionsChecker(getApplicationContext());
     }
@@ -242,11 +237,11 @@ public class EmployeesActivity extends BaseActivity {
     }
     private void initFields() {
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            isRunForCall = extras.getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
-        }
+//        if (extras != null) {
+//            isRunForCall = extras.getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
+//        }
         currentQBUser = sharedPrefsHelper.getQbUser();
-        webRtcSessionManager = WebRtcSessionManager.getInstance(getApplicationContext());
+//        webRtcSessionManager = WebRtcSessionManager.getInstance(getApplicationContext());
     }
 
     private void getListEmployees(){
@@ -291,14 +286,14 @@ public class EmployeesActivity extends BaseActivity {
         });
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (intent.getExtras() != null) {
-            isRunForCall = intent.getExtras().getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
-            if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
-                CallActivity.start(EmployeesActivity.this, true);
-            }
-        }
-    }
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        if (intent.getExtras() != null) {
+//            isRunForCall = intent.getExtras().getBoolean(Consts.EXTRA_IS_STARTED_FOR_CALL);
+//            if (isRunForCall && webRtcSessionManager.getCurrentSession() != null) {
+//                CallActivity.start(EmployeesActivity.this, true);
+//            }
+//        }
+//    }
 }

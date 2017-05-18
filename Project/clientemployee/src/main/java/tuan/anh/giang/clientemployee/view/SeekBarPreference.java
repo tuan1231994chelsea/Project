@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
 
 
 public class SeekBarPreference extends Preference implements SeekBar.OnSeekBarChangeListener {

@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
 
 
 public class ScreenShareFragment extends BaseToolBarFragment {

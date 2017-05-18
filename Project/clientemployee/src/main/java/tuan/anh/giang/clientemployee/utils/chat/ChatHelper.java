@@ -37,15 +37,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import tuan.anh.giang.clientemployee.App;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.models.SampleConfigs;
+import tuan.anh.giang.clientemployee.utils.qb.QbDialogHolder;
+import tuan.anh.giang.clientemployee.utils.qb.QbDialogUtils;
+import tuan.anh.giang.clientemployee.utils.qb.QbUsersHolder;
+import tuan.anh.giang.clientemployee.utils.qb.callback.QbEntityCallbackTwoTypeWrapper;
+import tuan.anh.giang.clientemployee.utils.qb.callback.QbEntityCallbackWrapper;
 import tuan.anh.giang.core.utils.Toaster;
-import tuan.anh.giang.project.App;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.models.SampleConfigs;
-import tuan.anh.giang.project.utils.qb.QbDialogHolder;
-import tuan.anh.giang.project.utils.qb.QbDialogUtils;
-import tuan.anh.giang.project.utils.qb.QbUsersHolder;
-import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackTwoTypeWrapper;
-import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackWrapper;
 
 
 public class ChatHelper {

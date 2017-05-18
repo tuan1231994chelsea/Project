@@ -3,7 +3,8 @@ package tuan.anh.giang.clientemployee.utils;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
+
 
 /**
  * Created by GIANG ANH TUAN on 21/04/2017.

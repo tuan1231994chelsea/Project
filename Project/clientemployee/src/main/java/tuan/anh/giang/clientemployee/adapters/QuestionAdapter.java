@@ -12,8 +12,9 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.entities.Question;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.entities.Question;
+
 
 /**
  * Created by GIANG ANH TUAN on 03/05/2017.
@@ -23,19 +24,18 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
     Activity context;
     int resource;
     ArrayList<Question> objects;
-//    private OnScrollToItemQuestionListener listener;
 
-    public QuestionAdapter( Activity context,  int resource,  ArrayList<Question> objects) {
+    public QuestionAdapter(Activity context, int resource, ArrayList<Question> objects) {
         super(context, resource, objects);
         this.context = context;
-        this.resource =resource;
-        this.objects=objects;
+        this.resource = resource;
+        this.objects = objects;
     }
 
     @Override
-    public View getView(int position,  View convertView,  ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = this.context.getLayoutInflater();
-        View row = inflater.inflate(R.layout.item_list_question,null);
+        View row = inflater.inflate(R.layout.item_list_question, null);
 
         ImageView imgUser = (ImageView) row.findViewById(R.id.img_user);
         ImageView imgReply = (ImageView) row.findViewById(R.id.img_reply);
@@ -43,23 +43,19 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         TextView tvContent = (TextView) row.findViewById(R.id.tv_content);
 
         Question question = this.objects.get(position);
-        if(question.getIs_reply()){
-            imgReply.setColorFilter(ContextCompat.getColor(context,R.color.red));
-        }else{
-            imgReply.setColorFilter(ContextCompat.getColor(context,R.color.colorFB));
+        if(question !=null){
+            if (question.getStatus() == 0) {
+                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.colorFB));
+            } else if (question.getStatus() == 1) {
+                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.red));
+            }else{
+                imgReply.setImageResource(R.drawable.success);
+                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.action_button_color));
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            tvCreated.setText("● " + sdf.format(question.getCreated()));
+            tvContent.setText(question.getContent());
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        tvCreated.setText("● "+sdf.format(question.getCreated()));
-        tvContent.setText(question.getContent());
-//        if (listener != null)
-//            listener.onScrollToItem(position);
         return row;
     }
-//    public interface OnScrollToItemQuestionListener {
-//        void onScrollToItem(int position);
-//    }
-//
-//    public void setOnScrollToItemListener(OnScrollToItemQuestionListener listener) {
-//        this.listener = listener;
-//    }
 }

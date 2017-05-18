@@ -8,8 +8,9 @@ import com.quickblox.users.model.QBUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import tuan.anh.giang.clientemployee.db.QbUsersDbManager;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
-import tuan.anh.giang.project.db.QbUsersDbManager;
+
 
 /**
  * Created by tereha on 09.06.16.

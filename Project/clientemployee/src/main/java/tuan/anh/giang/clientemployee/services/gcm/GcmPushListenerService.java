@@ -6,9 +6,9 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.quickblox.users.model.QBUser;
 
+import tuan.anh.giang.clientemployee.services.CallService;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.constant.GcmConsts;
-import tuan.anh.giang.project.services.CallService;
 
 /**
  * Created by tereha on 13.05.16.

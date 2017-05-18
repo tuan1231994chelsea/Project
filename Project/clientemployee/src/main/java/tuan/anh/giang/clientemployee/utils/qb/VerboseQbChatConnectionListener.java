@@ -7,8 +7,8 @@ import android.view.View;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
 
-import tuan.anh.giang.project.App;
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.App;
+import tuan.anh.giang.clientemployee.R;
 
 
 public class VerboseQbChatConnectionListener implements ConnectionListener {

@@ -21,10 +21,11 @@ import com.quickblox.videochat.webrtc.QBRTCConfig;
 
 import org.jivesoftware.smackx.ping.PingFailedListener;
 
-import tuan.anh.giang.project.util.ChatPingAlarmManager;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.SettingsUtil;
-import tuan.anh.giang.project.utils.WebRtcSessionManager;
+import tuan.anh.giang.clientemployee.util.ChatPingAlarmManager;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.SettingsUtil;
+import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
+
 
 public class CallService extends Service {
     private static final String TAG = CallService.class.getSimpleName();

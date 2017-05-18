@@ -20,9 +20,6 @@ import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.activities.CallActivity;
 import tuan.anh.giang.project.utils.CollectionsUtils;
 
-/**
- * Created by tereha on 25.05.16.
- */
 public class AudioConversationFragment extends BaseConversationFragment implements CallActivity.OnChangeDynamicToggle {
     private static final String TAG = AudioConversationFragment.class.getSimpleName();
 

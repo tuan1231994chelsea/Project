@@ -98,8 +98,8 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         currentUser = ChatHelper.getCurrentUser();
 
         initUi();
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
         setActionBarTitle("Select a dialog to chat");
         registerQbChatListeners();
         if (QbDialogHolder.getInstance().getDialogs().size() > 0) {

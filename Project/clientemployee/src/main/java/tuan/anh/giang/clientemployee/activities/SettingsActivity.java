@@ -8,15 +8,11 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.view.View;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.fragments.SettingsFragment;
+import tuan.anh.giang.clientemployee.view.SeekBarPreference;
 import tuan.anh.giang.core.utils.Toaster;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.fragments.SettingsFragment;
-import tuan.anh.giang.project.view.SeekBarPreference;
 
-
-/**
- * QuickBlox team
- */
 public class SettingsActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
@@ -32,9 +28,6 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initActionBar();
-
         // Display the fragment as the main content.
         settingsFragment = new SettingsFragment();
         getFragmentManager().beginTransaction()
@@ -44,13 +37,19 @@ public class SettingsActivity extends BaseActivity implements SharedPreferences.
     }
 
     private void initActionBar() {
-        actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.actionbar_title_settings);
+        actionBar = this.getSupportActionBar();
+        setActionBarTitle(R.string.actionbar_title_settings);
     }
 
     @Override
     protected View getSnackbarAnchorView() {
         return null;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initActionBar();
     }
 
     @Override

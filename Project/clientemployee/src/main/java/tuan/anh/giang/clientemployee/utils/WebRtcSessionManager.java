@@ -1,12 +1,16 @@
 package tuan.anh.giang.clientemployee.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.quickblox.videochat.webrtc.QBRTCSession;
 import com.quickblox.videochat.webrtc.callbacks.QBRTCClientSessionCallbacksImpl;
 
+import tuan.anh.giang.clientemployee.activities.CallActivity;
+import tuan.anh.giang.clientemployee.activities.ChatActivity;
 import tuan.anh.giang.clientemployee.activities.EmployeesActivity;
+import tuan.anh.giang.clientemployee.activities.MainActivity;
 
 public class WebRtcSessionManager extends QBRTCClientSessionCallbacksImpl {
     private static final String TAG = WebRtcSessionManager.class.getSimpleName();
@@ -42,7 +46,11 @@ public class WebRtcSessionManager extends QBRTCClientSessionCallbacksImpl {
 
         if (currentSession == null){
             setCurrentSession(session);
-            EmployeesActivity.start(context, true);
+            Intent intent = new Intent(context, CallActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Consts.EXTRA_IS_INCOMING_CALL, true);
+            context.startActivity(intent);
+
         }
     }
 

@@ -245,7 +245,7 @@
     <string name="question">Question</string>
     <string name="content_question">content</string>
     <string name="answers">answers</string>
-    <string name="is_reply_question">is_reply</string>
+    <string name="status">status</string>
     <string name="user">user</string>
 
     <string name="answer">Answer</string>
@@ -253,8 +253,8 @@
 
     <string name="created">created</string>
     <string name="updated">updated</string>
-    <string name="updating">Updating</string>
     <string name="objectId">objectId</string>
+    <string name="updating">Updating</string>
 
     <!-- Error -->
     <string name="er_3033">User name already exists, please change your user name</string>

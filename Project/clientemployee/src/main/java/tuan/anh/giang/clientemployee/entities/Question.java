@@ -20,7 +20,13 @@ public class Question implements Serializable{
     private String objectId;
     private BackendlessUser user;
     private String content;
-    private boolean is_reply;
+    /*
+    status = 0 => chờ nv trả lời, phản hồi
+    status =1 => chờ người dùng phản hồi
+    status = 2=> người dùng leave question
+     */
+
+    private int status;
     private Date created;
     private Date updated;
     @ExcludeProperty( propertyName="_reply" )
@@ -68,12 +74,11 @@ public class Question implements Serializable{
         this.content = content;
     }
 
-    public boolean getIs_reply() {
-        return is_reply;
+    public int getStatus() {
+        return status;
     }
 
-    public void setIs_reply(boolean is_reply) {
-        this.is_reply = is_reply;
+    public void setStatus(int status) {
+        this.status = status;
     }
-
 }

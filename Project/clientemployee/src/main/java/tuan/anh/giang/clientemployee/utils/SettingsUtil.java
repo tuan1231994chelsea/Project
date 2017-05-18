@@ -10,7 +10,8 @@ import com.quickblox.videochat.webrtc.QBRTCMediaConfig;
 
 import java.util.List;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
+
 
 public class SettingsUtil {
 

@@ -17,15 +17,11 @@ import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.utils.Consts;
 import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.core.utils.UiUtils;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.utils.Consts;
 
-
-/**
- * Created by GIANG ANH TUAN on 11/05/2017.
- */
 
 public class EmployeeAdapter extends ArrayAdapter<BackendlessUser> {
     Activity context;

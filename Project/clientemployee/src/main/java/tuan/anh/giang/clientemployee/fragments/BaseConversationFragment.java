@@ -21,14 +21,15 @@ import com.quickblox.videochat.webrtc.QBRTCTypes;
 
 import java.util.ArrayList;
 
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.activities.CallActivity;
-import tuan.anh.giang.project.db.QbUsersDbManager;
-import tuan.anh.giang.project.listener.ConversationFragmentCallbackListener;
-import tuan.anh.giang.project.utils.CollectionsUtils;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.UsersUtils;
-import tuan.anh.giang.project.utils.WebRtcSessionManager;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.activities.CallActivity;
+import tuan.anh.giang.clientemployee.db.QbUsersDbManager;
+import tuan.anh.giang.clientemployee.listener.ConversationFragmentCallbackListener;
+import tuan.anh.giang.clientemployee.utils.CollectionsUtils;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.UsersUtils;
+import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
+
 
 public abstract class BaseConversationFragment extends BaseToolBarFragment implements CallActivity.CurrentCallStateCallback {
 

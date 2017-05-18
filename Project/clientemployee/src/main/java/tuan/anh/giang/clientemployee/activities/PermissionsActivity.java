@@ -8,9 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.utils.PermissionsChecker;
 import tuan.anh.giang.core.utils.Toaster;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.utils.PermissionsChecker;
+
 
 
 public class PermissionsActivity extends AppCompatActivity {

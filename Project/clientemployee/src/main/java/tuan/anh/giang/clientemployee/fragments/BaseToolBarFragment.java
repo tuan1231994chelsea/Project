@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
+
 
 public abstract class BaseToolBarFragment extends Fragment {
 

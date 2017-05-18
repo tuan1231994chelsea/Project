@@ -10,14 +10,15 @@ import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.view.View;
 
+import tuan.anh.giang.clientemployee.App;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.util.QBResRequestExecutor;
+import tuan.anh.giang.clientemployee.utils.Consts;
 import tuan.anh.giang.core.gcm.GooglePlayServicesHelper;
 import tuan.anh.giang.core.ui.activity.CoreBaseActivity;
 import tuan.anh.giang.core.utils.ErrorUtils;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
-import tuan.anh.giang.project.App;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.util.QBResRequestExecutor;
-import tuan.anh.giang.project.utils.Consts;
+
 
 
 public abstract class BaseActivity extends CoreBaseActivity {

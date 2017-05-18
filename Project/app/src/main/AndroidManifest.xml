@@ -24,14 +24,15 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon_client_user"
+        android:label="User"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:label="Sign Up"
             android:name=".activities.SplashActivity"
+            android:label="User"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,14 +42,17 @@
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
+            android:theme="@style/MyMaterialTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
+            android:theme="@style/MyMaterialTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SignUpActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
+            android:theme="@style/MyMaterialTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.CallActivity"
@@ -60,26 +64,28 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SettingsActivity"
-            android:theme="@style/AppTheme"
             android:configChanges="keyboardHidden|screenSize|orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/ChatActivityTheme" />
         <activity
             android:name=".activities.EmployeesActivity"
+            android:theme="@style/MyMaterialTheme"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.DialogsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ChatActivityTheme"/>
+            android:theme="@style/ChatActivityTheme" />
 
         <activity
             android:name=".activities.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ChatActivityTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".activities.AttachmentImageActivity"
-            android:theme="@style/AppTheme.Dark"
-            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.AttachmentImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark" />
 
         <service android:name=".services.CallService" />
         <receiver
@@ -116,9 +122,15 @@
             </intent-filter>
         </service>
 
-        <meta-data android:name="com.quickblox.messages.TYPE" android:value="GCM" />
-        <meta-data android:name="com.quickblox.messages.SENDER_ID" android:value="@string/sender_id" />
-        <meta-data android:name="com.quickblox.messages.QB_ENVIRONMENT" android:value="DEVELOPMENT" />
+        <meta-data
+            android:name="com.quickblox.messages.TYPE"
+            android:value="GCM" />
+        <meta-data
+            android:name="com.quickblox.messages.SENDER_ID"
+            android:value="@string/sender_id" />
+        <meta-data
+            android:name="com.quickblox.messages.QB_ENVIRONMENT"
+            android:value="DEVELOPMENT" />
 
         <meta-data
             android:name="com.google.android.gms.version"

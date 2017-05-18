@@ -7,12 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
 
-
-/**
- * QuickBlox team
- */
 public class SettingsFragment extends PreferenceFragment {
 
     @Override

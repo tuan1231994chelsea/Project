@@ -14,9 +14,6 @@ import tuan.anh.giang.project.fragments.SettingsFragment;
 import tuan.anh.giang.project.view.SeekBarPreference;
 
 
-/**
- * QuickBlox team
- */
 public class SettingsActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 

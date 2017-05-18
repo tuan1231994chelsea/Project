@@ -5,13 +5,14 @@ import com.backendless.Backendless;
 
 import java.io.IOException;
 
+import tuan.anh.giang.clientemployee.db.Defaults;
+import tuan.anh.giang.clientemployee.models.SampleConfigs;
+import tuan.anh.giang.clientemployee.util.QBResRequestExecutor;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.configs.ConfigUtils;
 import tuan.anh.giang.core.CoreApp;
 import tuan.anh.giang.core.utils.ActivityLifecycle;
-import tuan.anh.giang.project.db.Defaults;
-import tuan.anh.giang.project.models.SampleConfigs;
-import tuan.anh.giang.project.util.QBResRequestExecutor;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.configs.ConfigUtils;
+
 
 public class App extends CoreApp {
     private static final String TAG = App.class.getSimpleName();

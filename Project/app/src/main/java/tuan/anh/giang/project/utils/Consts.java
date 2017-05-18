@@ -63,7 +63,9 @@ public interface Consts {
     String ALREADY_LOGGED_IN = "You have already logged in chat";
     String COUNTER_QUESTION="counter_question";
     String COUNTER_ANSWER ="counter_answer";
-
+    int WAIT_EMPLOYEE_REPLY = 0;
+    int WAIT_USER_REPLY =1;
+    int USER_LEAVE_QUESTION = 2;
     enum StartConversationReason {
         INCOME_CALL_FOR_ACCEPTION,
         OUTCOME_CALL_MADE

@@ -1,10 +1,11 @@
 package tuan.anh.giang.clientemployee.services.gcm;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.activities.SplashActivity;
 import tuan.anh.giang.core.gcm.CoreGcmPushListenerService;
 import tuan.anh.giang.core.utils.NotificationUtils;
 import tuan.anh.giang.core.utils.ResourceUtils;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.activities.SplashActivity;
+
 
 /**
  * Created by GIANG ANH TUAN on 17/05/2017.

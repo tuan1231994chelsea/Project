@@ -18,7 +18,7 @@
             android:layout_below="@+id/text_message_author"
             tools:text="Test message" />
 
-        <tuan.anh.giang.project.view.MaskedImageView
+        <tuan.anh.giang.clientemployee.view.MaskedImageView
             android:id="@+id/image_message_attachment"
             android:layout_width="@dimen/chat_message_attachment_size"
             android:layout_height="@dimen/chat_message_attachment_size"

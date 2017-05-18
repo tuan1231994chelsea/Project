@@ -42,51 +42,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.db.QbUsersDbManager;
+import tuan.anh.giang.clientemployee.fragments.AudioConversationFragment;
+import tuan.anh.giang.clientemployee.fragments.BaseConversationFragment;
+import tuan.anh.giang.clientemployee.fragments.IncomeCallFragment;
+import tuan.anh.giang.clientemployee.fragments.ScreenShareFragment;
+import tuan.anh.giang.clientemployee.fragments.VideoConversationFragment;
+import tuan.anh.giang.clientemployee.listener.ConversationFragmentCallbackListener;
+import tuan.anh.giang.clientemployee.listener.IncomeCallFragmentCallbackListener;
+import tuan.anh.giang.clientemployee.listener.OnCallEventsController;
+import tuan.anh.giang.clientemployee.util.NetworkConnectionChecker;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.FragmentExecutor;
+import tuan.anh.giang.clientemployee.utils.PermissionsChecker;
+import tuan.anh.giang.clientemployee.utils.QBEntityCallbackImpl;
+import tuan.anh.giang.clientemployee.utils.RingtonePlayer;
+import tuan.anh.giang.clientemployee.utils.SettingsUtil;
+import tuan.anh.giang.clientemployee.utils.UsersUtils;
+import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
 import tuan.anh.giang.core.utils.Toaster;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.db.QbUsersDbManager;
-import tuan.anh.giang.project.fragments.AudioConversationFragment;
-import tuan.anh.giang.project.fragments.BaseConversationFragment;
-import tuan.anh.giang.project.fragments.IncomeCallFragment;
-import tuan.anh.giang.project.fragments.ScreenShareFragment;
-import tuan.anh.giang.project.fragments.VideoConversationFragment;
-import tuan.anh.giang.project.listener.ConversationFragmentCallbackListener;
-import tuan.anh.giang.project.listener.IncomeCallFragmentCallbackListener;
-import tuan.anh.giang.project.listener.OnCallEventsController;
-import tuan.anh.giang.project.util.NetworkConnectionChecker;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.FragmentExecutor;
-import tuan.anh.giang.project.utils.PermissionsChecker;
-import tuan.anh.giang.project.utils.QBEntityCallbackImpl;
-import tuan.anh.giang.project.utils.RingtonePlayer;
-import tuan.anh.giang.project.utils.SettingsUtil;
-import tuan.anh.giang.project.utils.UsersUtils;
-import tuan.anh.giang.project.utils.WebRtcSessionManager;
 
-//import com.quickblox.sample.core.utils.Toaster;
-//import com.quickblox.sample.groupchatwebrtc.R;
-//import com.quickblox.sample.groupchatwebrtc.db.QbUsersDbManager;
-//import com.quickblox.sample.groupchatwebrtc.fragments.AudioConversationFragment;
-//import com.quickblox.sample.groupchatwebrtc.fragments.BaseConversationFragment;
-//import com.quickblox.sample.groupchatwebrtc.fragments.ConversationFragmentCallbackListener;
-//import com.quickblox.sample.groupchatwebrtc.fragments.IncomeCallFragment;
-//import com.quickblox.sample.groupchatwebrtc.fragments.IncomeCallFragmentCallbackListener;
-//import com.quickblox.sample.groupchatwebrtc.fragments.OnCallEventsController;
-//import com.quickblox.sample.groupchatwebrtc.fragments.ScreenShareFragment;
-//import com.quickblox.sample.groupchatwebrtc.fragments.VideoConversationFragment;
-//import com.quickblox.sample.groupchatwebrtc.util.NetworkConnectionChecker;
-//import com.quickblox.sample.groupchatwebrtc.utils.Consts;
-//import com.quickblox.sample.groupchatwebrtc.utils.FragmentExecutor;
-//import com.quickblox.sample.groupchatwebrtc.utils.PermissionsChecker;
-//import com.quickblox.sample.groupchatwebrtc.utils.QBEntityCallbackImpl;
-//import com.quickblox.sample.groupchatwebrtc.utils.RingtonePlayer;
-//import com.quickblox.sample.groupchatwebrtc.utils.SettingsUtil;
-//import com.quickblox.sample.groupchatwebrtc.utils.UsersUtils;
-//import com.quickblox.sample.groupchatwebrtc.utils.WebRtcSessionManager;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-/**
- * QuickBlox team
- */
+
 public class CallActivity extends BaseActivity implements QBRTCClientSessionCallbacks, QBRTCSessionStateCallback, QBRTCSignalingCallback,
         OnCallEventsController, IncomeCallFragmentCallbackListener, ConversationFragmentCallbackListener, NetworkConnectionChecker.OnConnectivityChangedListener, ScreenShareFragment.OnSharingEvents {
 
@@ -131,12 +110,9 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
     private PermissionsChecker checker;
     private MediaProjectionManager mMediaProjectionManager;
 
-    public static void start(Context context,
-                             boolean isIncomingCall) {
-
+    public static void start(Context context, boolean isIncomingCall) {
         Intent intent = new Intent(context, CallActivity.class);
         intent.putExtra(Consts.EXTRA_IS_INCOMING_CALL, isIncomingCall);
-
         context.startActivity(intent);
     }
 

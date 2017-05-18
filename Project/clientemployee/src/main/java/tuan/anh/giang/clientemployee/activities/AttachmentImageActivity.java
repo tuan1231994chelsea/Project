@@ -14,8 +14,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.utils.Consts;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.utils.Consts;
 
 
 public class AttachmentImageActivity extends BaseActivity {

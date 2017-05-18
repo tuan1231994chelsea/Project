@@ -36,17 +36,17 @@ import com.quickblox.users.model.QBUser;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.adapters.DialogsAdapter;
+import tuan.anh.giang.clientemployee.managers.DialogsManager;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
+import tuan.anh.giang.clientemployee.utils.qb.QbChatDialogMessageListenerImp;
+import tuan.anh.giang.clientemployee.utils.qb.QbDialogHolder;
+import tuan.anh.giang.clientemployee.utils.qb.callback.QbEntityCallbackImpl;
 import tuan.anh.giang.core.gcm.GooglePlayServicesHelper;
 import tuan.anh.giang.core.ui.dialog.ProgressDialogFragment;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.constant.GcmConsts;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.adapters.DialogsAdapter;
-import tuan.anh.giang.project.managers.DialogsManager;
-import tuan.anh.giang.project.utils.chat.ChatHelper;
-import tuan.anh.giang.project.utils.qb.QbChatDialogMessageListenerImp;
-import tuan.anh.giang.project.utils.qb.QbDialogHolder;
-import tuan.anh.giang.project.utils.qb.callback.QbEntityCallbackImpl;
 
 
 public class DialogsActivity extends BaseActivity implements DialogsManager.ManagingDialogsCallbacks {
@@ -55,7 +55,7 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
     private static final int REQUEST_DIALOG_ID_FOR_UPDATE = 165;
 
     private ProgressBar progressBar;
-    private FloatingActionButton fab;
+//    private FloatingActionButton fab;
     private ActionMode currentActionMode;
     private SwipyRefreshLayout setOnRefreshListener;
     private QBRequestGetBuilder requestBuilder;
@@ -236,16 +236,11 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         loadDialogsFromQb(true, true);
     }
 
-    public void onStartNewChatClick(View view) {
-        EmployeesActivity.start(DialogsActivity.this, false);
-        //        SelectUsersActivity.startForResult(this, REQUEST_SELECT_PEOPLE);
-    }
-
     private void initUi() {
 //        LinearLayout emptyHintLayout = _findViewById(R.id.layout_chat_empty);
         ListView dialogsListView = _findViewById(R.id.list_dialogs_chats);
         progressBar = _findViewById(R.id.progress_dialogs);
-        fab = _findViewById(R.id.fab_dialogs_new_chat);
+//        fab = _findViewById(R.id.fab_dialogs_new_chat);
         setOnRefreshListener = _findViewById(R.id.swipy_refresh_layout);
 
         dialogsAdapter = new DialogsAdapter(this, new ArrayList<>(QbDialogHolder.getInstance().getDialogs().values()));
@@ -391,7 +386,7 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
     private class DeleteActionModeCallback implements ActionMode.Callback {
 
         public DeleteActionModeCallback() {
-            fab.hide();
+//            fab.hide();
         }
 
         @Override
@@ -422,7 +417,7 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         public void onDestroyActionMode(ActionMode mode) {
             currentActionMode = null;
             dialogsAdapter.clearSelection();
-            fab.show();
+//            fab.show();
         }
 
         private void deleteSelectedDialogs() {

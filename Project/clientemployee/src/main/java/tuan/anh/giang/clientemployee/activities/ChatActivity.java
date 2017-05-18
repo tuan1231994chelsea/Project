@@ -1,6 +1,7 @@
 package tuan.anh.giang.clientemployee.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -38,26 +39,26 @@ import java.util.Collections;
 import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.adapters.AttachmentPreviewAdapter;
+import tuan.anh.giang.clientemployee.adapters.ChatAdapter;
+import tuan.anh.giang.clientemployee.services.CallService;
+import tuan.anh.giang.clientemployee.utils.CollectionsUtils;
+import tuan.anh.giang.clientemployee.utils.Consts;
+import tuan.anh.giang.clientemployee.utils.PermissionsChecker;
+import tuan.anh.giang.clientemployee.utils.PushNotificationSender;
+import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
+import tuan.anh.giang.clientemployee.utils.qb.PaginationHistoryListener;
+import tuan.anh.giang.clientemployee.utils.qb.QbChatDialogMessageListenerImp;
+import tuan.anh.giang.clientemployee.utils.qb.QbDialogHolder;
+import tuan.anh.giang.clientemployee.utils.qb.QbDialogUtils;
+import tuan.anh.giang.clientemployee.utils.qb.VerboseQbChatConnectionListener;
+import tuan.anh.giang.clientemployee.view.AttachmentPreviewAdapterView;
 import tuan.anh.giang.core.ui.dialog.ProgressDialogFragment;
 import tuan.anh.giang.core.utils.Toaster;
 import tuan.anh.giang.core.utils.imagepick.ImagePickHelper;
 import tuan.anh.giang.core.utils.imagepick.OnImagePickedListener;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.adapters.AttachmentPreviewAdapter;
-import tuan.anh.giang.project.adapters.ChatAdapter;
-import tuan.anh.giang.project.services.CallService;
-import tuan.anh.giang.project.utils.CollectionsUtils;
-import tuan.anh.giang.project.utils.Consts;
-import tuan.anh.giang.project.utils.PermissionsChecker;
-import tuan.anh.giang.project.utils.PushNotificationSender;
-import tuan.anh.giang.project.utils.WebRtcSessionManager;
-import tuan.anh.giang.project.utils.chat.ChatHelper;
-import tuan.anh.giang.project.utils.qb.PaginationHistoryListener;
-import tuan.anh.giang.project.utils.qb.QbChatDialogMessageListenerImp;
-import tuan.anh.giang.project.utils.qb.QbDialogHolder;
-import tuan.anh.giang.project.utils.qb.QbDialogUtils;
-import tuan.anh.giang.project.utils.qb.VerboseQbChatConnectionListener;
-import tuan.anh.giang.project.view.AttachmentPreviewAdapterView;
 
 
 public class ChatActivity extends BaseActivity implements OnImagePickedListener {

@@ -36,12 +36,23 @@
                         android:padding="12dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/menu" />
+                    <ImageView
+                        android:id="@+id/img_icon_employee"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_centerVertical="true"
+                        android:padding="12dp"
+                        android:layout_alignParentRight="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/employee" />
 
                     <TextView
+                        android:layout_marginLeft="20dp"
                         android:id="@+id/toolbar_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
+                        android:layout_toRightOf="@id/img_menu"
+                        android:layout_centerVertical="true"
                         android:textColor="#fff"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -81,9 +92,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:hint="Write your question here..."
+                        android:text="Unanswered questions"
                         android:paddingLeft="10dp"
-                        android:textColorHint="@color/hint_color"
+                        android:textColor="@color/text_color"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -121,7 +132,7 @@
                     android:background="@color/black" />
 
             </LinearLayout>
-            <tuan.anh.giang.floatingactionmenu.FloatingActionsMenu
+            <com.getbase.floatingactionbutton.FloatingActionsMenu
                 android:id="@+id/multiple_actions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,7 +147,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp">
 
-                <tuan.anh.giang.floatingactionmenu.FloatingActionButton
+                <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/action_old_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,18 +156,7 @@
                     app:fab_colorPressed="@color/press_action_button_color"
                     app:fab_icon="@drawable/ic_view_list"
                     app:fab_size="mini"/>
-
-                <tuan.anh.giang.floatingactionmenu.FloatingActionButton
-                    android:id="@+id/action_new_chat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:fab_colorNormal="@color/action_button_color"
-                    app:fab_title="New chat"
-                    app:fab_colorPressed="@color/press_action_button_color"
-                    app:fab_size="mini"
-                    app:fab_icon="@drawable/ic_action_start_chat" />
-
-            </tuan.anh.giang.floatingactionmenu.FloatingActionsMenu>
+            </com.getbase.floatingactionbutton.FloatingActionsMenu>
         </RelativeLayout>
 
     </LinearLayout>

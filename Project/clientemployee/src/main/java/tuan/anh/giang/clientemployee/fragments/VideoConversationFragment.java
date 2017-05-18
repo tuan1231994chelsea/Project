@@ -50,16 +50,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.adapters.OpponentsFromCallAdapter;
 import tuan.anh.giang.core.utils.Toaster;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.adapters.OpponentsFromCallAdapter;
+
 
 import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 
 
-/**
- * QuickBlox team
- */
 public class VideoConversationFragment extends BaseConversationFragment implements Serializable, QBRTCClientVideoTracksCallbacks,
         QBRTCSessionStateCallback, QBRTCSessionEventsCallback, OpponentsFromCallAdapter.OnAdapterEventListener {
 

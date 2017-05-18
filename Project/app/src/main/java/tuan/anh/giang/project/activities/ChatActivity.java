@@ -328,6 +328,7 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
     }
 
     private void initViews() {
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         messagesListView = _findViewById(R.id.list_chat_messages);
         messageEditText = _findViewById(R.id.edit_chat_message);

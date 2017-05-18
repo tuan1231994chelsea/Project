@@ -12,11 +12,12 @@ import com.quickblox.chat.model.QBDialogType;
 
 import java.util.List;
 
+import tuan.anh.giang.clientemployee.R;
+import tuan.anh.giang.clientemployee.utils.qb.QbDialogUtils;
 import tuan.anh.giang.core.ui.adapter.BaseSelectableListAdapter;
 import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.core.utils.UiUtils;
-import tuan.anh.giang.project.R;
-import tuan.anh.giang.project.utils.qb.QbDialogUtils;
+
 
 
 public class DialogsAdapter extends BaseSelectableListAdapter<QBChatDialog> {

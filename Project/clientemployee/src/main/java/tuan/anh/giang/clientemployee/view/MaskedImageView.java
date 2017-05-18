@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.InflateException;
 import android.widget.ImageView;
 
-import tuan.anh.giang.project.R;
+import tuan.anh.giang.clientemployee.R;
 
 
 public class MaskedImageView extends ImageView {
