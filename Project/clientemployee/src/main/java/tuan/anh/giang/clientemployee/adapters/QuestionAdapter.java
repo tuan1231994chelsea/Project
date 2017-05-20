@@ -45,9 +45,9 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         Question question = this.objects.get(position);
         if(question !=null){
             if (question.getStatus() == 0) {
-                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.colorFB));
-            } else if (question.getStatus() == 1) {
                 imgReply.setColorFilter(ContextCompat.getColor(context, R.color.red));
+            } else if (question.getStatus() == 1) {
+                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.colorFB));
             }else{
                 imgReply.setImageResource(R.drawable.success);
                 imgReply.setColorFilter(ContextCompat.getColor(context, R.color.action_button_color));

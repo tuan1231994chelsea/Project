@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_dialog"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/colorFB"
+        android:gravity="center"
+        android:text="Choose Type Questions"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border_content_dialog"
+        android:paddingLeft="10dp">
+
+        <RadioButton
+            android:id="@+id/rb_replied"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load questions replied" />
+
+        <RadioButton
+            android:id="@+id/rb_unreplied"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load questions unreplied" />
+
+        <RadioButton
+            android:id="@+id/rb_answered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load questions answered" />
+
+        <RadioButton
+            android:id="@+id/rb_load_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load all questions" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_submit"
+        android:text="Submit"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</LinearLayout>

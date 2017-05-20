@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.KeyboardUtils;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.activities.ChatActivity;
@@ -61,7 +62,7 @@ public class AnswerFragment extends Fragment {
     View view;
     private ProgressDialog progressDialog;
     Question question;
-    TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer,tvLeaveQuestion;
+    TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer, tvLeaveQuestion;
     EditText edReply;
     LinearLayout layoutMoreAnswer;
     ImageView imgBack, imgMoreAnswer, imgUser, imgSend;
@@ -71,7 +72,7 @@ public class AnswerFragment extends Fragment {
     AnswerAdapter answerAdapter;
     DataQueryBuilder queryAnswer;
     public boolean isUpdateMain = false;
-    int checkHideProgress = 0, status=0;
+    int checkHideProgress = 0, status = 0;
 //    SwipeRefreshLayout refreshLayout;
 
 
@@ -114,7 +115,7 @@ public class AnswerFragment extends Fragment {
         imgMoreAnswer = (ImageView) view.findViewById(R.id.img_more_answer);
         edReply.addTextChangedListener(new FragmentAnswerEditTextWatcher(edReply));
         lvAnswer.setVerticalScrollBarEnabled(false);
-        if(status!=2){
+        if (status != 2) {
             tvLeaveQuestion.post(new Runnable() {
                 @Override
                 public void run() {
@@ -122,7 +123,7 @@ public class AnswerFragment extends Fragment {
                 }
             });
             tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.enable_leave_question));
-        }else{
+        } else {
             tvLeaveQuestion.post(new Runnable() {
                 @Override
                 public void run() {
@@ -145,28 +146,33 @@ public class AnswerFragment extends Fragment {
         tvLeaveQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.disable_leave_question));
-                tvLeaveQuestion.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvLeaveQuestion.setClickable(false);
-                    }
-                });
-                question.setStatus(Consts.USER_LEAVE_QUESTION);
-                showProgressDialog(R.string.loading);
-                Backendless.Persistence.of(Question.class).save(question, new AsyncCallback<Question>() {
-                    @Override
-                    public void handleResponse(Question response) {
-                        isUpdateMain = true;
-                        hideProgressDialog();
-                        getActivity().onBackPressed();
-                    }
+                if (ConnectivityUtils.isNetworkConnected()) {
+                    tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.disable_leave_question));
+                    tvLeaveQuestion.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvLeaveQuestion.setClickable(false);
+                        }
+                    });
+                    question.setStatus(Consts.USER_LEAVE_QUESTION);
+                    showProgressDialog(R.string.loading);
+                    Backendless.Persistence.of(Question.class).save(question, new AsyncCallback<Question>() {
+                        @Override
+                        public void handleResponse(Question response) {
+                            isUpdateMain = true;
+                            hideProgressDialog();
+                            getActivity().onBackPressed();
+                        }
 
-                    @Override
-                    public void handleFault(BackendlessFault fault) {
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    showAlertMessage(getString(R.string.no_internet_connection));
+                }
+
             }
         });
         lvAnswer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -236,108 +242,121 @@ public class AnswerFragment extends Fragment {
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Answer answer = new Answer();
-                KeyboardUtils.hideKeyboard(edReply);
-                String content = edReply.getText().toString().trim();
-                if (content.equals("")) {
-                    edReply.setError(getString(R.string.fill_out_content_answer));
-                } else {
-                    answer.setContent_answer(content);
-                    answer.setUser(currentBackendlessUser);
-                    final ArrayList<Answer> listAdd = new ArrayList<Answer>();
-                    listAdd.add(answer);
-                    final ArrayList<BackendlessUser> listUser = new ArrayList<BackendlessUser>();
-                    listUser.add(currentBackendlessUser);
-                    showProgressDialog(R.string.loading);
-                    // save new answer
-                    Backendless.Persistence.save(answer, new AsyncCallback<Answer>() {
-                        public void handleResponse(Answer response) {
-                            // save new answer success
-                            // list add response thay vi answer la vi answer khong cos trung created => crash
-                            // add response vi tra ve roi nen co created nhung khong co user -> phai add
-                            response.setUser(currentBackendlessUser);
-                            listAnswer.add(response);
-                            listLessAnswer.clear();
-                            if (listAnswer.size() >= 10) {
-                                for (int i = listAnswer.size() - 10; i < listAnswer.size(); i++) {
-                                    listLessAnswer.add(listAnswer.get(i));
+                if (ConnectivityUtils.isNetworkConnected()) {
+                    final Answer answer = new Answer();
+                    KeyboardUtils.hideKeyboard(edReply);
+                    String content = edReply.getText().toString().trim();
+                    if (content.equals("")) {
+                        edReply.setError(getString(R.string.fill_out_content_answer));
+                    } else {
+                        answer.setContent_answer(content);
+                        answer.setUser(currentBackendlessUser);
+                        final ArrayList<Answer> listAdd = new ArrayList<Answer>();
+                        listAdd.add(answer);
+                        final ArrayList<BackendlessUser> listUser = new ArrayList<BackendlessUser>();
+                        listUser.add(currentBackendlessUser);
+                        showProgressDialog(R.string.loading);
+                        // save new answer
+                        Backendless.Persistence.save(answer, new AsyncCallback<Answer>() {
+                            public void handleResponse(Answer response) {
+                                // save new answer success
+                                // list add response thay vi answer la vi answer khong cos trung created => crash
+                                // add response vi tra ve roi nen co created nhung khong co user -> phai add
+                                response.setUser(currentBackendlessUser);
+                                listAnswer.add(response);
+                                listLessAnswer.clear();
+                                if (listAnswer.size() >= 10) {
+                                    for (int i = listAnswer.size() - 10; i < listAnswer.size(); i++) {
+                                        listLessAnswer.add(listAnswer.get(i));
+                                    }
                                 }
+                                lvAnswer.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        answerAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                                edReply.clearFocus();
+                                edReply.setText("");
+                                scrollMyListViewToBottom();
+                                Log.d("kiemtra", "so answers duoc add: " + response.getContent_answer());
+                                // add relation with Question table
+                                Backendless.Persistence.of(Question.class).addRelation(question, getString(R.string.answers), listAdd,
+                                        new AsyncCallback<Integer>() {
+                                            @Override
+                                            public void handleResponse(Integer response) {
+                                                Log.d("kiemtra", "add relation with question table " + response.toString());
+                                                // add relation with Users table
+                                                Backendless.Persistence.of(Answer.class).addRelation(answer, getString(R.string.user), listUser,
+                                                        new AsyncCallback<Integer>() {
+                                                            @Override
+                                                            public void handleResponse(Integer response) {
+                                                                Log.d("kiemtra ", "add relation with users table" + response.toString());
+                                                                checkHideProgress++;
+                                                                checkHideProgressDialog();
+                                                            }
+
+                                                            @Override
+                                                            public void handleFault(BackendlessFault fault) {
+                                                                Log.d("kiemtra", "add relation with question table " + fault.getMessage());
+                                                            }
+                                                        });
+                                            }
+
+                                            @Override
+                                            public void handleFault(BackendlessFault fault) {
+
+                                            }
+                                        });
+                                //update object question
+                                question.setStatus(Consts.WAIT_EMPLOYEE_REPLY);
+                                Backendless.Persistence.of(Question.class).save(question, new AsyncCallback<Question>() {
+                                    @Override
+                                    public void handleResponse(Question response) {
+                                        // set is_reply = true success
+                                        tvLeaveQuestion.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                tvLeaveQuestion.setClickable(true);
+                                            }
+                                        });
+                                        tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.enable_leave_question));
+                                        isUpdateMain = true;
+                                        checkHideProgress++;
+                                        checkHideProgressDialog();
+                                    }
+
+                                    @Override
+                                    public void handleFault(BackendlessFault fault) {
+
+                                    }
+                                });
                             }
-                            lvAnswer.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    answerAdapter.notifyDataSetChanged();
-                                }
-                            });
-                            edReply.clearFocus();
-                            edReply.setText("");
-                            scrollMyListViewToBottom();
-                            Log.d("kiemtra", "so answers duoc add: " + response.getContent_answer());
-                            // add relation with Question table
-                            Backendless.Persistence.of(Question.class).addRelation(question, getString(R.string.answers), listAdd,
-                                    new AsyncCallback<Integer>() {
-                                        @Override
-                                        public void handleResponse(Integer response) {
-                                            Log.d("kiemtra", "add relation with question table " + response.toString());
-                                            // add relation with Users table
-                                            Backendless.Persistence.of(Answer.class).addRelation(answer, getString(R.string.user), listUser,
-                                                    new AsyncCallback<Integer>() {
-                                                        @Override
-                                                        public void handleResponse(Integer response) {
-                                                            Log.d("kiemtra ", "add relation with users table" + response.toString());
-                                                            checkHideProgress++;
-                                                            checkHideProgressDialog();
-                                                        }
-
-                                                        @Override
-                                                        public void handleFault(BackendlessFault fault) {
-                                                            Log.d("kiemtra", "add relation with question table " + fault.getMessage());
-                                                        }
-                                                    });
-                                        }
-
-                                        @Override
-                                        public void handleFault(BackendlessFault fault) {
-
-                                        }
-                                    });
-                            //update object question
-                            question.setStatus(Consts.WAIT_EMPLOYEE_REPLY);
-                            Backendless.Persistence.of(Question.class).save(question, new AsyncCallback<Question>() {
-                                @Override
-                                public void handleResponse(Question response) {
-                                    // set is_reply = true success
-                                    tvLeaveQuestion.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            tvLeaveQuestion.setClickable(true);
-                                        }
-                                    });
-                                    tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.enable_leave_question));
-                                    isUpdateMain = true;
-                                    checkHideProgress++;
-                                    checkHideProgressDialog();
-                                }
-
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-
-                                }
-                            });
-                        }
 
 
-                        public void handleFault(BackendlessFault fault) {
-                            // an error has occurred, the error code can be retrieved with fault.getCode()
-                        }
-                    });
+                            public void handleFault(BackendlessFault fault) {
+                                // an error has occurred, the error code can be retrieved with fault.getCode()
+                            }
+                        });
+                    }
+                } else {
+                    showAlertMessage(getString(R.string.no_internet_connection));
                 }
             }
         });
 
     }
-    private void checkHideProgressDialog(){
-        if(checkHideProgress == 2){
+
+    private void showAlertMessage(String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        alertDialog.setTitle("")
+                .setMessage(message)
+                .create()
+                .show();
+    }
+
+    private void checkHideProgressDialog() {
+        if (checkHideProgress == 2) {
             checkHideProgress = 0;
             hideProgressDialog();
         }
@@ -371,43 +390,48 @@ public class AnswerFragment extends Fragment {
 
     private void getAllListAnswer() {
         Log.d("kiemtratime", "bat dau get list answer");
-        Backendless.Data.of(Answer.class).find(queryAnswer, new AsyncCallback<List<Answer>>() {
-            @Override
-            public void handleResponse(List<Answer> response) {
-                if (response.size() == 0) {
-                    if (listAnswer.size() > 10) {
-                        layoutMoreAnswer.setVisibility(View.VISIBLE);
-                        for (int i = listAnswer.size() - 10; i < listAnswer.size(); i++) {
-                            listLessAnswer.add(listAnswer.get(i));
+        if (ConnectivityUtils.isNetworkConnected()) {
+            Backendless.Data.of(Answer.class).find(queryAnswer, new AsyncCallback<List<Answer>>() {
+                @Override
+                public void handleResponse(List<Answer> response) {
+                    if (response.size() == 0) {
+                        if (listAnswer.size() > 10) {
+                            layoutMoreAnswer.setVisibility(View.VISIBLE);
+                            for (int i = listAnswer.size() - 10; i < listAnswer.size(); i++) {
+                                listLessAnswer.add(listAnswer.get(i));
+                            }
+                            answerAdapter.setListAnswer(listLessAnswer);
+                        } else {
+                            listLessAnswer.addAll(listAnswer);
+                            answerAdapter.setListAnswer(listAnswer);
+                            layoutMoreAnswer.setVisibility(View.GONE);
                         }
-                        answerAdapter.setListAnswer(listLessAnswer);
+                        lvAnswer.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                answerAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        scrollMyListViewToBottom();
+                        hideProgressDialog();
+                        Log.d("kiemtratime", "xong list answer");
                     } else {
-                        listLessAnswer.addAll(listAnswer);
-                        answerAdapter.setListAnswer(listAnswer);
-                        layoutMoreAnswer.setVisibility(View.GONE);
+                        listAnswer.addAll(response);
+                        queryAnswer.prepareNextPage();
+                        getAllListAnswer();
                     }
-                    lvAnswer.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            answerAdapter.notifyDataSetChanged();
-                        }
-                    });
-                    scrollMyListViewToBottom();
-                    hideProgressDialog();
-                    Log.d("kiemtratime", "xong list answer");
-                } else {
-                    listAnswer.addAll(response);
-                    queryAnswer.prepareNextPage();
-                    getAllListAnswer();
+
                 }
 
-            }
+                @Override
+                public void handleFault(BackendlessFault fault) {
 
-            @Override
-            public void handleFault(BackendlessFault fault) {
+                }
+            });
+        } else {
+            showAlertMessage(getString(R.string.no_internet_connection));
+        }
 
-            }
-        });
 
     }
 

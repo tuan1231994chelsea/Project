@@ -163,7 +163,7 @@ public class DialogsActivity extends BaseActivity implements DialogsManager.Mana
         if (resultCode == RESULT_OK) {
             isProcessingResultInProgress = true;
             if (requestCode == REQUEST_SELECT_PEOPLE) {
-                int i = 1;
+//                int i = 1;
 //                ArrayList<QBUser> selectedUsers = (ArrayList<QBUser>) data
 //                        .getSerializableExtra(SelectUsersActivity.EXTRA_QB_USERS);
 //

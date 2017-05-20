@@ -29,6 +29,7 @@ import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
 
+import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.Toaster;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.db.Defaults;
@@ -37,9 +38,7 @@ import tuan.anh.giang.project.utils.ErrorHandling;
 import tuan.anh.giang.project.utils.QBEntityCallbackImpl;
 import tuan.anh.giang.project.utils.ValidationUtils;
 
-/**
- * Created by GIANG ANH TUAN on 21/04/2017.
- */
+
 
 public class SignUpActivity extends BaseActivity {
     EditText userName, passWord, confirmPassword, email, fullName;
@@ -80,29 +79,33 @@ public class SignUpActivity extends BaseActivity {
             @Override
             public void onClick(final View view) {
                 if (checkFillOutSignUp() && isEnteredUserNameValid() && checkPasswordAndConfirmPassword()) {
-                    BackendlessUser user = new BackendlessUser();
-                    user.setProperty(getResources().getString(R.string.user_name), userName.getText().toString().trim());
-                    user.setPassword(passWord.getText().toString().trim());
-                    user.setProperty(getString(R.string.email), email.getText().toString().trim());
-                    user.setProperty(getString(R.string.full_name), fullName.getText().toString().trim());
-                    user.setProperty(getString(R.string.is_employee),false);
-                    user.setProperty(getString(R.string.is_online),false);
-                    showProgressDialog("Signing up");
-                    Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
-                        public void handleResponse(BackendlessUser belUser) {
-                            // user has been registered and now can login
-                            currentBELUser = belUser;
-                            startSignUpNewUser(createQBUserWithCurrentData(currentBELUser));
+                    if(ConnectivityUtils.isNetworkConnected()){
+                        BackendlessUser user = new BackendlessUser();
+                        user.setProperty(getResources().getString(R.string.user_name), userName.getText().toString().trim());
+                        user.setPassword(passWord.getText().toString().trim());
+                        user.setProperty(getString(R.string.email), email.getText().toString().trim());
+                        user.setProperty(getString(R.string.full_name), fullName.getText().toString().trim());
+                        user.setProperty(getString(R.string.is_employee),false);
+                        user.setProperty(getString(R.string.is_online),false);
+                        showProgressDialog("Signing up");
+                        Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
+                            public void handleResponse(BackendlessUser belUser) {
+                                // user has been registered and now can login
+                                currentBELUser = belUser;
+                                startSignUpNewUser(createQBUserWithCurrentData(currentBELUser));
 
 //                            finish();
-                        }
+                            }
 
-                        public void handleFault(BackendlessFault fault) {
-                            // an error has occurred, the error code can be retrieved with fault.getCode()
-                            ErrorHandling.BackendlessErrorCode(view.getContext(), fault.getCode());
-                            Log.d("Error ", fault.getCode());
-                        }
-                    });
+                            public void handleFault(BackendlessFault fault) {
+                                // an error has occurred, the error code can be retrieved with fault.getCode()
+                                ErrorHandling.BackendlessErrorCode(view.getContext(), fault.getCode());
+                                Log.d("Error ", fault.getCode());
+                            }
+                        });
+                    }else{
+                        showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+                    }
                 }
             }
         });

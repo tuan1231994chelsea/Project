@@ -76,12 +76,31 @@ public class LoginActivity extends BaseActivity {
         KeyboardUtils.hideKeyboard(password);
     }
 
-    private void login(String username, String password) {
-        Backendless.UserService.login(username, password, new AsyncCallback<BackendlessUser>() {
+    private void login(String username, String pw) {
+        Backendless.UserService.login(username, pw, new AsyncCallback<BackendlessUser>() {
             public void handleResponse(BackendlessUser user) {
                 Log.d("myapp", "login bel user thanh cong");
-                MainActivity.start(context, false);
-                finish();
+                boolean isEmployee = (boolean) user.getProperty(getString(R.string.is_employee));
+                if (!isEmployee) {
+                    Backendless.UserService.logout(new AsyncCallback<Void>() {
+                        @Override
+                        public void handleResponse(Void response) {
+                            // user has been logged out.
+                            hideProgressDialog();
+                            showNotifyDialog("", "User is not employee, please login again", R.drawable.error);
+                            userName.setText("");
+                            password.setText("");
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Log.d("error", fault.getMessage());
+                        }
+                    });
+                } else {
+                    MainActivity.start(context, false);
+                    finish();
+                }
             }
 
             public void handleFault(BackendlessFault fault) {

@@ -36,23 +36,24 @@
                         android:padding="12dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/menu" />
+
                     <ImageView
                         android:id="@+id/img_icon_employee"
                         android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
+                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:padding="12dp"
-                        android:layout_alignParentRight="true"
                         android:scaleType="fitXY"
                         android:src="@drawable/employee" />
 
                     <TextView
-                        android:layout_marginLeft="20dp"
                         android:id="@+id/toolbar_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/img_menu"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@id/img_menu"
                         android:textColor="#fff"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -84,16 +85,15 @@
                         android:layout_height="50dp"
                         android:layout_marginBottom="5dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/help_circle"
-                        android:tint="@color/notify_color" />
+                        android:src="@drawable/idea"/>
 
                     <TextView
                         android:id="@+id/tv_new_question"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:text="Unanswered questions"
                         android:paddingLeft="10dp"
+                        android:text="Answer questions"
                         android:textColor="@color/text_color"
                         android:textSize="16sp" />
 
@@ -132,30 +132,41 @@
                     android:background="@color/black" />
 
             </LinearLayout>
+
             <com.getbase.floatingactionbutton.FloatingActionsMenu
                 android:id="@+id/multiple_actions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 app:fab_addButtonColorNormal="@color/action_button_color"
                 app:fab_addButtonColorPressed="@color/press_action_button_color"
                 app:fab_addButtonPlusIconColor="@color/white"
-                app:fab_labelStyle="@style/menu_labels_style"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp">
+                app:fab_labelStyle="@style/menu_labels_style">
 
                 <com.getbase.floatingactionbutton.FloatingActionButton
                     android:id="@+id/action_old_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:fab_colorNormal="@color/action_button_color"
-                    app:fab_title="Old chat"
                     app:fab_colorPressed="@color/press_action_button_color"
                     app:fab_icon="@drawable/ic_view_list"
-                    app:fab_size="mini"/>
+                    app:fab_size="mini"
+                    app:fab_title="Old chat" />
+
+                <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/action_condition_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_colorNormal="@color/action_button_color"
+                    app:fab_colorPressed="@color/press_action_button_color"
+                    app:fab_icon="@drawable/ic_magnify"
+                    app:fab_size="mini"
+                    app:fab_title="Load question" />
             </com.getbase.floatingactionbutton.FloatingActionsMenu>
         </RelativeLayout>
 

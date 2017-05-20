@@ -1,5 +1,6 @@
 package tuan.anh.giang.clientemployee.fragments;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
@@ -11,11 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.backendless.Backendless;
@@ -35,12 +40,14 @@ import java.util.List;
 
 import tuan.anh.giang.clientemployee.R;
 import tuan.anh.giang.clientemployee.activities.ChatActivity;
+import tuan.anh.giang.clientemployee.activities.MainActivity;
 import tuan.anh.giang.clientemployee.adapters.AnswerAdapter;
 import tuan.anh.giang.clientemployee.entities.Answer;
 import tuan.anh.giang.clientemployee.entities.Question;
 import tuan.anh.giang.clientemployee.utils.Consts;
 import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
 import tuan.anh.giang.core.utils.KeyboardUtils;
+import tuan.anh.giang.core.utils.SharedPrefsHelper;
 
 import static tuan.anh.giang.clientemployee.activities.MainActivity.currentBackendlessUser;
 
@@ -49,7 +56,7 @@ public class AnswerFragment extends Fragment {
     View view;
     private ProgressDialog progressDialog;
     Question question;
-    TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer;
+    TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer,tvStatusQuestion;
     EditText edReply;
     LinearLayout layoutMoreAnswer;
     ImageView imgBack, imgMoreAnswer, imgUser, imgSend;
@@ -59,7 +66,7 @@ public class AnswerFragment extends Fragment {
     AnswerAdapter answerAdapter;
     DataQueryBuilder queryAnswer;
     public boolean isUpdateMain = false;
-
+    int checkHideProgress = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,7 @@ public class AnswerFragment extends Fragment {
         queryAnswer.setWhereClause(whereclause);
         queryAnswer.setSortBy("created ASC");
         queryAnswer.setPageSize(30);
+
 
     }
 
@@ -96,21 +104,35 @@ public class AnswerFragment extends Fragment {
         edReply = (EditText) view.findViewById(R.id.ed_reply);
         layoutMoreAnswer = (LinearLayout) view.findViewById(R.id.layout_more_answer);
         tvMoreAnswer = (TextView) view.findViewById(R.id.tv_more_answer);
+        tvStatusQuestion = (TextView) view.findViewById(R.id.tv_status_question);
         imgMoreAnswer = (ImageView) view.findViewById(R.id.img_more_answer);
         edReply.addTextChangedListener(new FragmentAnswerEditTextWatcher(edReply));
         lvAnswer.setVerticalScrollBarEnabled(false);
-        tvFullName.setText((String) currentBackendlessUser.getProperty(getString(R.string.full_name)));
+        tvFullName.setText((String) question.getUser().getProperty(getString(R.string.full_name)));
         tvQuestion.setText(question.getContent());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         tvCreated.setText("● " + sdf.format(question.getCreated()));
         answerAdapter = new AnswerAdapter(getActivity(), R.layout.item_list_answer, listAnswer);
         lvAnswer.setAdapter(answerAdapter);
+        // chua tra loi mau do, tra loi roi mau xanh, nguoi dung leave mau lam
+        if(question.getStatus() == Consts.WAIT_EMPLOYEE_REPLY){
+            tvStatusQuestion.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+        }if(question.getStatus() ==Consts.WAIT_USER_REPLY){
+            tvStatusQuestion.setBackgroundColor(getActivity().getResources().getColor(R.color.colorFB));
+        }if (question.getStatus() == Consts.USER_LEAVE_QUESTION){
+            tvStatusQuestion.setBackgroundColor(getActivity().getResources().getColor(R.color.press_action_button_color));
+        }
 
 
     }
 
     private void onClick() {
-
+        tvStatusQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogStatusQuestion();
+            }
+        });
         // có hiện click là có nhiều hơn 10 answers
         layoutMoreAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +192,7 @@ public class AnswerFragment extends Fragment {
                             response.setUser(currentBackendlessUser);
                             listAnswer.add(response);
                             listLessAnswer.clear();
-                            if(listAnswer.size() >= 10){
+                            if (listAnswer.size() >= 10) {
                                 for (int i = listAnswer.size() - 10; i < listAnswer.size(); i++) {
                                     listLessAnswer.add(listAnswer.get(i));
                                 }
@@ -183,7 +205,6 @@ public class AnswerFragment extends Fragment {
                             });
                             edReply.clearFocus();
                             edReply.setText("");
-                            hideProgressDialog();
                             scrollMyListViewToBottom();
                             Log.d("kiemtra", "so answers duoc add: " + response.getContent_answer());
                             // add relation with Question table
@@ -199,6 +220,8 @@ public class AnswerFragment extends Fragment {
                                                         public void handleResponse(Integer response) {
                                                             Log.d("kiemtra ", "add relation with users table" + response.toString());
 //                                                            updateListAnswer();
+                                                            checkHideProgress++;
+                                                            checkHideProgressDialog();
 
                                                         }
 
@@ -222,6 +245,9 @@ public class AnswerFragment extends Fragment {
                                 public void handleResponse(Question response) {
                                     // set is_reply = true success
                                     isUpdateMain = true;
+                                    checkHideProgress++;
+                                    checkHideProgressDialog();
+                                    tvStatusQuestion.setBackgroundColor(getActivity().getResources().getColor(R.color.colorFB));
                                 }
 
                                 @Override
@@ -242,6 +268,12 @@ public class AnswerFragment extends Fragment {
         });
 
     }
+    private void checkHideProgressDialog() {
+        if (checkHideProgress == 2) {
+            checkHideProgress = 0;
+            hideProgressDialog();
+        }
+    }
 
     private void startChatWithEmployee(QBUser employee) {
         ChatHelper.getInstance().createDialogWithSelectedUser(employee,
@@ -256,6 +288,74 @@ public class AnswerFragment extends Fragment {
 
                     }
                 });
+    }
+
+
+    private void showDialogStatusQuestion() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_status_question);
+
+        final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radio_group);
+        RadioButton rbReplied = (RadioButton) dialog.findViewById(R.id.rb_replied);
+        RadioButton rbUnReplied = (RadioButton) dialog.findViewById(R.id.rb_unreplied);
+        RadioButton rbAnswered = (RadioButton) dialog.findViewById(R.id.rb_answered);
+        Button submit = (Button) dialog.findViewById(R.id.btn_submit);
+        int status = question.getStatus();
+        if (status == Consts.WAIT_EMPLOYEE_REPLY) {
+            rbUnReplied.setChecked(true);
+        } else if (status == Consts.WAIT_USER_REPLY) {
+            rbReplied.setChecked(true);
+        } else {
+            rbAnswered.setChecked(true);
+        }
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int idChecked = radioGroup.getCheckedRadioButtonId();
+                switch (idChecked) {
+                    case R.id.rb_replied:
+                        updateQuestionStatus(Consts.WAIT_USER_REPLY);
+                        dialog.dismiss();
+                        break;
+                    case R.id.rb_unreplied:
+                        updateQuestionStatus(Consts.WAIT_EMPLOYEE_REPLY);
+                        dialog.dismiss();
+                        break;
+                    case R.id.rb_answered:
+                        updateQuestionStatus(Consts.USER_LEAVE_QUESTION);
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        });
+        dialog.show();
+    }
+    private void updateQuestionStatus(final int status){
+        showProgressDialog(R.string.loading);
+        question.setStatus(status);
+        Backendless.Persistence.of(Question.class).save(question, new AsyncCallback<Question>() {
+            @Override
+            public void handleResponse(Question response) {
+                // set is_reply = true success
+                isUpdateMain = true;
+                if(status == Consts.WAIT_EMPLOYEE_REPLY){
+                    tvStatusQuestion.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                }if(status ==Consts.WAIT_USER_REPLY){
+                    tvStatusQuestion.setBackgroundColor(getActivity().getResources().getColor(R.color.colorFB));
+                }if (status == Consts.USER_LEAVE_QUESTION){
+                    tvStatusQuestion.setBackgroundColor(getActivity().getResources().getColor(R.color.press_action_button_color));
+                }
+                hideProgressDialog();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                hideProgressDialog();
+            }
+        });
+
     }
 
     private void updateListAnswer() {

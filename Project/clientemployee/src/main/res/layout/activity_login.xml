@@ -12,7 +12,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/employee" />
 
     <EditText
@@ -50,7 +50,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="#4CAF50"
-        android:text="submit"
+        android:text="Login"
         android:textColor="#fff" />
 
 

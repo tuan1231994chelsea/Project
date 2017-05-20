@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.Toaster;
 import tuan.anh.giang.project.R;
@@ -126,105 +127,100 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void getCurrentBELUser() {
         showProgressDialog(R.string.loading);
         currentBackendlessUser = Backendless.UserService.CurrentUser();
-        if (currentBackendlessUser == null) {
-            Backendless.UserService.isValidLogin(new AsyncCallback<Boolean>() {
-                @Override
-                public void handleResponse(Boolean response) {
-                    if (response && Backendless.UserService.CurrentUser() == null) {
-                        String currentUserId = Backendless.UserService.loggedInUser();
-                        if (!currentUserId.equals("")) {
-                            Backendless.UserService.findById(currentUserId, new AsyncCallback<BackendlessUser>() {
-                                @Override
-                                public void handleResponse(BackendlessUser response) {
-                                    Backendless.UserService.setCurrentUser(response);
-                                    currentBackendlessUser = response;
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            tvTitle.setText("Hello " + currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
-                                        }
-                                    });
+        if(ConnectivityUtils.isNetworkConnected()){
+            if (currentBackendlessUser == null) {
+                Backendless.UserService.isValidLogin(new AsyncCallback<Boolean>() {
+                    @Override
+                    public void handleResponse(Boolean response) {
+                        if (response && Backendless.UserService.CurrentUser() == null) {
+                            String currentUserId = Backendless.UserService.loggedInUser();
+                            if (!currentUserId.equals("")) {
+                                Backendless.UserService.findById(currentUserId, new AsyncCallback<BackendlessUser>() {
+                                    @Override
+                                    public void handleResponse(BackendlessUser response) {
+                                        Backendless.UserService.setCurrentUser(response);
+                                        currentBackendlessUser = response;
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                tvTitle.setText("Hello " + currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                                            }
+                                        });
+                                        String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
+                                        currentQBUser = new QBUser(loginQBUser, Consts.DEFAULT_USER_PASSWORD);
+                                        signInCreatedUser(currentQBUser, false);
+                                        getOldQuestionFirst();
+                                    }
 
-                                    // check sharepreferences haven't Backendless User -> save current BELUser
-                                    Log.d("kiemtratime", "lay duoc current backendless user");
-//                                    if (!checkHasBELUser()) {
-//                                        sharedPrefsHelper.saveBELUser(currentBackendlessUser);
-//                                    }
-                                    /** check sharepreferences haven't QuickBlox User -> Sign Up new Quickblox User by
-                                     * current BEL User -> save QB User and sign in this user
-                                     * else get QB user from sharepreferences and sign in this user
-                                     **/
-//                                    if (!checkHasQbUser()) {
-//                                        startSignUpNewUser(createQBUserWithCurrentData(currentBackendlessUser));
-//                                    } else {
-//                                        signInCreatedUser(sharedPrefsHelper.getQbUser(), false);
-//                                    }
-                                    String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
-                                    currentQBUser = new QBUser(loginQBUser, Consts.DEFAULT_USER_PASSWORD);
-                                    signInCreatedUser(currentQBUser, false);
-                                    getOldQuestionFirst();
-                                }
+                                    @Override
+                                    public void handleFault(BackendlessFault fault) {
 
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void handleFault(BackendlessFault fault) {
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
 
-                }
-            });
-        } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    tvTitle.setText("Hello " + currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
-                }
-            });
-            String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
-            currentQBUser = new QBUser(loginQBUser, Consts.DEFAULT_USER_PASSWORD);
-            signInCreatedUser(currentQBUser, false);
-            getOldQuestionFirst();
+                    }
+                });
+            } else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTitle.setText("Hello " + currentBackendlessUser.getProperty(getString(R.string.full_name)).toString());
+                    }
+                });
+                String loginQBUser = (String) currentBackendlessUser.getProperty(getString(R.string.login));
+                currentQBUser = new QBUser(loginQBUser, Consts.DEFAULT_USER_PASSWORD);
+                signInCreatedUser(currentQBUser, false);
+                getOldQuestionFirst();
+            }
+        }else{
+            showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
+
     }
 
     // first load old question, load first page
     private void getOldQuestionFirst() {
-        isAllOfQuestion = false;
-        String whereclause = "";
-        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
-        whereclause = "user.objectId = '" + currentBackendlessUser.getObjectId() + "' " + loadQuestionByStatus;
-        queryQuestion.setWhereClause(whereclause);
-        queryQuestion.setSortBy("created DESC");
-        queryQuestion.setPageSize(10);
-        Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
-            @Override
-            public void handleResponse(List<Question> response) {
-                if (response.size() < 10) {
-                    isAllOfQuestion = true;
-                }
-                listOldQuestion.addAll(response);
-                lvOldQuestion.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        questionAdapter.notifyDataSetChanged();
-                        hideProgressDialog();
+        if(ConnectivityUtils.isNetworkConnected()){
+            isAllOfQuestion = false;
+            String whereclause = "";
+            loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
+            whereclause = "user.objectId = '" + currentBackendlessUser.getObjectId() + "' " + loadQuestionByStatus;
+            queryQuestion.setWhereClause(whereclause);
+            queryQuestion.setSortBy("created DESC");
+            queryQuestion.setPageSize(10);
+            Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
+                @Override
+                public void handleResponse(List<Question> response) {
+                    if (response.size() < 10) {
+                        isAllOfQuestion = true;
                     }
-                });
+                    listOldQuestion.addAll(response);
+                    lvOldQuestion.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            questionAdapter.notifyDataSetChanged();
+                            hideProgressDialog();
+                        }
+                    });
 
-                Log.d("kiemtratime", "load xong questions");
-            }
+                    Log.d("kiemtratime", "load xong questions");
+                }
 
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.d("myapp", fault.getMessage());
-            }
-        });
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Log.d("myapp", fault.getMessage());
+                }
+            });
+        }else{
+            showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+        }
+
     }
 
 
@@ -232,75 +228,85 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * update first page question
      */
     private void updateOldQuestion() {
-        isAllOfQuestion = false;
-        showProgressDialog(R.string.refreshing_your_question);
-        String whereclause = "";
-        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
-        whereclause = "user.objectId = '" + currentBackendlessUser.getObjectId() + "' " + loadQuestionByStatus;
-        queryQuestion = DataQueryBuilder.create();
-        queryQuestion.setWhereClause(whereclause);
-        queryQuestion.setSortBy("created DESC");
-        queryQuestion.setPageSize(10);
-        listOldQuestion.clear();
-        Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
-            @Override
-            public void handleResponse(List<Question> response) {
-                if (response.size() < 10) {
-                    isAllOfQuestion = true;
-                }
-                listOldQuestion.addAll(response);
-                lvOldQuestion.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        questionAdapter.notifyDataSetChanged();
-                        refreshLayout.setRefreshing(false);
-                        hideProgressDialog();
-                    }
-                });
-
-                Log.d("kiemtratime", "load xong questions");
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.d("myapp", fault.getMessage());
-            }
-        });
-    }
-
-    // load more 1 page question
-    private void loadMoreQuestion() {
-        showProgressDialog(R.string.loading_more_questions);
-        String whereclause = "";
-        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
-        whereclause = "user.objectId = '" + currentBackendlessUser.getObjectId() + "' " + loadQuestionByStatus;
-        queryQuestion.setWhereClause(whereclause);
-        queryQuestion.prepareNextPage();
-        Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
-            @Override
-            public void handleResponse(List<Question> response) {
-                if (response.size() != 0) {
+        if(ConnectivityUtils.isNetworkConnected()){
+            isAllOfQuestion = false;
+            showProgressDialog(R.string.refreshing_your_question);
+            String whereclause = "";
+            loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
+            whereclause = "user.objectId = '" + currentBackendlessUser.getObjectId() + "' " + loadQuestionByStatus;
+            queryQuestion = DataQueryBuilder.create();
+            queryQuestion.setWhereClause(whereclause);
+            queryQuestion.setSortBy("created DESC");
+            queryQuestion.setPageSize(10);
+            listOldQuestion.clear();
+            Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
+                @Override
+                public void handleResponse(List<Question> response) {
                     if (response.size() < 10) {
                         isAllOfQuestion = true;
                     }
                     listOldQuestion.addAll(response);
-                    runOnUiThread(new Runnable() {
+                    lvOldQuestion.post(new Runnable() {
                         @Override
                         public void run() {
                             questionAdapter.notifyDataSetChanged();
+                            refreshLayout.setRefreshing(false);
                             hideProgressDialog();
                         }
                     });
-                } else {
-                    isAllOfQuestion = true;
-                }
-            }
 
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.d("myapp", fault.getMessage());
-            }
-        });
+                    Log.d("kiemtratime", "load xong questions");
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Log.d("myapp", fault.getMessage());
+                }
+            });
+        }else{
+            showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+        }
+
+    }
+
+    // load more 1 page question
+    private void loadMoreQuestion() {
+        if(ConnectivityUtils.isNetworkConnected()){
+            showProgressDialog(R.string.loading_more_questions);
+            String whereclause = "";
+            loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
+            whereclause = "user.objectId = '" + currentBackendlessUser.getObjectId() + "' " + loadQuestionByStatus;
+            queryQuestion.setWhereClause(whereclause);
+            queryQuestion.prepareNextPage();
+            Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
+                @Override
+                public void handleResponse(List<Question> response) {
+                    if (response.size() != 0) {
+                        if (response.size() < 10) {
+                            isAllOfQuestion = true;
+                        }
+                        listOldQuestion.addAll(response);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                questionAdapter.notifyDataSetChanged();
+                                hideProgressDialog();
+                            }
+                        });
+                    } else {
+                        isAllOfQuestion = true;
+                    }
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Log.d("myapp", fault.getMessage());
+                }
+            });
+        }else{
+            showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+        }
+
     }
 
 
@@ -374,7 +380,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_condition_load_question);
-
 
         final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radio_group);
         RadioButton rbReplied = (RadioButton) dialog.findViewById(R.id.rb_replied);
@@ -497,33 +502,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-//    private boolean checkHasBELUser() {
-//        if (sharedPrefsHelper == null) {
-//            sharedPrefsHelper = SharedPrefsHelper.getInstance();
-//        }
-//        if (!sharedPrefsHelper.hasBELUser()) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
-
-    /**
-     * check if hasQb user in sharepreferances -> return true
-     * else sign up new QbUser by current backendless user and login then
-     *
-     * @return
-     */
-//    private boolean checkHasQbUser() {
-//        if (sharedPrefsHelper == null) {
-//            sharedPrefsHelper = SharedPrefsHelper.getInstance();
-//        }
-//        if (!sharedPrefsHelper.hasQbUser()) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
     public static void start(Context context, boolean isRunForCall) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

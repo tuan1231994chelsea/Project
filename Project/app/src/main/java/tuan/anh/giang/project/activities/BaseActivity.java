@@ -17,12 +17,12 @@ import tuan.anh.giang.core.utils.ErrorUtils;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.project.App;
 import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.util.NetworkConnectionChecker;
 import tuan.anh.giang.project.util.QBResRequestExecutor;
 import tuan.anh.giang.project.utils.Consts;
 
 
-public abstract class BaseActivity extends CoreBaseActivity {
-
+public abstract class BaseActivity extends CoreBaseActivity  {
     public SharedPrefsHelper sharedPrefsHelper;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialog;
@@ -32,7 +32,6 @@ public abstract class BaseActivity extends CoreBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         requestExecutor = App.getInstance().getQbResRequestExecutor();
         sharedPrefsHelper = SharedPrefsHelper.getInstance();
         googlePlayServicesHelper = new GooglePlayServicesHelper();

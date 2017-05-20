@@ -15,7 +15,7 @@ import weborb.service.ExcludeProperty;
     // numberOfAnswer xong Exclude nó đi.=> lúc add new Question
     // console không thêm 1 trường mới numberOfQuestion nữa
     // mà mình có thể gán thêm vào để sử dụng.
-@ExcludeProperty( propertyName = "_reply" )
+@ExcludeProperty( propertyName = "serialVersionUID" )
 public class Question implements Serializable{
     private String objectId;
     private BackendlessUser user;

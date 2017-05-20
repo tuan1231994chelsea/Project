@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.backendless.exceptions.BackendlessFault;
 
 import java.util.ArrayList;
 
+import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.KeyboardUtils;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.entities.Answer;
@@ -68,7 +70,7 @@ public class NewQuestionFragment extends Fragment {
         edContentQuestion.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     edContentQuestion.setBackgroundResource(R.drawable.border_content_question1);
                 }
                 return false;
@@ -77,51 +79,59 @@ public class NewQuestionFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edContentQuestion.setBackgroundResource(R.drawable.border_content_question);
-                KeyboardUtils.hideKeyboard(edContentQuestion);
-                String contentQuestion = edContentQuestion.getText().toString().trim();
-                if(contentQuestion.equals("")){
-                    edContentQuestion.setError(getString(R.string.fill_out_content_question));
-                }else{
-                    final ArrayList<BackendlessUser> listUser = new ArrayList<BackendlessUser>();
-                    listUser.add(mainActivity.currentBackendlessUser);
-                    final Question question = new Question();
-                    question.setUser(mainActivity.currentBackendlessUser);
-                    question.setContent(contentQuestion);
-                    question.setStatus(0);
-                    showProgressDialog(R.string.loading);
-                    //save new question
-                    Backendless.Persistence.save(question, new AsyncCallback<Question>() {
-                        public void handleResponse(Question response) {
-                            // save new question success
-                            // add relation with Users table
-                            Backendless.Persistence.of(Question.class).addRelation(question, getString(R.string.user), listUser,
-                                    new AsyncCallback<Integer>() {
-                                        @Override
-                                        public void handleResponse(Integer response) {
-                                            isUpdateMain = true;
-                                            hideProgressDialog();
-                                            getActivity().onBackPressed();
-                                        }
+                if (ConnectivityUtils.isNetworkConnected()) {
+                    edContentQuestion.setBackgroundResource(R.drawable.border_content_question);
+                    KeyboardUtils.hideKeyboard(edContentQuestion);
+                    String contentQuestion = edContentQuestion.getText().toString().trim();
+                    if (contentQuestion.equals("")) {
+                        edContentQuestion.setError(getString(R.string.fill_out_content_question));
+                    } else {
+                        final ArrayList<BackendlessUser> listUser = new ArrayList<BackendlessUser>();
+                        listUser.add(mainActivity.currentBackendlessUser);
+                        final Question question = new Question();
+                        question.setUser(mainActivity.currentBackendlessUser);
+                        question.setContent(contentQuestion);
+                        question.setStatus(0);
+                        showProgressDialog(R.string.loading);
+                        //save new question
+                        Backendless.Persistence.save(question, new AsyncCallback<Question>() {
+                            public void handleResponse(Question response) {
+                                // save new question success
+                                // add relation with Users table
+                                Backendless.Persistence.of(Question.class).addRelation(question, getString(R.string.user), listUser,
+                                        new AsyncCallback<Integer>() {
+                                            @Override
+                                            public void handleResponse(Integer response) {
+                                                isUpdateMain = true;
+                                                hideProgressDialog();
+                                                getActivity().onBackPressed();
+                                            }
 
-                                        @Override
-                                        public void handleFault(BackendlessFault fault) {
+                                            @Override
+                                            public void handleFault(BackendlessFault fault) {
 
-                                        }
-                                    });
+                                            }
+                                        });
 
-                        }
+                            }
 
-                        public void handleFault(BackendlessFault fault) {
-                            // an error has occurred, the error code can be retrieved with fault.getCode()
-                        }
-                    });
+                            public void handleFault(BackendlessFault fault) {
+                                // an error has occurred, the error code can be retrieved with fault.getCode()
+                            }
+                        });
+                    }
+                } else {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                    alertDialog.setTitle("")
+                            .setMessage(getActivity().getString(R.string.no_internet_connection))
+                            .create()
+                            .show();
                 }
-
             }
         });
 
     }
+
     void showProgressDialog(@StringRes int messageId) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
@@ -156,6 +166,7 @@ public class NewQuestionFragment extends Fragment {
         btnSubmit = (Button) view.findViewById(R.id.btn_submit);
         edContentQuestion.addTextChangedListener(new FragmentNewQuestionEditTextWatcher(edContentQuestion));
     }
+
     private class FragmentNewQuestionEditTextWatcher implements TextWatcher {
         private EditText editText;
 

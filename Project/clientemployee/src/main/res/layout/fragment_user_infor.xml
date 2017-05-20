@@ -20,69 +20,89 @@
             android:src="@drawable/account_circle"
             android:tint="@color/colorFB" />
 
-        <TableLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="40dp"
-            android:stretchColumns="*">
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_content_dialog"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
 
-            <TableRow>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:stretchColumns="*"
+                >
 
-                <TextView
-                    android:gravity="left"
-                    android:text="@string/FullName"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                <TableRow
+                    style="@style/MatchWidth">
 
-                <EditText
-                    android:id="@+id/ed_fullname"
-                    android:layout_width="match_parent"
-                    android:layout_marginRight="4dp"
-                    android:background="@drawable/border_send_reply"
-                    android:maxLength="28"
-                    android:singleLine="true"
-                    android:text="Giang Anh Tuan"
-                    android:textColor="@color/full_name_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </TableRow>
+                    <TextView
+                        android:gravity="left"
+                        android:text="@string/FullName"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-            <TableRow android:layout_marginTop="25dp">
+                    <EditText
+                        android:layout_column="1"
+                        android:ems="13"
+                        android:maxEms="15"
+                        android:id="@+id/ed_fullname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/border_send_reply"
+                        android:singleLine="true"
+                        android:text="Giang Anh Tuan"
+                        android:textColor="@color/full_name_color"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:gravity="left"
-                    android:text="@string/Email"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                <TableRow android:layout_marginTop="10dp"
+                    style="@style/MatchWidth">
 
-                <EditText
-                    android:id="@+id/ed_email"
-                    android:layout_width="match_parent"
-                    android:layout_marginRight="4dp"
-                    android:background="@drawable/border_send_reply"
-                    android:maxLength="28"
-                    android:singleLine="true"
-                    android:text="tuan1231994chelsea@gmail.com"
-                    android:textColor="@color/full_name_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </TableRow>
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_span="1"
+                        android:gravity="left"
+                        android:text="@string/Email"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-        </TableLayout>
+                    <EditText
+                        android:id="@+id/ed_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/border_send_reply"
+                        android:ems="13"
+                        android:maxEms="15"
+                        android:singleLine="true"
+                        android:text="tuan1231994chelsea@gmail.com"
+                        android:textColor="@color/full_name_color"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
 
-        <Button
-            android:id="@+id/btn_update_infor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/background_submit"
-            android:text="@string/Edit_Infor"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            </TableLayout>
+
+            <Button
+                android:id="@+id/btn_update_infor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/background_submit"
+                android:text="@string/Edit_Infor"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

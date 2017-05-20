@@ -1,5 +1,6 @@
 package tuan.anh.giang.clientemployee.activities;
 
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +18,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.backendless.Backendless;
@@ -89,7 +94,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Fragment currentFragment;
     SwipeRefreshLayout refreshLayout;
     boolean isAllOfQuestion = false;
-    FloatingActionButton oldChat;
+    FloatingActionButton oldChat,conditionLoad;
+    String loadQuestionByStatus = "";
 
 
     @Override
@@ -102,6 +108,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (sharedPrefsHelper == null) {
             sharedPrefsHelper = SharedPrefsHelper.getInstance();
         }
+        // load all String ="", status =0 -> String = "and status =0" ...
+        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
         listOldQuestion = new ArrayList<>();
 //        initFields();
         findViewById();
@@ -181,7 +189,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // status question = 0 => cho nhan vien tra loi
         // = 1=> cho nguoi dung phan hoi
         // = 2 => nguoi dung leave question
-        queryQuestion.setWhereClause("status = " + Consts.WAIT_EMPLOYEE_REPLY);
+        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
+        queryQuestion.setWhereClause(loadQuestionByStatus);
         queryQuestion.setSortBy("created DESC");
         queryQuestion.setPageSize(20);
         Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
@@ -214,8 +223,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      */
     private void updateOldQuestion() {
         isAllOfQuestion = false;
+        refreshLayout.setRefreshing(true);
         queryQuestion = DataQueryBuilder.create();
-        queryQuestion.setWhereClause("status = " + Consts.WAIT_EMPLOYEE_REPLY);
+        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
+        queryQuestion.setWhereClause(loadQuestionByStatus);
         queryQuestion.setSortBy("created DESC");
         queryQuestion.setPageSize(20);
         listOldQuestion.clear();
@@ -247,6 +258,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     // load more 1 page question
     private void loadMoreQuestion() {
         showProgressDialog(R.string.loading_more_questions);
+        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
+        queryQuestion.setWhereClause(loadQuestionByStatus);
         queryQuestion.prepareNextPage();
         Backendless.Data.of(Question.class).find(queryQuestion, new AsyncCallback<List<Question>>() {
             @Override
@@ -277,6 +290,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 
     private void onClick() {
+        conditionLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // show dialog set
+                showDialogConditionLoad();
+            }
+        });
         oldChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -318,6 +338,65 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
     }
+    private void showDialogConditionLoad() {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_condition_load_question);
+
+
+        final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radio_group);
+        RadioButton rbReplied = (RadioButton) dialog.findViewById(R.id.rb_replied);
+        RadioButton rbUnReplied = (RadioButton) dialog.findViewById(R.id.rb_unreplied);
+        RadioButton rbAnswered = (RadioButton) dialog.findViewById(R.id.rb_answered);
+        RadioButton rbLoadAll = (RadioButton) dialog.findViewById(R.id.rb_load_all);
+        Button submit = (Button) dialog.findViewById(R.id.btn_submit);
+
+        loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
+        if (loadQuestionByStatus.equals(Consts.LOAD_ALL_QUESTION)) {
+            rbLoadAll.setChecked(true);
+        } else if (loadQuestionByStatus.equals(Consts.CONDITION_WAIT_EMPLOYEE)) {
+            rbUnReplied.setChecked(true);
+        } else if (loadQuestionByStatus.equals(Consts.CONDITION_WAIT_USER)) {
+            rbReplied.setChecked(true);
+        } else {
+            rbAnswered.setChecked(true);
+        }
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int idChecked = radioGroup.getCheckedRadioButtonId();
+                switch (idChecked) {
+                    case R.id.rb_replied:
+                        loadQuestionByStatus = Consts.CONDITION_WAIT_USER;
+                        sharedPrefsHelper.save(Consts.LOAD_QUESTION_BY_STATUS, loadQuestionByStatus);
+                        updateOldQuestion();
+                        dialog.dismiss();
+                        break;
+                    case R.id.rb_unreplied:
+                        loadQuestionByStatus = Consts.CONDITION_WAIT_EMPLOYEE;
+                        sharedPrefsHelper.save(Consts.LOAD_QUESTION_BY_STATUS, loadQuestionByStatus);
+                        updateOldQuestion();
+                        dialog.dismiss();
+                        break;
+                    case R.id.rb_answered:
+                        loadQuestionByStatus = Consts.CONDITION_USER_LEAVE_QUESTION;
+                        sharedPrefsHelper.save(Consts.LOAD_QUESTION_BY_STATUS, loadQuestionByStatus);
+                        updateOldQuestion();
+                        dialog.dismiss();
+                        break;
+                    case R.id.rb_load_all:
+                        loadQuestionByStatus = Consts.LOAD_ALL_QUESTION;
+                        sharedPrefsHelper.save(Consts.LOAD_QUESTION_BY_STATUS, loadQuestionByStatus);
+                        updateOldQuestion();
+                        dialog.dismiss();
+                        break;
+
+                }
+            }
+        });
+        dialog.show();
+    }
 
     private void findViewById() {
         mainActivity = this;
@@ -335,6 +414,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         tvTitle = (TextView) findViewById(R.id.toolbar_title);
         lvOldQuestion.setVerticalScrollBarEnabled(false);
         oldChat = (FloatingActionButton) findViewById(R.id.action_old_chat);
+        conditionLoad = (FloatingActionButton) findViewById(R.id.action_condition_load);
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipetop);
         refreshLayout.setColorSchemeResources(R.color.fb_color);
         questionAdapter = new QuestionAdapter(mainActivity, R.layout.item_list_question, listOldQuestion);

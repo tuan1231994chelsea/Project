@@ -31,6 +31,7 @@ import com.quickblox.videochat.webrtc.QBRTCTypes;
 import java.util.ArrayList;
 import java.util.List;
 
+import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.Toaster;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.adapters.EmployeeAdapter;
@@ -171,17 +172,22 @@ public class EmployeesActivity extends BaseActivity {
 
     }
     private void startChatWithEmployee(){
-        ChatHelper.getInstance().createDialogWithSelectedUser(employeeAdapter.getSelectedQBUser(),
-                new QBEntityCallback<QBChatDialog>() {
-                    @Override
-                    public void onSuccess(QBChatDialog qbChatDialog, Bundle bundle) {
-                        ChatActivity.start(EmployeesActivity.this,qbChatDialog);
-                    }
-                    @Override
-                    public void onError(QBResponseException e) {
+        if(ConnectivityUtils.isNetworkConnected()){
+            ChatHelper.getInstance().createDialogWithSelectedUser(employeeAdapter.getSelectedQBUser(),
+                    new QBEntityCallback<QBChatDialog>() {
+                        @Override
+                        public void onSuccess(QBChatDialog qbChatDialog, Bundle bundle) {
+                            ChatActivity.start(EmployeesActivity.this,qbChatDialog);
+                        }
+                        @Override
+                        public void onError(QBResponseException e) {
 
-                    }
-                });
+                        }
+                    });
+        }else{
+            showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+        }
+
     }
     private void passResultToCallerActivity() {
         Intent result = new Intent();
@@ -253,29 +259,35 @@ public class EmployeesActivity extends BaseActivity {
     }
 
     private void getListEmployees(){
-        // create lai dataquerybuilder truoc roi chay de quy
-        Backendless.Data.of(BackendlessUser.class).find(dataQueryBuilder, new AsyncCallback<List<BackendlessUser>>() {
-            @Override
-            public void handleResponse(List<BackendlessUser> response) {
-                if(response.size()!=0){
-                    listEmployee.addAll(response);
-                    dataQueryBuilder.prepareNextPage();
-                    getListEmployees();
-                }else{
-                    lvEmployee.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            employeeAdapter.notifyDataSetChanged();
-                        }
-                    });
-                    refreshLayout.setRefreshing(false);
+        if(ConnectivityUtils.isNetworkConnected()){
+            // create lai dataquerybuilder truoc roi chay de quy
+            Backendless.Data.of(BackendlessUser.class).find(dataQueryBuilder, new AsyncCallback<List<BackendlessUser>>() {
+                @Override
+                public void handleResponse(List<BackendlessUser> response) {
+                    if(response.size()!=0){
+                        listEmployee.addAll(response);
+                        dataQueryBuilder.prepareNextPage();
+                        getListEmployees();
+                    }else{
+                        lvEmployee.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                employeeAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        refreshLayout.setRefreshing(false);
+                    }
                 }
-            }
-            @Override
-            public void handleFault(BackendlessFault fault) {
+                @Override
+                public void handleFault(BackendlessFault fault) {
 
-            }
-        });
+                }
+            });
+        }else{
+            refreshLayout.setRefreshing(false);
+            showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+        }
+
     }
 
     @Override
