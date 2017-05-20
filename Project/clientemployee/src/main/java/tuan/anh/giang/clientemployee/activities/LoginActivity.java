@@ -18,10 +18,12 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.quickblox.auth.session.QBSessionManager;
 
 import tuan.anh.giang.clientemployee.R;
 import tuan.anh.giang.clientemployee.utils.ErrorHandling;
 import tuan.anh.giang.clientemployee.utils.ValidationUtils;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
 import tuan.anh.giang.core.utils.KeyboardUtils;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 

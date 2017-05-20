@@ -20,12 +20,20 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.quickblox.auth.session.QBSessionManager;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
 
+import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.KeyboardUtils;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.utils.ErrorHandling;
+import tuan.anh.giang.project.utils.QBEntityCallbackImpl;
 import tuan.anh.giang.project.utils.ValidationUtils;
+import tuan.anh.giang.project.utils.chat.ChatHelper;
 
 import static tuan.anh.giang.project.activities.MainActivity.currentBackendlessUser;
 
@@ -35,7 +43,7 @@ import static tuan.anh.giang.project.activities.MainActivity.currentBackendlessU
 
 public class LoginActivity extends BaseActivity {
     Context context;
-    EditText userName, password;
+    EditText userName, passWord;
     TextView register, forgotPassWord;
     Button submit, loginWithFB;
 
@@ -58,7 +66,7 @@ public class LoginActivity extends BaseActivity {
 
     private void findViewById() {
         userName = (EditText) findViewById(R.id.user_name);
-        password = (EditText) findViewById(R.id.password);
+        passWord = (EditText) findViewById(R.id.password);
         register = (TextView) findViewById(R.id.tv_register);
         forgotPassWord = (TextView) findViewById(R.id.tv_forgotPassword);
         submit = (Button) findViewById(R.id.bt_submit);
@@ -83,7 +91,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View view) {
                 if (isEnteredUserNameValid()) {
                     hideKeyboard();
-                    login(userName.getText().toString().trim(), password.getText().toString().trim());
+                    login(userName.getText().toString().trim(), passWord.getText().toString().trim());
 //                    startSignUpNewUser(createUserWithEnteredData());
                 }
             }
@@ -96,42 +104,58 @@ public class LoginActivity extends BaseActivity {
 
     private void hideKeyboard() {
         KeyboardUtils.hideKeyboard(userName);
-        KeyboardUtils.hideKeyboard(password);
+        KeyboardUtils.hideKeyboard(passWord);
     }
 
-    private void login(String username, String password) {
-        Backendless.UserService.login(username, password, new AsyncCallback<BackendlessUser>() {
-            public void handleResponse(BackendlessUser user) {
-                // user has been logged in
-//                if (sharedPrefsHelper.hasBELUser()) {
-//                    BackendlessUser oldBELUser = sharedPrefsHelper.getBELUser();
-//                    if(!user.getEmail().equals(oldBELUser.getEmail())){
-//                        deleteAndSaveNewBackendUser(user);
-//                        deleteQBUser();
-//                    }
-//                } else {
-//                    sharedPrefsHelper.saveBELUser(user);
-//                }
-                Log.d("myapp", "login bel user thanh cong");
-                MainActivity.start(context, false);
-                finish();
+    private void login(final String username, final String password) {
+        showProgressDialog(R.string.loading);
+        if (ConnectivityUtils.isNetworkConnected()) {
+            Backendless.UserService.login(username, password, new AsyncCallback<BackendlessUser>() {
+                public void handleResponse(BackendlessUser user) {
+                    Log.d("myapp", "login bel user thanh cong");
+                    boolean isEmployee = (boolean) user.getProperty(getString(R.string.is_employee));
+                    if (isEmployee) {
+                        Backendless.UserService.logout(new AsyncCallback<Void>() {
+                            @Override
+                            public void handleResponse(Void response) {
+                                // user has been logged out.
+                                hideProgressDialog();
+                                showNotifyDialog("", "User is employee, please login another user", R.drawable.error);
+                                userName.setText("");
+                                passWord.setText("");
+                            }
 
-            }
-
-            public void handleFault(BackendlessFault fault) {
-                // login failed, to get the error code call fault.getCode()
-                //3087 loi email chua confirm
-                if (fault.getCode().equals("Server.Processing")) {
-                    MainActivity.start(context, false);
-                    finish();
-                    return;
+                            @Override
+                            public void handleFault(BackendlessFault fault) {
+                                Log.d("error", fault.getMessage());
+                            }
+                        });
+                    } else {
+                        MainActivity.start(context, false);
+                        finish();
+                    }
                 }
-                ErrorHandling.BackendlessErrorCode(context, fault.getCode());
-                Log.d("error myapp", fault.getCode());
-            }
-        }, true);
+
+                public void handleFault(BackendlessFault fault) {
+                    // login failed, to get the error code call fault.getCode()
+                    //3087 loi email chua confirm
+                    hideProgressDialog();
+                    if (fault.getCode().equals("Server.Processing")) {
+                        MainActivity.start(context, false);
+                        finish();
+                        return;
+                    }
+                    ErrorHandling.BackendlessErrorCode(context, fault.getCode());
+                    Log.d("error myapp", fault.getCode());
+                }
+            }, true);
+        } else {
+            showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+        }
+
     }
-    private void showDialogForgotPassword(){
+
+    private void showDialogForgotPassword() {
         final Dialog dialog = new Dialog(this);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -161,22 +185,22 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 String userName = edUserName.getText().toString().trim();
-                if(userName.equals("")){
+                if (userName.equals("")) {
                     edUserName.setError(getString(R.string.fill_out_user_name));
-                }else{
+                } else {
                     Backendless.UserService.restorePassword(userName,
                             new AsyncCallback<Void>() {
                                 public void handleResponse(Void response) {
                                     // Backendless has completed the operation - an email has been sent to the user
                                     hideProgressDialog();
-                                    showNotifyDialog("Change password", getString(R.string.Email_sent),R.drawable.success);
+                                    showNotifyDialog("Change password", getString(R.string.Email_sent), R.drawable.success);
                                     dialog.dismiss();
                                 }
 
                                 public void handleFault(BackendlessFault fault) {
                                     // password revovery failed, to get the error code call fault.getCode()
                                     Log.d("error", fault.getMessage());
-                                    showNotifyDialog("Change password", "Changing password have not succeed",R.drawable.error);
+                                    showNotifyDialog("Change password", "Changing password have not succeed", R.drawable.error);
                                     dialog.dismiss();
                                 }
                             });
@@ -195,10 +219,10 @@ public class LoginActivity extends BaseActivity {
         sharedPrefsHelper.removeBELUser();
         sharedPrefsHelper.saveBELUser(currentBackendlessUser);
     }
-    private void deleteQBUser(){
+
+    private void deleteQBUser() {
         sharedPrefsHelper.removeQbUser();
     }
-
 
 
 }

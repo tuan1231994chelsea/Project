@@ -1,1 +1,1 @@
-include ':app', ':core', ':testtextchat', ':clientemployee'
+include ':app', ':core', ':clientemployee'

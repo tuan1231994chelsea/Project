@@ -10,9 +10,6 @@ import android.widget.ListView;
 import tuan.anh.giang.project.R;
 
 
-/**
- * QuickBlox team
- */
 public class SettingsFragment extends PreferenceFragment {
 
     @Override

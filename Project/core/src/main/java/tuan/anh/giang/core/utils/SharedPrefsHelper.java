@@ -25,7 +25,7 @@ public class SharedPrefsHelper {
     private static final String BEL_USER_IS_EMPLOYEE="bel_user_is_employee";
     private static final String BEL_USER_IS_ONLINE="bel_user_is_online";
     private static final String BEL_USER_TAGS="bel_user_tags";
-
+    private static final String LOAD_QUESTION_BY_STATUS = "load_question_by_status";
 
 
     private static SharedPrefsHelper instance;
@@ -36,7 +36,6 @@ public class SharedPrefsHelper {
         if (instance == null) {
             instance = new SharedPrefsHelper();
         }
-
         return instance;
     }
 
@@ -49,6 +48,10 @@ public class SharedPrefsHelper {
         if (sharedPreferences.contains(key)) {
             getEditor().remove(key).commit();
         }
+    }
+    // return status for question to load
+    public String getConditionLoadQuestion(){
+        return sharedPreferences.getString(LOAD_QUESTION_BY_STATUS,"");
     }
 
     public void save(String key, Object value) {

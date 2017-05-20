@@ -61,7 +61,7 @@ public class AnswerFragment extends Fragment {
     View view;
     private ProgressDialog progressDialog;
     Question question;
-    TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer;
+    TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer,tvLeaveQuestion;
     EditText edReply;
     LinearLayout layoutMoreAnswer;
     ImageView imgBack, imgMoreAnswer, imgUser, imgSend;
@@ -71,6 +71,7 @@ public class AnswerFragment extends Fragment {
     AnswerAdapter answerAdapter;
     DataQueryBuilder queryAnswer;
     public boolean isUpdateMain = false;
+    int checkHideProgress = 0, status=0;
 //    SwipeRefreshLayout refreshLayout;
 
 
@@ -81,12 +82,12 @@ public class AnswerFragment extends Fragment {
         listAnswer = new ArrayList<>();
         listLessAnswer = new ArrayList<>();
         question = (Question) getArguments().getSerializable("question");
+        status = question.getStatus();
         String whereclause = "Question[answers].objectId = '" + question.getObjectId() + "'";
         queryAnswer = DataQueryBuilder.create();
         queryAnswer.setWhereClause(whereclause);
         queryAnswer.setSortBy("created ASC");
         queryAnswer.setPageSize(30);
-
     }
 
     @Override
@@ -104,6 +105,7 @@ public class AnswerFragment extends Fragment {
         tvFullName = (TextView) view.findViewById(R.id.tv_full_name);
         tvQuestion = (TextView) view.findViewById(R.id.tv_question);
         tvCreated = (TextView) view.findViewById(R.id.tv_created);
+        tvLeaveQuestion = (TextView) view.findViewById(R.id.tv_leave_question);
         lvAnswer = (ListView) view.findViewById(R.id.lv_answer);
         imgSend = (ImageView) view.findViewById(R.id.img_send);
         edReply = (EditText) view.findViewById(R.id.ed_reply);
@@ -112,6 +114,23 @@ public class AnswerFragment extends Fragment {
         imgMoreAnswer = (ImageView) view.findViewById(R.id.img_more_answer);
         edReply.addTextChangedListener(new FragmentAnswerEditTextWatcher(edReply));
         lvAnswer.setVerticalScrollBarEnabled(false);
+        if(status!=2){
+            tvLeaveQuestion.post(new Runnable() {
+                @Override
+                public void run() {
+                    tvLeaveQuestion.setClickable(true);
+                }
+            });
+            tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.enable_leave_question));
+        }else{
+            tvLeaveQuestion.post(new Runnable() {
+                @Override
+                public void run() {
+                    tvLeaveQuestion.setClickable(false);
+                }
+            });
+            tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.disable_leave_question));
+        }
         tvFullName.setText((String) currentBackendlessUser.getProperty(getString(R.string.full_name)));
         tvQuestion.setText(question.getContent());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -123,7 +142,33 @@ public class AnswerFragment extends Fragment {
     }
 
     private void onClick() {
+        tvLeaveQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.disable_leave_question));
+                tvLeaveQuestion.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvLeaveQuestion.setClickable(false);
+                    }
+                });
+                question.setStatus(Consts.USER_LEAVE_QUESTION);
+                showProgressDialog(R.string.loading);
+                Backendless.Persistence.of(Question.class).save(question, new AsyncCallback<Question>() {
+                    @Override
+                    public void handleResponse(Question response) {
+                        isUpdateMain = true;
+                        hideProgressDialog();
+                        getActivity().onBackPressed();
+                    }
 
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+
+                    }
+                });
+            }
+        });
         lvAnswer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -226,7 +271,6 @@ public class AnswerFragment extends Fragment {
                             });
                             edReply.clearFocus();
                             edReply.setText("");
-                            hideProgressDialog();
                             scrollMyListViewToBottom();
                             Log.d("kiemtra", "so answers duoc add: " + response.getContent_answer());
                             // add relation with Question table
@@ -241,8 +285,8 @@ public class AnswerFragment extends Fragment {
                                                         @Override
                                                         public void handleResponse(Integer response) {
                                                             Log.d("kiemtra ", "add relation with users table" + response.toString());
-//                                                            updateListAnswer();
-
+                                                            checkHideProgress++;
+                                                            checkHideProgressDialog();
                                                         }
 
                                                         @Override
@@ -263,7 +307,16 @@ public class AnswerFragment extends Fragment {
                                 @Override
                                 public void handleResponse(Question response) {
                                     // set is_reply = true success
+                                    tvLeaveQuestion.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            tvLeaveQuestion.setClickable(true);
+                                        }
+                                    });
+                                    tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.enable_leave_question));
                                     isUpdateMain = true;
+                                    checkHideProgress++;
+                                    checkHideProgressDialog();
                                 }
 
                                 @Override
@@ -282,6 +335,12 @@ public class AnswerFragment extends Fragment {
             }
         });
 
+    }
+    private void checkHideProgressDialog(){
+        if(checkHideProgress == 2){
+            checkHideProgress = 0;
+            hideProgressDialog();
+        }
     }
 
     private void startChatWithEmployee(QBUser employee) {
@@ -371,15 +430,14 @@ public class AnswerFragment extends Fragment {
             progressDialog.setCanceledOnTouchOutside(false);
 
             // Disable the back button
-//            DialogInterface.OnKeyListener keyListener = new DialogInterface.OnKeyListener() {
-//                @Override
-//                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-//                    return keyCode == KeyEvent.KEYCODE_BACK;
-//                }
-//            };
-//            progressDialog.setOnKeyListener(keyListener);
+            DialogInterface.OnKeyListener keyListener = new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    return keyCode == KeyEvent.KEYCODE_BACK;
+                }
+            };
+            progressDialog.setOnKeyListener(keyListener);
         }
-
         progressDialog.setMessage(getString(messageId));
 
         progressDialog.show();

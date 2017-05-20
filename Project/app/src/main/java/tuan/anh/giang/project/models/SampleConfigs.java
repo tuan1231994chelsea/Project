@@ -7,11 +7,11 @@ public class SampleConfigs {
     public SampleConfigs() {
     }
 
-    @SerializedName("users_tag")
-    private String usersTag;
-
-    @SerializedName("users_password")
-    private String usersPassword;
+//    @SerializedName("users_tag")
+//    private String usersTag;
+//
+//    @SerializedName("users_password")
+//    private String usersPassword;
 
     @SerializedName("port")
     private int chatPort;
@@ -37,21 +37,21 @@ public class SampleConfigs {
     @SerializedName("allow_listen_network")
     private boolean allowListenNetwork;
 
-    public String getUsersTag() {
-        return usersTag;
-    }
-
-    public void setUsersTag(String usersTag) {
-        this.usersTag = usersTag;
-    }
-
-    public String getUsersPassword() {
-        return usersPassword;
-    }
-
-    public void setUsersPassword(String usersPassword) {
-        this.usersPassword = usersPassword;
-    }
+//    public String getUsersTag() {
+//        return usersTag;
+//    }
+//
+//    public void setUsersTag(String usersTag) {
+//        this.usersTag = usersTag;
+//    }
+//
+//    public String getUsersPassword() {
+//        return usersPassword;
+//    }
+//
+//    public void setUsersPassword(String usersPassword) {
+//        this.usersPassword = usersPassword;
+//    }
 
     public int getChatPort() {
         return chatPort;

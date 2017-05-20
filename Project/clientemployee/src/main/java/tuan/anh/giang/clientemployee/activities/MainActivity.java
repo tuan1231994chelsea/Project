@@ -30,10 +30,13 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.quickblox.auth.session.QBSessionManager;
+import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.core.helper.Utils;
+import com.quickblox.messages.services.SubscribeService;
+import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
@@ -53,6 +56,8 @@ import tuan.anh.giang.clientemployee.utils.PermissionsChecker;
 import tuan.anh.giang.clientemployee.utils.QBEntityCallbackImpl;
 import tuan.anh.giang.clientemployee.utils.UsersUtils;
 import tuan.anh.giang.clientemployee.utils.WebRtcSessionManager;
+import tuan.anh.giang.clientemployee.utils.chat.ChatHelper;
+import tuan.anh.giang.clientemployee.utils.qb.QbDialogHolder;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.Toaster;
 
@@ -444,7 +449,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     @Override
                     public void onError(QBResponseException e) {
                         if (e.getHttpStatusCode() == Consts.ERR_LOGIN_ALREADY_TAKEN_HTTP_STATUS) {
-                            signInCreatedUser(newUser, true);
+//                            signInCreatedUser(newUser, true);
                             Log.d("myapp", "error signUp qb user ERR_LOGIN_ALREADY_TAKEN_HTTP_STATUS ");
                         } else {
                             hideProgressDialog();
@@ -489,6 +494,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 currentQBUser = result;
                 currentQBUser.setPassword(Consts.DEFAULT_USER_PASSWORD);
                 startLoginService(currentQBUser);
+                userForSave = currentQBUser;
                 saveUserData(currentQBUser);
 //                if (deleteCurrentUser) {
 //                    removeAllUserData(result);
@@ -544,7 +550,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 Log.d("myapp", "login qb user to chat success");
                 Log.d("kiemtratime", "login to chat thanh cong");
 //                saveUserData(userForSave);
-                signInCreatedUser(currentQBUser, false);
+//                signInCreatedUser(currentQBUser, false);
             } else {
                 Toaster.longToast(getString(R.string.login_chat_login_error) + errorMessage);
             }
@@ -593,6 +599,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void logOut() {
         showProgressDialog(R.string.dlg_logout);
+        logOutChat();
         Backendless.UserService.logout(new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
@@ -607,6 +614,51 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 Log.d("error", fault.getMessage());
             }
         });
+    }
+    // logout chat va video call
+    private void logOutChat() {
+        unsubscribeFromPushes();
+        ChatHelper.getInstance().destroy();
+        QbDialogHolder.getInstance().clear();
+        startLogoutCommand();
+        UsersUtils.removeUserData(getApplicationContext());
+        final QBChatService chatService = QBChatService.getInstance();
+        boolean login = QBSessionManager.getInstance().getSessionParameters() != null;
+        boolean logintochat = chatService.isLoggedIn();
+
+        if (logintochat) {
+            //logout chat video chat
+            chatService.logout(new QBEntityCallback<Void>() {
+                @Override
+                public void onSuccess(Void aVoid, Bundle bundle) {
+                    int i = 0;
+                }
+
+                @Override
+                public void onError(QBResponseException e) {
+                }
+            });
+        }
+
+        if(login){
+            // logout user
+            QBUsers.signOut().performAsync(new QBEntityCallback<Void>() {
+                @Override
+                public void onSuccess(Void aVoid, Bundle bundle) {
+                    int i = 0;
+                }
+
+                @Override
+                public void onError(QBResponseException e) {
+                }
+            });
+        }
+    }
+    private void startLogoutCommand() {
+        CallService.logout(this);
+    }
+    private void unsubscribeFromPushes() {
+        SubscribeService.unSubscribeFromPushes(this);
     }
 
     @Override

@@ -10,8 +10,8 @@
     </style>
     <style name="ChatActivityTheme" parent="AppTheme">
         <item name="android:windowBackground">@color/background_chat_color</item>
-        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
-        <item name="android:actionBarTheme">@style/MyApp.ActionBarTheme</item>
+        <item name="actionBarStyle">@style/MyActionBarStyle</item>
+        <item name="actionBarTheme">@style/MyApp.ActionBarTheme</item>
 
     </style>
     <!-- Base application theme. -->
@@ -103,7 +103,7 @@
 
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">true</item>
+        <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorFB</item>

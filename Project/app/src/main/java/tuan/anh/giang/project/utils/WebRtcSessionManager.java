@@ -2,6 +2,7 @@ package tuan.anh.giang.project.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.util.Log;
 
 import com.quickblox.videochat.webrtc.QBRTCSession;
@@ -48,6 +49,17 @@ public class WebRtcSessionManager extends QBRTCClientSessionCallbacksImpl {
 
         if (currentSession == null){
             setCurrentSession(session);
+            PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+            boolean isScreenOn = pm.isScreenOn();
+//            Log.e("screen on.................................", ""+isScreenOn);
+            if(isScreenOn==false)
+            {
+                PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
+                wl.acquire(10000);
+                PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
+
+                wl_cpu.acquire(10000);
+            }
             Intent intent = new Intent(context, CallActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Consts.EXTRA_IS_INCOMING_CALL, true);

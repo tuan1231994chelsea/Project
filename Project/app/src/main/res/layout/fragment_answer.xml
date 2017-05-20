@@ -81,13 +81,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:paddingLeft="10dp">
 
                             <ImageView
+                                android:id="@+id/img_user_above"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_marginTop="10dp"
@@ -96,15 +96,27 @@
                                 android:tint="@color/colorFB" />
 
                             <TextView
+                                android:layout_toRightOf="@+id/img_user_above"
                                 android:id="@+id/tv_full_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
                                 android:text="Giang Anh Tuan"
                                 android:textColor="@color/full_name_color"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                                android:textStyle="bold"
+                                android:layout_toLeftOf="@+id/tv_leave_question"/>
+                            <TextView
+                                android:background="@drawable/enable_leave_question"
+                                android:textColor="@color/text_color"
+                                android:id="@+id/tv_leave_question"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Leave question"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="10dp"/>
+                        </RelativeLayout>
 
                         <TextView
                             android:id="@+id/tv_question"

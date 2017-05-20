@@ -66,6 +66,12 @@ public interface Consts {
     int WAIT_EMPLOYEE_REPLY = 0;
     int WAIT_USER_REPLY =1;
     int USER_LEAVE_QUESTION = 2;
+    String LOAD_QUESTION_BY_STATUS = "load_question_by_status";
+    String LOAD_ALL_QUESTION ="";
+    String CONDITION_WAIT_EMPLOYEE ="and status =0";
+    String CONDITION_WAIT_USER ="and status =1";
+    String CONDITION_USER_LEAVE_QUESTION ="and status =2";
+
     enum StartConversationReason {
         INCOME_CALL_FOR_ACCEPTION,
         OUTCOME_CALL_MADE

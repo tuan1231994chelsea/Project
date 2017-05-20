@@ -155,6 +155,15 @@
                     app:fab_colorPressed="@color/press_action_button_color"
                     app:fab_size="mini"
                     app:fab_icon="@drawable/ic_action_start_chat" />
+                <com.getbase.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/action_condition_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fab_colorNormal="@color/action_button_color"
+                    app:fab_title="Load question"
+                    app:fab_colorPressed="@color/press_action_button_color"
+                    app:fab_size="mini"
+                    app:fab_icon="@drawable/ic_magnify" />
 
             </com.getbase.floatingactionbutton.FloatingActionsMenu>
         </RelativeLayout>

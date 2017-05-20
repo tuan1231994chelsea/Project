@@ -1,7 +1,10 @@
 package tuan.anh.giang.project.fragments;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,6 +42,8 @@ public class NewQuestionFragment extends Fragment {
     EditText edContentQuestion;
     Button btnSubmit;
     public boolean isUpdateMain = false;
+    private ProgressDialog progressDialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +89,7 @@ public class NewQuestionFragment extends Fragment {
                     question.setUser(mainActivity.currentBackendlessUser);
                     question.setContent(contentQuestion);
                     question.setStatus(0);
+                    showProgressDialog(R.string.loading);
                     //save new question
                     Backendless.Persistence.save(question, new AsyncCallback<Question>() {
                         public void handleResponse(Question response) {
@@ -94,6 +100,7 @@ public class NewQuestionFragment extends Fragment {
                                         @Override
                                         public void handleResponse(Integer response) {
                                             isUpdateMain = true;
+                                            hideProgressDialog();
                                             getActivity().onBackPressed();
                                         }
 
@@ -114,6 +121,33 @@ public class NewQuestionFragment extends Fragment {
             }
         });
 
+    }
+    void showProgressDialog(@StringRes int messageId) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+
+            // Disable the back button
+            DialogInterface.OnKeyListener keyListener = new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    return keyCode == KeyEvent.KEYCODE_BACK;
+                }
+            };
+            progressDialog.setOnKeyListener(keyListener);
+        }
+        progressDialog.setMessage(getString(messageId));
+
+        progressDialog.show();
+
+    }
+
+    void hideProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     private void findViewById() {

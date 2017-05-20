@@ -5,10 +5,13 @@ import com.backendless.BackendlessUser;
 import java.io.Serializable;
 import java.util.Date;
 
+import weborb.service.ExcludeProperty;
+
 /**
  * Created by GIANG ANH TUAN on 04/05/2017.
  */
 
+@ExcludeProperty( propertyName = "serialVersionUID" )
 public class Answer implements Serializable{
     private Date created;
     private Date updated;

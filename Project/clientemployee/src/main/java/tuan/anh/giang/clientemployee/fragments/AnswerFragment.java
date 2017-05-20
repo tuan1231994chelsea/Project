@@ -111,36 +111,6 @@ public class AnswerFragment extends Fragment {
 
     private void onClick() {
 
-//        lvAnswer.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                BackendlessUser backendlessUser = null;
-//                if (tvMoreAnswer.getText().toString().equals(getString(R.string.view_all_answer))) {
-//                    backendlessUser = listLessAnswer.get(i).getUser();
-//                } else {
-//                    backendlessUser = listAnswer.get(i).getUser();
-//                }
-//                boolean userIsEmployee = (boolean) backendlessUser.getProperty(getString(R.string.is_employee));
-//                if (userIsEmployee) {
-//                    QBUser qbUser = new QBUser((String) backendlessUser.getProperty(getString(R.string.login)), Consts.DEFAULT_USER_PASSWORD);
-//                    qbUser.setId((Integer) backendlessUser.getProperty(getString(R.string.id_qb)));
-//                    qbUser.setFullName((String) backendlessUser.getProperty(getString(R.string.full_name)));
-//                    StringifyArrayList<String> tags = new StringifyArrayList<>();
-//                    tags.add((String) backendlessUser.getProperty(getString(R.string.tags)));
-//                    qbUser.setTags(tags);
-//                    startChatWithEmployee(qbUser);
-//                } else {
-//                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-//                    alertDialog.setTitle("")
-//                            .setIcon(R.drawable.error)
-//                            .setMessage(getString(R.string.user_not_employee))
-//                            .create()
-//                            .show();
-//                }
-//                return false;
-//            }
-//        });
         // có hiện click là có nhiều hơn 10 answers
         layoutMoreAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,7 +299,6 @@ public class AnswerFragment extends Fragment {
                     queryAnswer.prepareNextPage();
                     getAllListAnswer();
                 }
-
             }
 
             @Override
@@ -359,13 +328,6 @@ public class AnswerFragment extends Fragment {
             progressDialog.setCanceledOnTouchOutside(false);
 
             // Disable the back button
-//            DialogInterface.OnKeyListener keyListener = new DialogInterface.OnKeyListener() {
-//                @Override
-//                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-//                    return keyCode == KeyEvent.KEYCODE_BACK;
-//                }
-//            };
-//            progressDialog.setOnKeyListener(keyListener);
         }
 
         progressDialog.setMessage(getString(messageId));

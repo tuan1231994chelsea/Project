@@ -67,7 +67,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -94,11 +95,12 @@
 
             <Button
                 android:id="@+id/btn_submit"
-                android:layout_width="match_parent"
+                android:layout_width="314dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="right"
                 android:background="@drawable/background_submit"
                 android:text="Submit"
                 android:textColor="@color/white"
