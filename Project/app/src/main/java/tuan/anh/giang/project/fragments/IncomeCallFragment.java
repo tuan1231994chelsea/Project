@@ -42,9 +42,7 @@ import tuan.anh.giang.project.utils.RingtonePlayer;
 import tuan.anh.giang.project.utils.UsersUtils;
 import tuan.anh.giang.project.utils.WebRtcSessionManager;
 
-/**
- * QuickBlox team
- */
+
 public class IncomeCallFragment extends Fragment implements Serializable, View.OnClickListener {
 
     private static final String TAG = IncomeCallFragment.class.getSimpleName();

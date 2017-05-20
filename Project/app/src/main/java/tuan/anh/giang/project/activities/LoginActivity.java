@@ -37,9 +37,6 @@ import tuan.anh.giang.project.utils.chat.ChatHelper;
 
 import static tuan.anh.giang.project.activities.MainActivity.currentBackendlessUser;
 
-/**
- * Created by GIANG ANH TUAN on 23/04/2017.
- */
 
 public class LoginActivity extends BaseActivity {
     Context context;

@@ -7,10 +7,6 @@ import tuan.anh.giang.core.utils.NotificationUtils;
 import tuan.anh.giang.core.utils.ResourceUtils;
 
 
-/**
- * Created by GIANG ANH TUAN on 17/05/2017.
- */
-
 public class GcmPushListenerServiceForChat extends CoreGcmPushListenerService {
     private static final int NOTIFICATION_ID = 1;
     @Override

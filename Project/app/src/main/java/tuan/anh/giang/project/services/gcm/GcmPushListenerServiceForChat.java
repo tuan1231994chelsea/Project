@@ -6,9 +6,7 @@ import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.activities.SplashActivity;
 
-/**
- * Created by GIANG ANH TUAN on 17/05/2017.
- */
+
 
 public class GcmPushListenerServiceForChat extends CoreGcmPushListenerService {
     private static final int NOTIFICATION_ID = 1;

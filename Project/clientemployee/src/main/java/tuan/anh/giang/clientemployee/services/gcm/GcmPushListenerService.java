@@ -10,9 +10,6 @@ import tuan.anh.giang.clientemployee.services.CallService;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.core.utils.constant.GcmConsts;
 
-/**
- * Created by tereha on 13.05.16.
- */
 public class GcmPushListenerService extends GcmListenerService {
     private static final String TAG = GcmPushListenerService.class.getSimpleName();
 

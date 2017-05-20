@@ -8,9 +8,7 @@ import org.webrtc.CameraVideoCapturer;
 
 import tuan.anh.giang.project.activities.CallActivity;
 
-/**
- * Created by tereha on 23.05.16.
- */
+
 public interface ConversationFragmentCallbackListener {
 
     void addTCClientConnectionCallback(QBRTCSessionStateCallback clientConnectionCallbacks);

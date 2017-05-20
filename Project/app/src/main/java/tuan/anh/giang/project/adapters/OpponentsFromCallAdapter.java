@@ -21,9 +21,7 @@ import java.util.List;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.utils.QBRTCSessionUtils;
 
-/**
- * QuickBlox team
- */
+
 public class OpponentsFromCallAdapter extends RecyclerView.Adapter<OpponentsFromCallAdapter.ViewHolder> {
 
     private static final String TAG = OpponentsFromCallAdapter.class.getSimpleName();

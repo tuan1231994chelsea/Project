@@ -22,9 +22,6 @@ import java.util.List;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.entities.Question;
 
-/**
- * Created by GIANG ANH TUAN on 03/05/2017.
- */
 
 public class QuestionAdapter extends ArrayAdapter<Question> {
     Activity context;

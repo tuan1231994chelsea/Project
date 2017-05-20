@@ -20,9 +20,6 @@ import java.util.List;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.entities.Answer;
 
-/**
- * Created by GIANG ANH TUAN on 04/05/2017.
- */
 
 public class AnswerAdapter extends ArrayAdapter<Answer> {
     Activity context;

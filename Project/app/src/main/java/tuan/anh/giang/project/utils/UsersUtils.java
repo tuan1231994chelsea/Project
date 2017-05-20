@@ -11,9 +11,7 @@ import java.util.List;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 import tuan.anh.giang.project.db.QbUsersDbManager;
 
-/**
- * Created by tereha on 09.06.16.
- */
+
 public class UsersUtils {
 
     private static SharedPrefsHelper sharedPrefsHelper;

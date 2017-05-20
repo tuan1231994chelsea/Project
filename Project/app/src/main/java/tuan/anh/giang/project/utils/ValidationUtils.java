@@ -9,9 +9,7 @@ import java.util.regex.Pattern;
 
 import tuan.anh.giang.project.R;
 
-/**
- * Created by tereha on 03.06.16.
- */
+
 public class ValidationUtils {
 
     private static boolean isEnteredTextValid(Context context, EditText editText, int resFieldName, int maxLength, boolean checkName) {

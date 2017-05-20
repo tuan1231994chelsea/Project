@@ -6,9 +6,7 @@ import android.widget.Toast;
 
 import tuan.anh.giang.project.R;
 
-/**
- * Created by GIANG ANH TUAN on 21/04/2017.
- */
+
 
 public class ErrorHandling {
     public static void BackendlessErrorCode(Context context, String ErrorCode){

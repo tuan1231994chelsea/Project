@@ -34,9 +34,6 @@ import tuan.anh.giang.project.entities.Question;
 
 import static tuan.anh.giang.project.activities.MainActivity.mainActivity;
 
-/**
- * Created by GIANG ANH TUAN on 08/05/2017.
- */
 
 public class NewQuestionFragment extends Fragment {
     View view;

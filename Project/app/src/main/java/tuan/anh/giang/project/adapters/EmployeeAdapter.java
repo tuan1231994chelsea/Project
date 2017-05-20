@@ -26,10 +26,6 @@ import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.utils.Consts;
 
 
-/**
- * Created by GIANG ANH TUAN on 11/05/2017.
- */
-
 public class EmployeeAdapter extends ArrayAdapter<BackendlessUser> {
     Activity context;
     BackendlessUser selectedItem;

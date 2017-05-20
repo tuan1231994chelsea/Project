@@ -63,9 +63,6 @@ import tuan.anh.giang.project.utils.SettingsUtil;
 import tuan.anh.giang.project.utils.UsersUtils;
 import tuan.anh.giang.project.utils.WebRtcSessionManager;
 
-/**
- * QuickBlox team
- */
 public class CallActivity extends BaseActivity implements QBRTCClientSessionCallbacks, QBRTCSessionStateCallback, QBRTCSignalingCallback,
         OnCallEventsController, IncomeCallFragmentCallbackListener, ConversationFragmentCallbackListener, NetworkConnectionChecker.OnConnectivityChangedListener, ScreenShareFragment.OnSharingEvents {
 

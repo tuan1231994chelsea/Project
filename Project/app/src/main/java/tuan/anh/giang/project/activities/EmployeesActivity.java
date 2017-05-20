@@ -43,9 +43,6 @@ import tuan.anh.giang.project.utils.PushNotificationSender;
 import tuan.anh.giang.project.utils.WebRtcSessionManager;
 import tuan.anh.giang.project.utils.chat.ChatHelper;
 
-/**
- * Created by GIANG ANH TUAN on 12/05/2017.
- */
 
 public class EmployeesActivity extends BaseActivity {
     public static final String EXTRA_QB_USERS = "qb_users";

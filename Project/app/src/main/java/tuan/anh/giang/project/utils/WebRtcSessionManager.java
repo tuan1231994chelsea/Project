@@ -12,9 +12,7 @@ import tuan.anh.giang.project.activities.CallActivity;
 import tuan.anh.giang.project.activities.EmployeesActivity;
 import tuan.anh.giang.project.activities.MainActivity;
 
-/**
- * Created by tereha on 16.05.16.
- */
+
 public class WebRtcSessionManager extends QBRTCClientSessionCallbacksImpl {
     private static final String TAG = WebRtcSessionManager.class.getSimpleName();
 

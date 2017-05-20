@@ -12,9 +12,6 @@ import tuan.anh.giang.clientemployee.db.QbUsersDbManager;
 import tuan.anh.giang.core.utils.SharedPrefsHelper;
 
 
-/**
- * Created by tereha on 09.06.16.
- */
 public class UsersUtils {
 
     private static SharedPrefsHelper sharedPrefsHelper;

@@ -29,9 +29,7 @@ import static tuan.anh.giang.project.activities.MainActivity.mainActivity;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.utils.ErrorHandling;
 
-/**
- * Created by GIANG ANH TUAN on 10/05/2017.
- */
+
 
 public class UserInforFragment extends Fragment {
     View view;

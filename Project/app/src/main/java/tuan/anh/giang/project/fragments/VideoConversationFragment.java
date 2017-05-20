@@ -58,9 +58,7 @@ import tuan.anh.giang.project.adapters.OpponentsFromCallAdapter;
 import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 
 
-/**
- * QuickBlox team
- */
+
 public class VideoConversationFragment extends BaseConversationFragment implements Serializable, QBRTCClientVideoTracksCallbacks,
         QBRTCSessionStateCallback, QBRTCSessionEventsCallback, OpponentsFromCallAdapter.OnAdapterEventListener {
 
