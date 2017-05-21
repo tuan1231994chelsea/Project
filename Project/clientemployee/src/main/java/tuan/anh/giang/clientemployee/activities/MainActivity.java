@@ -326,10 +326,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         lvOldQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Question clickQuestion = listOldQuestion.get(i);
                 currentFragment = new AnswerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("question", listOldQuestion.get(i));
+                Question question = new Question();
+                question.setStatus(clickQuestion.getStatus());
+                question.setContent(clickQuestion.getContent());
+                question.setCreated(clickQuestion.getCreated());
+                question.setObjectId(clickQuestion.getObjectId());
+                question.setUpdated(clickQuestion.getUpdated());
+                bundle.putSerializable("question", question);
+                bundle.putString("FullName", (String) clickQuestion.getUser().getProperty(getString(R.string.full_name)));
                 currentFragment.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.root_view_main_activity, currentFragment)
                         .addToBackStack(null)

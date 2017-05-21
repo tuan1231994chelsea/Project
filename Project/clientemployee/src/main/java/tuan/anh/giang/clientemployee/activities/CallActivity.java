@@ -318,18 +318,18 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
 
             @Override
             public void onCameraFreezed(String s) {
-                showToast("Camera freezed: " + s);
+//                showToast("Camera freezed: " + s);
                 hangUpCurrentSession();
             }
 
             @Override
             public void onCameraOpening(String s) {
-                showToast("Camera aOpening: " + s);
+//                showToast("Camera aOpening: " + s);
             }
 
             @Override
             public void onFirstFrameAvailable() {
-                showToast("onFirstFrameAvailable: ");
+//                showToast("onFirstFrameAvailable: ");
             }
 
             @Override
@@ -620,7 +620,7 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
             QBUser participant = dbManager.getUserById(userID);
             final String participantName = participant != null ? participant.getFullName() : String.valueOf(userID);
 
-            showToast("User " + participantName + " " + getString(R.string.text_status_hang_up) + " conversation");
+//            showToast("User " + participantName + " " + getString(R.string.text_status_hang_up) + " conversation");
         }
     }
 

@@ -18,7 +18,6 @@ public class Question implements Serializable{
     private int status;
     private Date created;
     private Date updated;
-    @ExcludeProperty( propertyName="_reply" )
 
     public Question() {
     }

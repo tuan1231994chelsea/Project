@@ -70,6 +70,7 @@ public class AnswerFragment extends Fragment {
     DataQueryBuilder queryAnswer;
     public boolean isUpdateMain = false;
     int checkHideProgress = 0, status = 0;
+    String fullName = "";
 //    SwipeRefreshLayout refreshLayout;
 
 
@@ -80,6 +81,7 @@ public class AnswerFragment extends Fragment {
         listAnswer = new ArrayList<>();
         listLessAnswer = new ArrayList<>();
         question = (Question) getArguments().getSerializable("question");
+        fullName = getArguments().getString("FullName");
         status = question.getStatus();
         String whereclause = "Question[answers].objectId = '" + question.getObjectId() + "'";
         queryAnswer = DataQueryBuilder.create();

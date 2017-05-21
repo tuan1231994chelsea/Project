@@ -77,12 +77,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final long ON_ITEM_CLICK_DELAY = TimeUnit.SECONDS.toMillis(10);
-    private OpponentsAdapter opponentsAdapter;
-    private ListView opponentsListView;
-    private ArrayList<QBUser> currentOpponentsList;
-    private QbUsersDbManager dbManager;
-    private boolean isRunForCall;
-    private WebRtcSessionManager webRtcSessionManager;
     private QBUser userForSave;
     private PermissionsChecker checker;
     private ArrayList<BackendlessUser> employeeList;
@@ -127,7 +121,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void getCurrentBELUser() {
         showProgressDialog(R.string.loading);
         currentBackendlessUser = Backendless.UserService.CurrentUser();
-        if(ConnectivityUtils.isNetworkConnected()){
+        if (ConnectivityUtils.isNetworkConnected()) {
             if (currentBackendlessUser == null) {
                 Backendless.UserService.isValidLogin(new AsyncCallback<Boolean>() {
                     @Override
@@ -178,7 +172,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 signInCreatedUser(currentQBUser, false);
                 getOldQuestionFirst();
             }
-        }else{
+        } else {
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -186,7 +180,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // first load old question, load first page
     private void getOldQuestionFirst() {
-        if(ConnectivityUtils.isNetworkConnected()){
+        if (ConnectivityUtils.isNetworkConnected()) {
             isAllOfQuestion = false;
             String whereclause = "";
             loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
@@ -217,7 +211,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Log.d("myapp", fault.getMessage());
                 }
             });
-        }else{
+        } else {
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -228,7 +222,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * update first page question
      */
     private void updateOldQuestion() {
-        if(ConnectivityUtils.isNetworkConnected()){
+        if (ConnectivityUtils.isNetworkConnected()) {
             isAllOfQuestion = false;
             showProgressDialog(R.string.refreshing_your_question);
             String whereclause = "";
@@ -263,7 +257,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Log.d("myapp", fault.getMessage());
                 }
             });
-        }else{
+        } else {
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -271,7 +265,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // load more 1 page question
     private void loadMoreQuestion() {
-        if(ConnectivityUtils.isNetworkConnected()){
+        if (ConnectivityUtils.isNetworkConnected()) {
             showProgressDialog(R.string.loading_more_questions);
             String whereclause = "";
             loadQuestionByStatus = sharedPrefsHelper.getConditionLoadQuestion();
@@ -303,7 +297,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Log.d("myapp", fault.getMessage());
                 }
             });
-        }else{
+        } else {
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -363,10 +357,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         lvOldQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Question clickQuestion = listOldQuestion.get(i);
                 currentFragment = new AnswerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("question", listOldQuestion.get(i));
+                Question question = new Question();
+                question.setStatus(clickQuestion.getStatus());
+                question.setContent(clickQuestion.getContent());
+                question.setCreated(clickQuestion.getCreated());
+                question.setObjectId(clickQuestion.getObjectId());
+                question.setUpdated(clickQuestion.getUpdated());
+                bundle.putSerializable("question", question);
+                bundle.putString("FullName", (String) clickQuestion.getUser().getProperty(getString(R.string.full_name)));
                 currentFragment.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.root_view_main_activity, currentFragment)
                         .addToBackStack(null)
@@ -627,7 +628,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
-        questionAdapter.notifyDataSetChanged();
+//        questionAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -734,7 +735,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             });
         }
 
-        if(login){
+        if (login) {
             // logout user
             QBUsers.signOut().performAsync(new QBEntityCallback<Void>() {
                 @Override

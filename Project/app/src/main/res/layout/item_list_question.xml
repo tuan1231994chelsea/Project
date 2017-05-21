@@ -3,18 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
     <RelativeLayout
-        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/img_user"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="fitXY"
             android:layout_alignParentLeft="true"
+            android:scaleType="fitXY"
             android:src="@drawable/account_circle"
             android:tint="@color/colorFB" />
 
@@ -26,8 +27,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/message"
             android:scaleType="fitXY"
+            android:src="@drawable/message"
             android:tint="@color/colorFB" />
 
         <TextView
@@ -41,6 +42,7 @@
             android:textColor="@color/time_color"
             android:textSize="14sp"
             android:textStyle="italic" />
+
     </RelativeLayout>
 
     <TextView
@@ -51,18 +53,21 @@
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingTop="10dp"
-        android:textColor="@color/text_color"
         android:text="This is a question"
+        android:textColor="@color/text_color"
         android:textSize="16sp" />
+
     <View
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
+        android:layout_marginTop="5dp"
         android:background="@color/border_color_below" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:background="@color/widen_border_color" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"

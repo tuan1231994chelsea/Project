@@ -67,6 +67,7 @@ public class AnswerFragment extends Fragment {
     DataQueryBuilder queryAnswer;
     public boolean isUpdateMain = false;
     int checkHideProgress = 0;
+    String fullName= "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class AnswerFragment extends Fragment {
         listAnswer = new ArrayList<>();
         listLessAnswer = new ArrayList<>();
         question = (Question) getArguments().getSerializable("question");
+        fullName = getArguments().getString("FullName");
         String whereclause = "Question[answers].objectId = '" + question.getObjectId() + "'";
         queryAnswer = DataQueryBuilder.create();
         queryAnswer.setWhereClause(whereclause);
@@ -108,7 +110,7 @@ public class AnswerFragment extends Fragment {
         imgMoreAnswer = (ImageView) view.findViewById(R.id.img_more_answer);
         edReply.addTextChangedListener(new FragmentAnswerEditTextWatcher(edReply));
         lvAnswer.setVerticalScrollBarEnabled(false);
-        tvFullName.setText((String) question.getUser().getProperty(getString(R.string.full_name)));
+        tvFullName.setText(fullName);
         tvQuestion.setText(question.getContent());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         tvCreated.setText("● " + sdf.format(question.getCreated()));

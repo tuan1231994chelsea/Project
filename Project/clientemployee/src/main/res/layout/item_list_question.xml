@@ -30,17 +30,30 @@
             android:scaleType="fitXY"
             android:tint="@color/colorFB" />
 
-        <TextView
-            android:id="@+id/tv_created"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/img_user"
-            android:text="03.05.2017 GMT 7:00:00"
-            android:textColor="@color/time_color"
-            android:textSize="14sp"
-            android:textStyle="italic" />
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_full_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giang Anh Tuan"
+                android:textStyle="bold"
+                android:textColor="@color/full_name_color" />
+            <TextView
+                android:paddingTop="5dp"
+                android:id="@+id/tv_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="03.05.2017 GMT 7:00:00"
+                android:textColor="@color/time_color"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+        </LinearLayout>
     </RelativeLayout>
 
     <TextView

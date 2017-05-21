@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.backendless.BackendlessUser;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +31,17 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
     ArrayList<Question> objects;
 //    private OnScrollToItemQuestionListener listener;
 
-    public QuestionAdapter( Activity context,  int resource,  ArrayList<Question> objects) {
+    public QuestionAdapter(Activity context, int resource, ArrayList<Question> objects) {
         super(context, resource, objects);
         this.context = context;
-        this.resource =resource;
-        this.objects=objects;
+        this.resource = resource;
+        this.objects = objects;
     }
 
     @Override
-    public View getView(int position,  View convertView,  ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = this.context.getLayoutInflater();
-        View row = inflater.inflate(R.layout.item_list_question,null);
+        View row = inflater.inflate(R.layout.item_list_question, null);
 
         ImageView imgUser = (ImageView) row.findViewById(R.id.img_user);
         ImageView imgReply = (ImageView) row.findViewById(R.id.img_reply);
@@ -47,19 +49,19 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         TextView tvContent = (TextView) row.findViewById(R.id.tv_content);
 
         Question question = this.objects.get(position);
-        if(question != null){
-            if(question.getStatus()==0){
+        if (question != null) {
+            if (question.getStatus() == 0) {
                 imgReply.setImageResource(R.drawable.message);
-                imgReply.setColorFilter(ContextCompat.getColor(context,R.color.colorFB));
-            }else if(question.getStatus()==1){
+                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.colorFB));
+            } else if (question.getStatus() == 1) {
                 imgReply.setImageResource(R.drawable.message);
-                imgReply.setColorFilter(ContextCompat.getColor(context,R.color.red));
-            }else{
+                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.red));
+            } else {
                 imgReply.setImageResource(R.drawable.success);
-                imgReply.setColorFilter(ContextCompat.getColor(context,R.color.action_button_color));
+                imgReply.setColorFilter(ContextCompat.getColor(context, R.color.action_button_color));
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            tvCreated.setText("● "+sdf.format(question.getCreated()));
+            tvCreated.setText("● " + sdf.format(question.getCreated()));
             tvContent.setText(question.getContent());
         }
 

@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.backendless.BackendlessUser;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         ImageView imgReply = (ImageView) row.findViewById(R.id.img_reply);
         TextView tvCreated = (TextView) row.findViewById(R.id.tv_created);
         TextView tvContent = (TextView) row.findViewById(R.id.tv_content);
-
+        TextView tvFullName = (TextView) row.findViewById(R.id.tv_full_name);
         Question question = this.objects.get(position);
         if(question !=null){
             if (question.getStatus() == 0) {
@@ -47,6 +49,10 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
             }else{
                 imgReply.setImageResource(R.drawable.success);
                 imgReply.setColorFilter(ContextCompat.getColor(context, R.color.action_button_color));
+            }
+            BackendlessUser user = question.getUser();
+            if(user != null){
+                tvFullName.setText((String) user.getProperty(context.getString(R.string.full_name)));
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             tvCreated.setText("● " + sdf.format(question.getCreated()));
