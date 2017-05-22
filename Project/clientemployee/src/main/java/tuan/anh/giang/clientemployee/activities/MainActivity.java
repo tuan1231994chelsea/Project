@@ -691,7 +691,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void handleResponse(Void response) {
                 // user has been logged out.
-                sharedPrefsHelper.removeBELUser();
                 LoginActivity.start(mainActivity);
                 finish();
             }
