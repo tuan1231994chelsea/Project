@@ -262,7 +262,7 @@
     <string name="undefined_er">Undefined this error</string>
     <string name="er_3087">Unable to login. User email is not confirmed.</string>
     <string name="er_1155">Duplicate entry(email already exists)</string>
-    <string name="er_3003">Invalid login or password</string>
+    <string name="er_3003">Invalid username or password</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -272,6 +272,7 @@
     <string name="loading_answer">Loading answers </string>
     <string name="loading_more_answer">Loading more answers </string>
     <string name="loading_more_questions">Loading more questions </string>
+    <string name="cant_screen_share">This feature is only available for API version 21 or later</string>
 
     <!-- fragment answer-->
     <string name="view_all_answer">View all answers</string>

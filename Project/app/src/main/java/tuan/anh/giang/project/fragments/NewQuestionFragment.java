@@ -106,18 +106,20 @@ public class NewQuestionFragment extends Fragment {
 
                                             @Override
                                             public void handleFault(BackendlessFault fault) {
-
+                                                hideProgressDialog();
                                             }
                                         });
 
                             }
 
                             public void handleFault(BackendlessFault fault) {
+                                hideProgressDialog();
                                 // an error has occurred, the error code can be retrieved with fault.getCode()
                             }
                         });
                     }
                 } else {
+                    hideProgressDialog();
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                     alertDialog.setTitle("")
                             .setMessage(getActivity().getString(R.string.no_internet_connection))

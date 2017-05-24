@@ -733,6 +733,7 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
     @Override
     public void onStartScreenSharing() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            showNotifyDialog("",getString(R.string.cant_screen_share),R.drawable.error);
             return;
         }
         QBRTCScreenCapturer.requestPermissions(CallActivity.this);

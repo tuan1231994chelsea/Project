@@ -165,10 +165,11 @@ public class AnswerFragment extends Fragment {
 
                         @Override
                         public void handleFault(BackendlessFault fault) {
-
+                            hideProgressDialog();
                         }
                     });
                 } else {
+                    hideProgressDialog();
                     showAlertMessage(getString(R.string.no_internet_connection));
                 }
 
@@ -297,6 +298,7 @@ public class AnswerFragment extends Fragment {
 
                                                             @Override
                                                             public void handleFault(BackendlessFault fault) {
+                                                                hideProgressDialog();
                                                                 Log.d("kiemtra", "add relation with question table " + fault.getMessage());
                                                             }
                                                         });
@@ -304,7 +306,7 @@ public class AnswerFragment extends Fragment {
 
                                             @Override
                                             public void handleFault(BackendlessFault fault) {
-
+                                                hideProgressDialog();
                                             }
                                         });
                                 //update object question
@@ -327,18 +329,18 @@ public class AnswerFragment extends Fragment {
 
                                     @Override
                                     public void handleFault(BackendlessFault fault) {
-
+                                        hideProgressDialog();
                                     }
                                 });
                             }
-
-
                             public void handleFault(BackendlessFault fault) {
+                                hideProgressDialog();
                                 // an error has occurred, the error code can be retrieved with fault.getCode()
                             }
                         });
                     }
                 } else {
+                    hideProgressDialog();
                     showAlertMessage(getString(R.string.no_internet_connection));
                 }
             }
@@ -424,14 +426,13 @@ public class AnswerFragment extends Fragment {
 
                 @Override
                 public void handleFault(BackendlessFault fault) {
-
+                    hideProgressDialog();
                 }
             });
         } else {
+            hideProgressDialog();
             showAlertMessage(getString(R.string.no_internet_connection));
         }
-
-
     }
 
 

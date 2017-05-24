@@ -124,6 +124,7 @@ public class LoginActivity extends BaseActivity {
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
+                                hideProgressDialog();
                                 Log.d("error", fault.getMessage());
                             }
                         });
@@ -147,6 +148,7 @@ public class LoginActivity extends BaseActivity {
                 }
             }, true);
         } else {
+            hideProgressDialog();
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -185,22 +187,28 @@ public class LoginActivity extends BaseActivity {
                 if (userName.equals("")) {
                     edUserName.setError(getString(R.string.fill_out_user_name));
                 } else {
-                    Backendless.UserService.restorePassword(userName,
-                            new AsyncCallback<Void>() {
-                                public void handleResponse(Void response) {
-                                    // Backendless has completed the operation - an email has been sent to the user
-                                    hideProgressDialog();
-                                    showNotifyDialog("Change password", getString(R.string.Email_sent), R.drawable.success);
-                                    dialog.dismiss();
-                                }
+                    if (ConnectivityUtils.isNetworkConnected()) {
+                        Backendless.UserService.restorePassword(userName,
+                                new AsyncCallback<Void>() {
+                                    public void handleResponse(Void response) {
+                                        // Backendless has completed the operation - an email has been sent to the user
+                                        hideProgressDialog();
+                                        showNotifyDialog("Change password", getString(R.string.Email_sent), R.drawable.success);
+                                        dialog.dismiss();
+                                    }
 
-                                public void handleFault(BackendlessFault fault) {
-                                    // password revovery failed, to get the error code call fault.getCode()
-                                    Log.d("error", fault.getMessage());
-                                    showNotifyDialog("Change password", "Changing password have not succeed", R.drawable.error);
-                                    dialog.dismiss();
-                                }
-                            });
+                                    public void handleFault(BackendlessFault fault) {
+                                        // password revovery failed, to get the error code call fault.getCode()
+                                        Log.d("error", fault.getMessage());
+                                        hideProgressDialog();
+                                        showNotifyDialog("Change password", "Changing password have not succeed", R.drawable.error);
+                                        dialog.dismiss();
+                                    }
+                                });
+                    } else {
+                        hideProgressDialog();
+                        showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+                    }
                 }
             }
         });

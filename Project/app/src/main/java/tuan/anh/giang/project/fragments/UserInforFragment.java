@@ -26,9 +26,9 @@ import com.quickblox.users.model.QBUser;
 import static tuan.anh.giang.project.activities.MainActivity.currentBackendlessUser;
 import static tuan.anh.giang.project.activities.MainActivity.mainActivity;
 
+import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.utils.ErrorHandling;
-
 
 
 public class UserInforFragment extends Fragment {
@@ -68,72 +68,85 @@ public class UserInforFragment extends Fragment {
 
     private void onClick() {
         // change password by send email
+
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgressDialog("Updating password");
-                Backendless.UserService.restorePassword(currentBackendlessUser.getProperty(getString(R.string.user_name)).toString(),
-                        new AsyncCallback<Void>() {
-                            public void handleResponse(Void response) {
-                                // Backendless has completed the operation - an email has been sent to the user
-                                hideProgressDialog();
-                                showNotifyDialog("Change password", getString(R.string.Email_sent),R.drawable.success);
-                            }
+                if (ConnectivityUtils.isNetworkConnected()) {
+                    showProgressDialog("Updating password");
+                    Backendless.UserService.restorePassword(currentBackendlessUser.getProperty(getString(R.string.user_name)).toString(),
+                            new AsyncCallback<Void>() {
+                                public void handleResponse(Void response) {
+                                    // Backendless has completed the operation - an email has been sent to the user
+                                    hideProgressDialog();
+                                    showNotifyDialog("Change password", getString(R.string.Email_sent), R.drawable.success);
+                                }
 
-                            public void handleFault(BackendlessFault fault) {
-                                // password revovery failed, to get the error code call fault.getCode()
-                                Log.d("error", fault.getMessage());
-                            }
-                        });
+                                public void handleFault(BackendlessFault fault) {
+                                    // password revovery failed, to get the error code call fault.getCode()
+                                    hideProgressDialog();
+                                    Log.d("error", fault.getMessage());
+                                }
+                            });
+                } else {
+                    hideProgressDialog();
+                    showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
+                }
             }
         });
         btnUpdateInfor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (btnUpdateInfor.getText().equals(getString(R.string.Edit_Infor))) {
-                    // thuc hien sua thong tin
-                    btnUpdateInfor.setText(getString(R.string.Complete_Update_Infor));
-                    edEmail.setFocusableInTouchMode(true);
-                    edEmail.setFocusable(true);
-                    edFullName.setFocusableInTouchMode(true);
-                    edFullName.setFocusable(true);
-                    edFullName.requestFocus();
-                } else {
-                    if (checkFillOut()) {
-                        edEmail.setFocusable(false);
-                        edFullName.setFocusable(false);
-                        BackendlessUser user = currentBackendlessUser;
-                        user.setEmail(edEmail.getText().toString());
-                        user.setProperty(getString(R.string.full_name), edFullName.getText().toString());
-                        showProgressDialog(R.string.updating);
-                        Backendless.Data.of(BackendlessUser.class).save(user, new AsyncCallback<BackendlessUser>() {
-                            @Override
-                            public void handleResponse(BackendlessUser response) {
-                                hideProgressDialog();
-                                Backendless.UserService.setCurrentUser(response);
-                                currentBackendlessUser = response;
-                                showNotifyDialog("Update Information","Your information has been updated",R.drawable.success);
-                                updateUserInDb();
-                                btnUpdateInfor.setText(getString(R.string.Edit_Infor));
-                            }
+                if (ConnectivityUtils.isNetworkConnected()) {
+                    if (btnUpdateInfor.getText().equals(getString(R.string.Edit_Infor))) {
+                        // thuc hien sua thong tin
+                        btnUpdateInfor.setText(getString(R.string.Complete_Update_Infor));
+                        edEmail.setFocusableInTouchMode(true);
+                        edEmail.setFocusable(true);
+                        edFullName.setFocusableInTouchMode(true);
+                        edFullName.setFocusable(true);
+                        edFullName.requestFocus();
+                    } else {
+                        if (checkFillOut()) {
+                            edEmail.setFocusable(false);
+                            edFullName.setFocusable(false);
+                            BackendlessUser user = currentBackendlessUser;
+                            user.setEmail(edEmail.getText().toString());
+                            user.setProperty(getString(R.string.full_name), edFullName.getText().toString());
+                            showProgressDialog(R.string.updating);
+                            Backendless.Data.of(BackendlessUser.class).save(user, new AsyncCallback<BackendlessUser>() {
+                                @Override
+                                public void handleResponse(BackendlessUser response) {
+                                    hideProgressDialog();
+                                    Backendless.UserService.setCurrentUser(response);
+                                    currentBackendlessUser = response;
+                                    showNotifyDialog("Update Information", "Your information has been updated", R.drawable.success);
+                                    updateUserInDb();
+                                    btnUpdateInfor.setText(getString(R.string.Edit_Infor));
+                                }
 
-                            @Override
-                            public void handleFault(BackendlessFault fault) {
-                                ErrorHandling.BackendlessErrorCode(getActivity(), fault.getCode());
-                            }
-                        });
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    hideProgressDialog();
+                                    ErrorHandling.BackendlessErrorCode(getActivity(), fault.getCode());
+                                }
+                            });
+                        }
                     }
-
+                } else {
+                    hideProgressDialog();
+                    showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
                 }
             }
         });
     }
-    private void updateUserInDb(){
+
+    private void updateUserInDb() {
         // update bel user
-        mainActivity.sharedPrefsHelper.save("bel_user_full_name",currentBackendlessUser.getProperty(getString(R.string.full_name)));
-        mainActivity.sharedPrefsHelper.save("bel_user_email",currentBackendlessUser.getProperty(getString(R.string.email)));
+        mainActivity.sharedPrefsHelper.save("bel_user_full_name", currentBackendlessUser.getProperty(getString(R.string.full_name)));
+        mainActivity.sharedPrefsHelper.save("bel_user_email", currentBackendlessUser.getProperty(getString(R.string.email)));
         // update Qb user
-        mainActivity.sharedPrefsHelper.save("qb_user_full_name",currentBackendlessUser.getProperty(getString(R.string.full_name)));
+        mainActivity.sharedPrefsHelper.save("qb_user_full_name", currentBackendlessUser.getProperty(getString(R.string.full_name)));
 
     }
 
@@ -162,7 +175,8 @@ public class UserInforFragment extends Fragment {
         progressDialog.show();
 
     }
-    void showProgressDialog( String message) {
+
+    void showProgressDialog(String message) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setIndeterminate(true);

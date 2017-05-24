@@ -148,7 +148,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                                     @Override
                                     public void handleFault(BackendlessFault fault) {
-
+                                        hideProgressDialog();
                                     }
                                 });
                             }
@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-
+                        hideProgressDialog();
                     }
                 });
             } else {
@@ -173,6 +173,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 getOldQuestionFirst();
             }
         } else {
+            hideProgressDialog();
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -209,9 +210,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 @Override
                 public void handleFault(BackendlessFault fault) {
                     Log.d("myapp", fault.getMessage());
+                    hideProgressDialog();
                 }
             });
         } else {
+            hideProgressDialog();
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -255,9 +258,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 @Override
                 public void handleFault(BackendlessFault fault) {
                     Log.d("myapp", fault.getMessage());
+                    hideProgressDialog();
+                    refreshLayout.setRefreshing(false);
                 }
             });
         } else {
+            refreshLayout.setRefreshing(false);
+            hideProgressDialog();
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
@@ -295,9 +302,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 @Override
                 public void handleFault(BackendlessFault fault) {
                     Log.d("myapp", fault.getMessage());
+                    hideProgressDialog();
                 }
             });
         } else {
+            hideProgressDialog();
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 

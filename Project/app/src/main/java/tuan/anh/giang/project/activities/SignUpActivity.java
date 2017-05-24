@@ -99,11 +99,13 @@ public class SignUpActivity extends BaseActivity {
 
                             public void handleFault(BackendlessFault fault) {
                                 // an error has occurred, the error code can be retrieved with fault.getCode()
+                                hideProgressDialog();
                                 ErrorHandling.BackendlessErrorCode(view.getContext(), fault.getCode());
                                 Log.d("Error ", fault.getCode());
                             }
                         });
                     }else{
+                        hideProgressDialog();
                         showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
                     }
                 }
@@ -193,13 +195,14 @@ public class SignUpActivity extends BaseActivity {
                                         })
                                         .create()
                                         .show();
-                                showNotifyDialog("Sign up",getString(R.string.register_success),R.drawable.success);
+//                                showNotifyDialog("Sign up",getString(R.string.register_success),R.drawable.success);
 //                                LoginActivity.start(SignUpActivity.this);
 //                                finish();
                             }
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
+                                hideProgressDialog();
                                 showNotifyDialog("Sign up",fault.getMessage(),R.drawable.error);
                             }
                         });

@@ -313,6 +313,9 @@ public class ChatActivity extends BaseActivity implements OnImagePickedListener 
     }
 
     public void onAttachmentsClick(View view) {
+        if(checker.lacksPermissions(Consts.PERMISSIONS_SEND_IMAGE)){
+            PermissionsActivity.startActivity(this, false, Consts.PERMISSIONS_SEND_IMAGE);
+        }
         new ImagePickHelper().pickAnImage(this, REQUEST_CODE_ATTACHMENT);
     }
 

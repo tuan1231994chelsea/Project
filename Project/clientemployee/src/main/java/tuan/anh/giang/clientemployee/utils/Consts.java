@@ -55,7 +55,7 @@ public interface Consts {
     int EXTRA_LOGIN_RESULT_CODE = 1002;
 
     String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
-
+    String[] PERMISSIONS_SEND_IMAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     String EXTRA_COMMAND_TO_SERVICE = "command_for_service";
     int COMMAND_NOT_FOUND = 0;
     int COMMAND_LOGIN = 1;

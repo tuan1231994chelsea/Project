@@ -47,24 +47,25 @@ import tuan.anh.giang.project.utils.chat.ChatHelper;
 public class EmployeesActivity extends BaseActivity {
     public static final String EXTRA_QB_USERS = "qb_users";
     private static final String EXTRA_QB_DIALOG = "qb_dialog";
-    ImageView imgMessage,imgVideoCall,imgPhoneCall,imgBack;
+    ImageView imgMessage, imgVideoCall, imgPhoneCall, imgBack;
     ListView lvEmployee;
     SwipeRefreshLayout refreshLayout;
     ArrayList<BackendlessUser> listEmployee;
-    EmployeeAdapter employeeAdapter ;
+    EmployeeAdapter employeeAdapter;
     DataQueryBuilder dataQueryBuilder;
     BackendlessUser currentBELUser;
     QBUser currentQBUser;
     private boolean isRunForCall;
     private WebRtcSessionManager webRtcSessionManager;
     private PermissionsChecker checker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee);
         dataQueryBuilder = DataQueryBuilder.create();
         dataQueryBuilder.setPageSize(20);
-        dataQueryBuilder.setWhereClause(getString(R.string.is_employee)+" = true and "+getString(R.string.is_online)+"= true");
+        dataQueryBuilder.setWhereClause(getString(R.string.is_employee) + " = true and " + getString(R.string.is_online) + "= true");
         currentBELUser = Backendless.UserService.CurrentUser();
         initFields();
         findViewById();
@@ -83,6 +84,7 @@ public class EmployeesActivity extends BaseActivity {
         intent.putExtra(Consts.EXTRA_IS_STARTED_FOR_CALL, isRunForCall);
         context.startActivity(intent);
     }
+
     public static void startForResult(Activity activity, int code) {
         startForResult(activity, code, null);
     }
@@ -92,6 +94,7 @@ public class EmployeesActivity extends BaseActivity {
         intent.putExtra(EXTRA_QB_DIALOG, dialog);
         activity.startActivityForResult(intent, code);
     }
+
     private void findViewById() {
         lvEmployee = (ListView) findViewById(R.id.lv_employee);
         imgMessage = (ImageView) findViewById(R.id.img_message);
@@ -101,7 +104,7 @@ public class EmployeesActivity extends BaseActivity {
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshing_list_employees);
         refreshLayout.setColorSchemeResources(R.color.fb_color);
         listEmployee = new ArrayList<>();
-        employeeAdapter = new EmployeeAdapter(this, R.layout.item_employee_list,listEmployee);
+        employeeAdapter = new EmployeeAdapter(this, R.layout.item_employee_list, listEmployee);
         employeeAdapter.setSelectedItemsCountsChangedListener(new EmployeeAdapter.SelectedItemsCountsChangedListener() {
             @Override
             public void onCountSelectedItemsChanged(BackendlessUser item) {
@@ -110,6 +113,7 @@ public class EmployeesActivity extends BaseActivity {
         });
         lvEmployee.setAdapter(employeeAdapter);
     }
+
     private void onClick() {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,10 +124,10 @@ public class EmployeesActivity extends BaseActivity {
         imgMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(employeeAdapter.getSelectedItem() != null ){
+                if (employeeAdapter.getSelectedItem() != null) {
                     startChatWithEmployee();
-                }else{
-                    showNotifyDialog("","Please, choose one participant",R.drawable.error);
+                } else {
+                    showNotifyDialog("", "Please, choose one participant", R.drawable.error);
                 }
 
             }
@@ -138,60 +142,63 @@ public class EmployeesActivity extends BaseActivity {
         imgVideoCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(employeeAdapter.getSelectedItem() != null){
+                if (employeeAdapter.getSelectedItem() != null) {
                     if (isLoggedInChat()) {
                         startCall(true);
                     }
                     if (checker.lacksPermissions(Consts.PERMISSIONS)) {
                         startPermissionsActivity(false);
                     }
-                }else{
-                    showNotifyDialog("","Please, choose one participant",R.drawable.error);
+                } else {
+                    showNotifyDialog("", "Please, choose one participant", R.drawable.error);
                 }
             }
         });
         imgPhoneCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(employeeAdapter.getSelectedItem() != null){
+                if (employeeAdapter.getSelectedItem() != null) {
                     if (isLoggedInChat()) {
                         startCall(false);
                     }
                     if (checker.lacksPermissions(Consts.PERMISSIONS[1])) {
                         startPermissionsActivity(true);
                     }
-                }else{
-                    showNotifyDialog("","Please, choose one participant",R.drawable.error);
+                } else {
+                    showNotifyDialog("", "Please, choose one participant", R.drawable.error);
                 }
 
             }
         });
 
     }
-    private void startChatWithEmployee(){
-        if(ConnectivityUtils.isNetworkConnected()){
+
+    private void startChatWithEmployee() {
+        if (ConnectivityUtils.isNetworkConnected()) {
             ChatHelper.getInstance().createDialogWithSelectedUser(employeeAdapter.getSelectedQBUser(),
                     new QBEntityCallback<QBChatDialog>() {
                         @Override
                         public void onSuccess(QBChatDialog qbChatDialog, Bundle bundle) {
-                            ChatActivity.start(EmployeesActivity.this,qbChatDialog);
+                            ChatActivity.start(EmployeesActivity.this, qbChatDialog);
                         }
+
                         @Override
                         public void onError(QBResponseException e) {
 
                         }
                     });
-        }else{
+        } else {
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
 
     }
+
     private void passResultToCallerActivity() {
         Intent result = new Intent();
         ArrayList<QBUser> selectedUsers = new ArrayList<>();
         selectedUsers.add(currentQBUser);
         BackendlessUser participantBELUser = employeeAdapter.getSelectedItem();
-        QBUser participantQBUser = new QBUser((String) participantBELUser.getProperty(getString(R.string.login)),Consts.DEFAULT_USER_PASSWORD);
+        QBUser participantQBUser = new QBUser((String) participantBELUser.getProperty(getString(R.string.login)), Consts.DEFAULT_USER_PASSWORD);
         participantQBUser.setId((Integer) participantBELUser.getProperty(getString(R.string.id_qb)));
         participantQBUser.setFullName((String) participantBELUser.getProperty(getString(R.string.full_name)));
         StringifyArrayList<String> tags = new StringifyArrayList<>();
@@ -202,6 +209,7 @@ public class EmployeesActivity extends BaseActivity {
         setResult(RESULT_OK, result);
         finish();
     }
+
     private boolean isLoggedInChat() {
         if (!QBChatService.getInstance().isLoggedIn()) {
             Toaster.shortToast(R.string.dlg_signal_error);
@@ -234,18 +242,21 @@ public class EmployeesActivity extends BaseActivity {
 
         CallActivity.start(this, false);
     }
-    private void updateListEmployees(){
+
+    private void updateListEmployees() {
         refreshLayout.setRefreshing(true);
         listEmployee.clear();
         dataQueryBuilder = DataQueryBuilder.create();
         dataQueryBuilder.setPageSize(20);
-        dataQueryBuilder.setWhereClause(getString(R.string.is_employee)+" = true and "+getString(R.string.is_online)+"= true");
+        dataQueryBuilder.setWhereClause(getString(R.string.is_employee) + " = true and " + getString(R.string.is_online) + "= true");
         employeeAdapter.clearSelection();
         getListEmployees();
     }
+
     private void startPermissionsActivity(boolean checkOnlyAudio) {
         PermissionsActivity.startActivity(this, checkOnlyAudio, Consts.PERMISSIONS);
     }
+
     private void initFields() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -255,17 +266,17 @@ public class EmployeesActivity extends BaseActivity {
         webRtcSessionManager = WebRtcSessionManager.getInstance(getApplicationContext());
     }
 
-    private void getListEmployees(){
-        if(ConnectivityUtils.isNetworkConnected()){
+    private void getListEmployees() {
+        if (ConnectivityUtils.isNetworkConnected()) {
             // create lai dataquerybuilder truoc roi chay de quy
             Backendless.Data.of(BackendlessUser.class).find(dataQueryBuilder, new AsyncCallback<List<BackendlessUser>>() {
                 @Override
                 public void handleResponse(List<BackendlessUser> response) {
-                    if(response.size()!=0){
+                    if (response.size() != 0) {
                         listEmployee.addAll(response);
                         dataQueryBuilder.prepareNextPage();
                         getListEmployees();
-                    }else{
+                    } else {
                         lvEmployee.post(new Runnable() {
                             @Override
                             public void run() {
@@ -275,12 +286,13 @@ public class EmployeesActivity extends BaseActivity {
                         refreshLayout.setRefreshing(false);
                     }
                 }
+
                 @Override
                 public void handleFault(BackendlessFault fault) {
-
+                    refreshLayout.setRefreshing(false);
                 }
             });
-        }else{
+        } else {
             refreshLayout.setRefreshing(false);
             showNotifyDialog("", getString(R.string.no_internet_connection), R.drawable.error);
         }
