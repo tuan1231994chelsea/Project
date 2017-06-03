@@ -81,7 +81,8 @@
                 <EditText
                     android:id="@+id/ed_content_question"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
+                    android:lines="5"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:gravity="top"
@@ -92,10 +93,39 @@
                     android:maxLines="5"
                     />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_image"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/image"
+                    android:scaleType="fitXY"
+                    android:tint="@color/colorFB"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Image"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    />
 
+            </LinearLayout>
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/img_upload"
+                />
             <Button
                 android:id="@+id/btn_submit"
-                android:layout_width="314dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"

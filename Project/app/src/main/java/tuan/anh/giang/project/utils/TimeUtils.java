@@ -15,7 +15,7 @@ public class TimeUtils {
     }
 
     public static String getDate(long milliseconds) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM", Locale.getDefault());
         return dateFormat.format(new Date(milliseconds));
     }
 

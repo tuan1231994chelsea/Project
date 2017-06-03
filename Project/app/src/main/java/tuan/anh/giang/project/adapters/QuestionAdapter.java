@@ -16,11 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.backendless.BackendlessUser;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.project.R;
 import tuan.anh.giang.project.entities.Question;
 
@@ -44,6 +46,7 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
         View row = inflater.inflate(R.layout.item_list_question, null);
 
         ImageView imgUser = (ImageView) row.findViewById(R.id.img_user);
+        ImageView imgQuestion = (ImageView) row.findViewById(R.id.img_question);
         ImageView imgReply = (ImageView) row.findViewById(R.id.img_reply);
         TextView tvCreated = (TextView) row.findViewById(R.id.tv_created);
         TextView tvContent = (TextView) row.findViewById(R.id.tv_content);
@@ -59,6 +62,14 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
             } else {
                 imgReply.setImageResource(R.drawable.success);
                 imgReply.setColorFilter(ContextCompat.getColor(context, R.color.action_button_color));
+            }
+            if(!(question.getImage() == null || question.getImage().equals(""))){
+                Picasso.with(context)
+                        .load(question.getImage())
+                        .noPlaceholder()
+                        .centerCrop()
+                        .resize(ResourceUtils.dpToPx(330),ResourceUtils.dpToPx(250))
+                        .into((imgQuestion));
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             tvCreated.setText("● " + sdf.format(question.getCreated()));

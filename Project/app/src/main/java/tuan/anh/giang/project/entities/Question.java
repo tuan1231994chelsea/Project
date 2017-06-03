@@ -16,6 +16,7 @@ public class Question implements Serializable{
     private BackendlessUser user;
     private String content;
     private int status;
+    private String image;
     private Date created;
     private Date updated;
 
@@ -68,5 +69,13 @@ public class Question implements Serializable{
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -25,14 +25,14 @@
         android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/icon_client_user"
-        android:label="User"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activities.SplashActivity"
-            android:label="User"
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

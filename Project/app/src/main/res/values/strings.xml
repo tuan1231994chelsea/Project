@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="current_version">0.9.1</string>
-    <string name="app_name">Project</string>
-    <string name="splash_app_title">Project</string>
+    <string name="current_version">1.0.0</string>
+    <string name="app_name">Hỏi đáp trực tuyến</string>
+    <string name="splash_app_title">Hỏi đáp trực tuyến</string>
     <string name="splash_create_session_error">Create session errors:</string>
 
 

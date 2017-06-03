@@ -35,6 +35,7 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +43,9 @@ import java.util.List;
 
 import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.KeyboardUtils;
+import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.project.R;
+import tuan.anh.giang.project.activities.AttachmentImageActivity;
 import tuan.anh.giang.project.activities.ChatActivity;
 import tuan.anh.giang.project.activities.EmployeesActivity;
 import tuan.anh.giang.project.adapters.AnswerAdapter;
@@ -62,7 +65,7 @@ public class AnswerFragment extends Fragment {
     TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer, tvLeaveQuestion;
     EditText edReply;
     LinearLayout layoutMoreAnswer;
-    ImageView imgBack, imgMoreAnswer, imgUser, imgSend;
+    ImageView imgBack, imgMoreAnswer, imgUser, imgSend,imgQuestion;
     ListView lvAnswer;
     ArrayList<Answer> listAnswer;
     ArrayList<Answer> listLessAnswer;
@@ -108,6 +111,7 @@ public class AnswerFragment extends Fragment {
         tvLeaveQuestion = (TextView) view.findViewById(R.id.tv_leave_question);
         lvAnswer = (ListView) view.findViewById(R.id.lv_answer);
         imgSend = (ImageView) view.findViewById(R.id.img_send);
+        imgQuestion = (ImageView) view.findViewById(R.id.img_question);
         edReply = (EditText) view.findViewById(R.id.ed_reply);
         layoutMoreAnswer = (LinearLayout) view.findViewById(R.id.layout_more_answer);
         tvMoreAnswer = (TextView) view.findViewById(R.id.tv_more_answer);
@@ -131,6 +135,14 @@ public class AnswerFragment extends Fragment {
             });
             tvLeaveQuestion.setBackground(getActivity().getResources().getDrawable(R.drawable.disable_leave_question));
         }
+        if(!(question.getImage() == null || question.getImage().equals(""))){
+            Picasso.with(getContext())
+                    .load(question.getImage())
+                    .noPlaceholder()
+                    .centerCrop()
+                    .resize(ResourceUtils.dpToPx(330),ResourceUtils.dpToPx(250))
+                    .into((imgQuestion));
+        }
         tvFullName.setText((String) currentBackendlessUser.getProperty(getString(R.string.full_name)));
         tvQuestion.setText(question.getContent());
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -142,6 +154,12 @@ public class AnswerFragment extends Fragment {
     }
 
     private void onClick() {
+        imgQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AttachmentImageActivity.start(getContext(), question.getImage());
+            }
+        });
         tvLeaveQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
