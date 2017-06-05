@@ -17,6 +17,7 @@ public class Answer implements Serializable{
     private Date updated;
     private String objectId;
     private String content_answer;
+    private String image;
     private BackendlessUser user;
 
     public Answer() {
@@ -61,5 +62,13 @@ public class Answer implements Serializable{
 
     public void setUser(BackendlessUser user) {
         this.user = user;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

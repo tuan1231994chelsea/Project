@@ -47,6 +47,12 @@
                 android:text="● 05-04-2017 16:24:46"
                 android:textColor="@color/time_color"
                 android:textSize="12sp" />
+            <ImageView
+                android:layout_gravity="left"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/img_image_answer"/>
         </LinearLayout>
     </LinearLayout>
     <View

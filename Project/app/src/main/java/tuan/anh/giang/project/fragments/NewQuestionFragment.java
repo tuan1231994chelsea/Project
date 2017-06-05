@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import tuan.anh.giang.core.utils.ConnectivityUtils;
 import tuan.anh.giang.core.utils.ImageUtils;
 import tuan.anh.giang.core.utils.KeyboardUtils;
+import tuan.anh.giang.core.utils.ResourceUtils;
 import tuan.anh.giang.core.utils.imagepick.OnImagePickedListener;
 import tuan.anh.giang.core.utils.imagepick.fragment.ImageSourcePickDialogFragment;
 import tuan.anh.giang.project.R;
@@ -126,6 +127,8 @@ public class NewQuestionFragment extends Fragment {
                 if (ConnectivityUtils.isNetworkConnected()) {
                     // quality = 50
                     showProgressDialog(R.string.loading);
+                    remoteName = String.valueOf(System.currentTimeMillis());
+                    remoteName = remoteName+".jpg";
                     Backendless.Files.Android.upload(bitmap,
                             Bitmap.CompressFormat.JPEG,
                             50,
@@ -259,12 +262,12 @@ public class NewQuestionFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             if (requestCode == GALLERY_REQUEST_CODE) {
                 currentUri = data.getData();
-                remoteName = getFileName(currentUri);
+//                remoteName = getFileName(currentUri);
                 Picasso.with(getContext())
                         .load(currentUri)
                         .noPlaceholder()
                         .centerCrop()
-                        .resize(200, 180)
+                        .resize(ResourceUtils.dpToPx(180),ResourceUtils.dpToPx(120))
                         .into((imgUpload));
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), currentUri);
@@ -277,12 +280,12 @@ public class NewQuestionFragment extends Fragment {
                     data.setData(Uri.fromFile(ImageUtils.getLastUsedCameraFile()));
                 }
                 currentUri = data.getData();
-                remoteName = getFileName(currentUri);
+//                remoteName = getFileName(currentUri);
                 Picasso.with(getContext())
                         .load(currentUri)
                         .noPlaceholder()
                         .centerCrop()
-                        .resize(200, 180)
+                        .resize(ResourceUtils.dpToPx(180),ResourceUtils.dpToPx(120))
                         .into((imgUpload));
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), currentUri);

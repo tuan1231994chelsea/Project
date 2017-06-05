@@ -68,7 +68,7 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
                         .load(question.getImage())
                         .noPlaceholder()
                         .centerCrop()
-                        .resize(ResourceUtils.dpToPx(330),ResourceUtils.dpToPx(250))
+                        .resize(ResourceUtils.dpToPx(330),ResourceUtils.dpToPx(220))
                         .into((imgQuestion));
             }
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");

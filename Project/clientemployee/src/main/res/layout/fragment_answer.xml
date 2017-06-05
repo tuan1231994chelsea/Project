@@ -96,28 +96,29 @@
                                 android:tint="@color/colorFB" />
 
                             <TextView
-                                android:layout_toRightOf="@+id/img_user_above"
                                 android:id="@+id/tv_full_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
+                                android:layout_toLeftOf="@+id/tv_status_question"
+                                android:layout_toRightOf="@+id/img_user_above"
                                 android:text="Giang Anh Tuan"
                                 android:textColor="@color/full_name_color"
-                                android:textStyle="bold"
-                                android:layout_toLeftOf="@+id/tv_status_question"/>
+                                android:textStyle="bold" />
+
                             <TextView
-                                android:background="@drawable/enable_leave_question"
-                                android:textColor="@color/text_color"
                                 android:id="@+id/tv_status_question"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="10dp"
+                                android:background="@drawable/status_question_0"
                                 android:paddingLeft="5dp"
                                 android:paddingRight="5dp"
                                 android:text="Status question"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="10dp"/>
+                                android:textColor="@color/text_color" />
                         </RelativeLayout>
 
                         <TextView
@@ -126,8 +127,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:paddingLeft="15dp"
-                            android:textColor="@color/text_color"
-                            android:text="Content question here" />
+                            android:text="Content question here"
+                            android:textColor="@color/text_color" />
 
                         <TextView
                             android:id="@+id/tv_created"
@@ -139,6 +140,11 @@
                             android:textColor="@color/time_color"
                             android:textSize="12sp" />
 
+                        <ImageView
+                            android:id="@+id/img_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp" />
                     </LinearLayout>
 
                     <View
@@ -180,23 +186,22 @@
                         android:layout_height="0.3dp"
                         android:background="@color/border_color_below" />
 
-                    <ListView
+                    <tuan.anh.giang.clientemployee.view.NonScrollableListview
                         android:id="@+id/lv_answer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:divider="@android:color/transparent"
-                        android:dividerHeight="0dp"></ListView>
+                        android:dividerHeight="0dp"></tuan.anh.giang.clientemployee.view.NonScrollableListview>
 
                 </LinearLayout>
             </ScrollView>
 
 
             <LinearLayout
-
                 android:id="@+id/layout_reply_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_above="@+id/layout_image"
                 android:orientation="vertical">
 
                 <View
@@ -222,38 +227,74 @@
                             android:layout_height="48dp"
                             android:layout_alignParentLeft="true"
                             android:scaleType="fitXY"
-                            android:src="@drawable/employee"
-                            />
+                            android:src="@drawable/employee" />
 
                         <ImageView
-                            android:layout_centerVertical="true"
                             android:id="@+id/img_send"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_alignParentRight="true"
-                            android:layout_marginRight="10dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
                             android:scaleType="fitXY"
-                            android:tint="@color/colorFB"
-                            android:src="@drawable/send" />
+                            android:src="@drawable/send"
+                            android:tint="@color/colorFB" />
 
-                        <EditText
-                            android:maxLines="2"
-                            android:textColor="@color/text_color"
-                            android:id="@+id/ed_reply"
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="5dp"
                             android:layout_toLeftOf="@+id/img_send"
                             android:layout_toRightOf="@+id/img_user"
-                            android:background="@drawable/border_send_reply"
-                            android:hint="Write reply..."
-                            android:textColorHint="@color/hint_color" />
+                            android:background="@drawable/bg_layout_reply">
 
+                            <EditText
+                                android:id="@+id/ed_reply"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/img_reply"
+                                android:background="@drawable/bg_send_reply"
+                                android:hint="Write reply..."
+                                android:maxLines="2"
+                                android:textColor="@color/text_color"
+                                android:textColorHint="@color/hint_color" />
+
+                            <ImageView
+                                android:id="@+id/img_reply"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/image"
+                                android:tint="@color/colorFB" />
+                        </RelativeLayout>
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 
+            <FrameLayout
+                android:id="@+id/layout_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:id="@+id/img_preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp" />
+
+                <ImageView
+                    android:id="@+id/img_remove_preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|right"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_action_remove"
+                    android:visibility="gone" />
+            </FrameLayout>
 
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>

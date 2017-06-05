@@ -335,6 +335,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 question.setCreated(clickQuestion.getCreated());
                 question.setObjectId(clickQuestion.getObjectId());
                 question.setUpdated(clickQuestion.getUpdated());
+                question.setImage(clickQuestion.getImage());
                 bundle.putSerializable("question", question);
                 bundle.putString("FullName", (String) clickQuestion.getUser().getProperty(getString(R.string.full_name)));
                 currentFragment.setArguments(bundle);
