@@ -84,9 +84,9 @@ public class ScreenShareFragment extends BaseToolBarFragment {
     }
 
     public static class MyAdapter extends FragmentPagerAdapter {
-        private static final int NUM_ITEMS = 4;
+        private static final int NUM_ITEMS = 1;
 
-        private int[] images = {R.drawable.pres_img, R.drawable.p2p, R.drawable.group_call, R.drawable.opponents};
+        private int[] images = {R.drawable.pres_img};
 
         public MyAdapter(FragmentManager fm) {
             super(fm);

@@ -2,11 +2,15 @@ package tuan.anh.giang.clientemployee.fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -41,7 +45,9 @@ import com.quickblox.core.helper.StringifyArrayList;
 import com.quickblox.users.model.QBUser;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +83,7 @@ public class AnswerFragment extends Fragment {
     TextView tvFullName, tvQuestion, tvCreated, tvMoreAnswer, tvStatusQuestion;
     EditText edReply;
     LinearLayout layoutMoreAnswer;
-    ImageView imgBack, imgMoreAnswer, imgUser, imgSend, imgQuestion, imgReply, imgPreview,imgRemovePreview;
+    ImageView imgBack, imgMoreAnswer, imgUser, imgSend, imgQuestion, imgReply, imgPreview, imgRemovePreview;
     NonScrollableListview lvAnswer;
     ArrayList<Answer> listAnswer;
     ArrayList<Answer> listLessAnswer;
@@ -715,10 +721,22 @@ public class AnswerFragment extends Fragment {
                     data.setData(Uri.fromFile(ImageUtils.getLastUsedCameraFile()));
                 }
                 currentUri = data.getData();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), currentUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), currentUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 100);
+                if (bitmap == null) {
+                    try {
+                        bitmap = decodeSampledBitmapFromUri(getActivity(), currentUri, 9, 9);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 imgRemovePreview.setVisibility(View.VISIBLE);
                 Picasso.with(getContext())
@@ -747,6 +765,48 @@ public class AnswerFragment extends Fragment {
             }
         }
     }
+
+    private static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromUri(Context context, Uri imageUri, int reqWidth, int reqHeight) throws FileNotFoundException {
+
+        // Get input stream of the image
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        InputStream iStream = context.getContentResolver().openInputStream(imageUri);
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(iStream, null, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeStream(iStream, null, options);
+    }
+
 
     private class FragmentAnswerEditTextWatcher implements TextWatcher {
         private EditText editText;

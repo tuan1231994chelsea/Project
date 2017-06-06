@@ -120,9 +120,7 @@ public class CallActivity extends BaseActivity implements QBRTCClientSessionCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call);
-
         parseIntentExtras();
-
         sessionManager = WebRtcSessionManager.getInstance(this);
         if (!currentSessionExist()) {
 //            we have already currentSession == null, so it's no reason to do further initialization
